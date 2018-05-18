@@ -68,7 +68,7 @@ def setWB():
     cam.awb_gains = (one, two)
 
 cam=initCam()
-daytime=isDaytime()
+daytime="TBD"
 
 if not options.awb:
     setWB()
