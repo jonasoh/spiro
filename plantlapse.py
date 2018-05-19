@@ -9,7 +9,6 @@ import sys
 version = "0.1.0"
 
 parser = OptionParser(version="plantlapse " + version)
-
 parser.add_option('-n', '--num-shots', default=168, type="int", dest="nshots",
                     help="number of shots to capture [default: 168]")
 parser.add_option('-d', '--delay', type="float", default=60, dest="delay", 
@@ -32,39 +31,33 @@ parser.add_option('--led', default=False, action="store_true", dest="led",
                     help="do not disable camera led; useful for running without GPIO privileges")
 parser.add_option('--preview', action="store_true", default=False, dest="preview",
                     help="show a live preview of the current settings for 60 seconds, then exit")
-parser.add_option('-t','--test', action="store_true", default=False, dest="test",
+parser.add_option('-t','--test', action="store_true", default=False, dest="test", 
                     help="capture a test picture as 'test.jpg', then exit")
-
 (options, args) = parser.parse_args()
 
 def initCam():
     cam = PiCamera()
-    cam.resolution=options.resolution 
-    cam.meter_mode='spot'
+    cam.resolution = options.resolution 
+    cam.meter_mode = 'spot'
     if not options.led: 
-        cam.led=False
+        cam.led = False
     return cam
 
 def isDaytime():
     # determine if it's day or not. give the camera 1 second to adjust.
-    oldshutter=cam.shutter_speed
-    oldiso=cam.iso
-    cam.shutter_speed=0
+    cam.shutter_speed = 0
     cam.iso = 100
     time.sleep(1)
     exp = cam.exposure_speed
     print("Exposure speed: %f" % exp)
     if exp < 20000:
-        day=True
+        return True
     else:
-        day=False
-    cam.shutter_speed=oldshutter
-    cam.iso=oldiso
-    return day
+        return False
 
 def setWB():
     sys.stdout.write("Determining white balance")
-    cam.awb_mode='auto'
+    cam.awb_mode = 'auto'
     (one, two) = cam.awb_gains
     sys.stdout.flush()
     for i in range(1,5):
@@ -72,7 +65,7 @@ def setWB():
         sys.stdout.write(".")
         sys.stdout.flush()
     print(" done.")
-    cam.awb_mode="off"
+    cam.awb_mode = "off"
     cam.awb_gains = (one, two)
 
 cam=initCam()
@@ -80,18 +73,17 @@ daytime="TBD"
 
 if options.preview:
     cam.start_preview()
-    sleep(60)
+    time.sleep(60)
     cam.stop_preview()
     sys.exit()
 
 for n in range(0, options.nshots):
-    prev_daytime=daytime
-    daytime=isDaytime()
+    prev_daytime = daytime
+    daytime = isDaytime()
     
     # set new wb if there's a day/night shift
-    if prev_daytime != daytime:
-        if not options.awb:
-            setWB()
+    if prev_daytime != daytime and not options.awb:
+        setWB()
 
     if daytime:
         cam.shutter_speed=1000000//options.dayshutter
