@@ -22,7 +22,7 @@ parser.add_option('--day-iso', default=100, dest="dayiso", type="int",
                     help="set daytime ISO value (0=auto) [default: 100]")
 parser.add_option('--night-iso', default=100, dest="nightiso", type="int",
                     help="set nighttime ISO value (0=auto) [default: 100]")
-parser.add_option('-r', '--resolution', default="2592x1944", dest="resolution", 
+parser.add_option('--resolution', default="2592x1944", dest="resolution", 
                     help="set camera resolution [default: 2592x1944]")
 parser.add_option('--prefix', default="", dest="prefix", 
                     help="prefix to use for filenames [default: none]")
@@ -30,6 +30,8 @@ parser.add_option('--auto-wb', default=False, action="store_true", dest="awb",
                     help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
 parser.add_option('--preview', action="store_true", default=False, dest="preview",
                     help="show a live preview of the current settings for 60 seconds, then exit")
+parser.add_option('--test', action="store_true", default=False, dest="test",
+                    help="capture a test picture as 'test.jpg', then exit")
 
 (options, args) = parser.parse_args()
 
@@ -94,6 +96,11 @@ for n in range(0, options.nshots):
     else:
         cam.shutter_speed=1000000//options.nightshutter
         cam.iso=options.nightiso
+    
+    if options.test:
+        cam.capture("test.jpg")
+        print("Test picture captured successfully.")
+        sys.exit()
     
     now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
     filename = options.prefix + now + ".jpg"
