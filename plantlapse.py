@@ -14,16 +14,20 @@ parser.add_option('-n', '--num-shots', default=168, type="int", dest="nshots",
                     help="number of shots to capture [default: 168]")
 parser.add_option('-d', '--delay', type="float", default=60, dest="delay", 
                     help="time to wait between shots [default: 60]")
-parser.add_option('--auto-wb', default=False, action="store_true", dest="awb",
-                    help="adjust white balance between shots [default: false]")
-parser.add_option('-I', '--iso', default=0, dest="iso", type="int",
-                    help="set camera ISO value (0=auto) [default: 0]")
-parser.add_option('-s', '--shutter-speed', default=50, dest="shutter", type="int", 
-                    help="set camera shutter speed denominator, i.e. for 1/100 specify '100' [default: 50]")
+parser.add_option('--day-shutter', default=50, dest="dayshutter", type="int", 
+                    help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 50]")
+parser.add_option('--night-shutter', default=200, dest="nightshutter", type="int", 
+                    help="nighttime shutter in fractions of a second [default: 200]")
+parser.add_option('--day-iso', default=100, dest="dayiso", type="int",
+                    help="set daytime ISO value (0=auto) [default: 100]")
+parser.add_option('--night-iso', default=100, dest="nightiso", type="int",
+                    help="set nighttime ISO value (0=auto) [default: 100]")
 parser.add_option('-r', '--resolution', default="2592x1944", dest="resolution", 
                     help="set camera resolution [default: 2592x1944]")
 parser.add_option('--prefix', default="", dest="prefix", 
                     help="prefix to use for filenames [default: none]")
+parser.add_option('--auto-wb', default=False, action="store_true", dest="awb",
+                    help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
 parser.add_option('--preview', action="store_true", default=False, dest="preview",
                     help="show a live preview of the current settings for 60 seconds, then exit")
 
@@ -32,7 +36,6 @@ parser.add_option('--preview', action="store_true", default=False, dest="preview
 def initCam():
     cam = PiCamera()
     cam.resolution=options.resolution 
-    cam.iso=options.iso
     cam.meter_mode='spot'
     cam.led=False
     return cam
@@ -70,9 +73,6 @@ def setWB():
 cam=initCam()
 daytime="TBD"
 
-if not options.awb:
-    setWB()
-
 if options.preview:
     cam.start_preview()
     sleep(60)
@@ -85,14 +85,15 @@ for n in range(0, options.nshots):
     
     # set new wb if there's a day/night shift
     if prev_daytime != daytime:
-        setWB()
-        
+        if not options.awb:
+            setWB()
+
     if daytime:
-        cam.shutter_speed=1000000//50
-        cam.iso=100
+        cam.shutter_speed=1000000//options.dayshutter
+        cam.iso=options.dayiso
     else:
-        cam.shutter_speed=1000000//200
-        cam.iso=100
+        cam.shutter_speed=1000000//options.nightshutter
+        cam.iso=options.nightiso
     
     now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
     filename = options.prefix + now + ".jpg"
