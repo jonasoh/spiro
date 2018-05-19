@@ -28,9 +28,11 @@ parser.add_option('--prefix', default="", dest="prefix",
                     help="prefix to use for filenames [default: none]")
 parser.add_option('--auto-wb', default=False, action="store_true", dest="awb",
                     help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
+parser.add_option('--led', default=False, action="store_true", dest="led",
+                    help="do not disable camera led; useful for running without GPIO privileges")
 parser.add_option('--preview', action="store_true", default=False, dest="preview",
                     help="show a live preview of the current settings for 60 seconds, then exit")
-parser.add_option('--test', action="store_true", default=False, dest="test",
+parser.add_option('-t','--test', action="store_true", default=False, dest="test",
                     help="capture a test picture as 'test.jpg', then exit")
 
 (options, args) = parser.parse_args()
@@ -39,7 +41,8 @@ def initCam():
     cam = PiCamera()
     cam.resolution=options.resolution 
     cam.meter_mode='spot'
-    cam.led=False
+    if not options.led: 
+        cam.led=False
     return cam
 
 def isDaytime():
