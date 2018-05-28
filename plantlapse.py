@@ -12,7 +12,7 @@ parser = OptionParser(version="plantlapse " + version)
 parser.add_option('-n', '--num-shots', default=168, type="int", dest="nshots",
                     help="number of shots to capture [default: 168]")
 parser.add_option('-d', '--delay', type="float", default=60, dest="delay", 
-                    help="time to wait between shots [default: 60]")
+                    help="time, in minutes, to wait between shots [default: 60]")
 parser.add_option('--day-shutter', default=50, dest="dayshutter", type="int", 
                     help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 50]")
 parser.add_option('--night-shutter', default=200, dest="nightshutter", type="int", 
@@ -76,6 +76,10 @@ if options.preview:
     time.sleep(60)
     cam.stop_preview()
     sys.exit()
+
+if not options.test:
+    print("Starting new experiment.\nWill take one picture every %i minutes, in total %i pictures." % (options.delay, options.nshots))
+    print("Experiment will continue for approximately %f days." % (options.delay*options.nshots)/(60*24))
 
 for n in range(0, options.nshots):
     prev_daytime = daytime
