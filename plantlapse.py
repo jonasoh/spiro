@@ -11,6 +11,7 @@ from picamera import PiCamera
 from optparse import OptionParser
 import time
 import sys
+import os
 
 version = "0.1.0"
 
@@ -29,6 +30,8 @@ parser.add_option('--night-iso', default=100, dest="nightiso", type="int",
                     help="set nighttime ISO value (0=auto) [default: 100]")
 parser.add_option('--resolution', default="2592x1944", dest="resolution", 
                     help="set camera resolution [default: 2592x1944]")
+parser.add_option('--dir', default='.', dest="dir", 
+                    help="output pictures to directory 'DIR', creating it if needed [default: use current directory]")
 parser.add_option('--prefix', default="", dest="prefix", 
                     help="prefix to use for filenames [default: none]")
 parser.add_option('--auto-wb', default=False, action="store_true", dest="awb",
@@ -88,6 +91,10 @@ if not options.test:
     days = options.delay*options.nshots / (60*24)
     print("Experiment will continue for approximately %i days." % days)
 
+if options.dir != '.':
+    if not os.path.exists(options.dir): 
+        os.makedirs(options.dir)
+
 for n in range(0, options.nshots):
     prev_daytime = daytime
     daytime = isDaytime()
@@ -104,12 +111,12 @@ for n in range(0, options.nshots):
         cam.iso=options.nightiso
     
     if options.test:
-        cam.capture("test.jpg")
+        cam.capture(os.path.join(options.dir, "test.jpg"))
         print("Test picture captured successfully.")
         sys.exit()
     
     now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
-    filename = options.prefix + now + ".jpg"
+    filename = os.path.join(options.dir, options.prefix + now + ".jpg")
     sys.stdout.write("Capturing %s..." % filename)
     sys.stdout.flush()
     cam.capture(filename)
