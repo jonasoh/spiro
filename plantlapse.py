@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 #
+# plantlapse.py - 
+#   script for time-lapse imaging of petri dishes, with a focus on plants (i.e. it is adapted to day/night cycles). 
+#   designed to be used with the 5 MP OV5647-based camera with IR illumation, which is widely available. 
+# 
+# - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
+#
 
 from picamera import PiCamera
 from optparse import OptionParser
