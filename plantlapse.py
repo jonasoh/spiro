@@ -79,7 +79,8 @@ if options.preview:
 
 if not options.test:
     print("Starting new experiment.\nWill take one picture every %i minutes, in total %i pictures." % (options.delay, options.nshots))
-    print("Experiment will continue for approximately %f days." % (options.delay*options.nshots)/(60*24))
+    days = options.delay*options.nshots / (60*24)
+    print("Experiment will continue for approximately %i days." % days)
 
 for n in range(0, options.nshots):
     prev_daytime = daytime
