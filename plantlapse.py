@@ -47,9 +47,9 @@ parser.add_option("-t", "--test", action="store_true", default=False, dest="test
 
 def initCam():
     cam = PiCamera()
-    cam.resolution = options.resolution 
+    cam.resolution = options.resolution
     cam.meter_mode = "spot"
-    if not options.led: 
+    if not options.led:
         cam.led = False
     return cam
 
@@ -77,8 +77,8 @@ def setWB():
     cam.awb_mode = "off"
     cam.awb_gains = (one, two)
 
-cam=initCam()
-daytime="TBD"
+cam = initCam()
+daytime = "TBD"
 
 if options.preview:
     cam.start_preview()
@@ -92,7 +92,7 @@ if not options.test:
     print("Experiment will continue for approximately %i days." % days)
 
 if options.dir != ".":
-    if not os.path.exists(options.dir): 
+    if not os.path.exists(options.dir):
         os.makedirs(options.dir)
 
 for n in range(options.nshots):
@@ -104,10 +104,10 @@ for n in range(options.nshots):
         setWB()
 
     if daytime:
-        cam.shutter_speed = 1000000//options.dayshutter
+        cam.shutter_speed = 1000000 // options.dayshutter
         cam.iso=options.dayiso
     else:
-        cam.shutter_speed = 1000000//options.nightshutter
+        cam.shutter_speed = 1000000 // options.nightshutter
         cam.iso=options.nightiso
 
     if options.test:
