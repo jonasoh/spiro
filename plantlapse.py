@@ -16,38 +16,38 @@ import os
 version = "0.1.0"
 
 parser = OptionParser(version="plantlapse " + version)
-parser.add_option('-n', '--num-shots', default=168, type="int", dest="nshots",
+parser.add_option("-n", "--num-shots", default=168, type="int", dest="nshots",
                     help="number of shots to capture [default: 168]")
-parser.add_option('-d', '--delay', type="float", default=60, dest="delay", 
+parser.add_option("-d", "--delay", type="float", default=60, dest="delay", 
                     help="time, in minutes, to wait between shots [default: 60]")
-parser.add_option('--day-shutter', default=50, dest="dayshutter", type="int", 
+parser.add_option("--day-shutter", default=50, dest="dayshutter", type="int", 
                     help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 50]")
-parser.add_option('--night-shutter', default=200, dest="nightshutter", type="int", 
+parser.add_option("--night-shutter", default=200, dest="nightshutter", type="int", 
                     help="nighttime shutter in fractions of a second [default: 200]")
-parser.add_option('--day-iso', default=100, dest="dayiso", type="int",
+parser.add_option("--day-iso", default=100, dest="dayiso", type="int",
                     help="set daytime ISO value (0=auto) [default: 100]")
-parser.add_option('--night-iso', default=100, dest="nightiso", type="int",
+parser.add_option("--night-iso", default=100, dest="nightiso", type="int",
                     help="set nighttime ISO value (0=auto) [default: 100]")
-parser.add_option('--resolution', default="2592x1944", dest="resolution", 
+parser.add_option("--resolution", default="2592x1944", dest="resolution", 
                     help="set camera resolution [default: 2592x1944]")
-parser.add_option('--dir', default='.', dest="dir", 
+parser.add_option("--dir", default=".", dest="dir", 
                     help="output pictures to directory 'DIR', creating it if needed [default: use current directory]")
-parser.add_option('--prefix', default="", dest="prefix", 
+parser.add_option("--prefix", default="", dest="prefix", 
                     help="prefix to use for filenames [default: none]")
-parser.add_option('--auto-wb', default=False, action="store_true", dest="awb",
+parser.add_option("--auto-wb", default=False, action="store_true", dest="awb",
                     help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
-parser.add_option('--led', default=False, action="store_true", dest="led",
+parser.add_option("--led", default=False, action="store_true", dest="led",
                     help="do not disable camera led; useful for running without GPIO privileges")
-parser.add_option('--preview', action="store_true", default=False, dest="preview",
+parser.add_option("--preview", action="store_true", default=False, dest="preview",
                     help="show a live preview of the current settings for 60 seconds, then exit")
-parser.add_option('-t','--test', action="store_true", default=False, dest="test", 
+parser.add_option("-t","--test", action="store_true", default=False, dest="test", 
                     help="capture a test picture as 'test.jpg', then exit")
 (options, args) = parser.parse_args()
 
 def initCam():
     cam = PiCamera()
     cam.resolution = options.resolution 
-    cam.meter_mode = 'spot'
+    cam.meter_mode = "spot"
     if not options.led: 
         cam.led = False
     return cam
@@ -58,15 +58,12 @@ def isDaytime():
     cam.iso = 100
     time.sleep(1)
     exp = cam.exposure_speed
-    print("Exposure speed: %f" % exp)
-    if exp < 20000:
-        return True
-    else:
-        return False
+    print("Exposure speed: %i" % exp)
+    return exp < 20000
 
 def setWB():
     sys.stdout.write("Determining white balance")
-    cam.awb_mode = 'auto'
+    cam.awb_mode = "auto"
     (one, two) = cam.awb_gains
     sys.stdout.flush()
     for i in range(1,5):
@@ -91,11 +88,11 @@ if not options.test:
     days = options.delay*options.nshots / (60*24)
     print("Experiment will continue for approximately %i days." % days)
 
-if options.dir != '.':
+if options.dir != ".":
     if not os.path.exists(options.dir): 
         os.makedirs(options.dir)
 
-for n in range(0, options.nshots):
+for n in range(options.nshots):
     prev_daytime = daytime
     daytime = isDaytime()
     
@@ -104,10 +101,10 @@ for n in range(0, options.nshots):
         setWB()
 
     if daytime:
-        cam.shutter_speed=1000000//options.dayshutter
+        cam.shutter_speed = 1000000//options.dayshutter
         cam.iso=options.dayiso
     else:
-        cam.shutter_speed=1000000//options.nightshutter
+        cam.shutter_speed = 1000000//options.nightshutter
         cam.iso=options.nightiso
     
     if options.test:
