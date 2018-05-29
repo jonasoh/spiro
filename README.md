@@ -27,6 +27,8 @@ Options:
   --night-iso=NIGHTISO  set nighttime ISO value (0=auto) [default: 100]
   --resolution=RESOLUTION
                         set camera resolution [default: 2592x1944]
+  --dir=DIR             output pictures to directory 'DIR', creating it if
+                        needed [default: use current directory]
   --prefix=PREFIX       prefix to use for filenames [default: none]
   --auto-wb             adjust white balance between shots (if false, only
                         adjust when day/night shift is detected) [default:
