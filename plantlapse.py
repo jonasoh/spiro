@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 #
+# plantlapse.py - 
+#   script for time-lapse imaging of petri dishes, with a focus on plants (i.e. it is adapted to day/night cycles). 
+#   designed to be used with the 5 MP OV5647-based camera with IR illumation, which is widely available. 
+# 
+# - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
+#
 
 from picamera import PiCamera
 from optparse import OptionParser
@@ -79,7 +85,8 @@ if options.preview:
 
 if not options.test:
     print("Starting new experiment.\nWill take one picture every %i minutes, in total %i pictures." % (options.delay, options.nshots))
-    print("Experiment will continue for approximately %f days." % (options.delay*options.nshots)/(60*24))
+    days = options.delay*options.nshots / (60*24)
+    print("Experiment will continue for approximately %i days." % days)
 
 for n in range(0, options.nshots):
     prev_daytime = daytime
