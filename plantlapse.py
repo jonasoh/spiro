@@ -67,13 +67,13 @@ def isDaytime():
 def setWB():
     sys.stdout.write("Determining white balance")
     cam.awb_mode = "auto"
-    (one, two) = cam.awb_gains
     sys.stdout.flush()
     for i in range(4):
         time.sleep(1)
         sys.stdout.write(".")
         sys.stdout.flush()
     print(" done.")
+    (one, two) = cam.awb_gains
     cam.awb_mode = "off"
     cam.awb_gains = (one, two)
 
