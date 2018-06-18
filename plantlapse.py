@@ -65,14 +65,11 @@ def isDaytime():
 
 
 def setWB():
-    sys.stdout.write("Determining white balance")
+    sys.stdout.write("Determining white balance... ")
     cam.awb_mode = "auto"
     sys.stdout.flush()
-    for i in range(4):
-        time.sleep(1)
-        sys.stdout.write(".")
-        sys.stdout.flush()
-    print(" done.")
+    time.sleep(1)
+    print("done.")
     (one, two) = cam.awb_gains
     cam.awb_mode = "off"
     cam.awb_gains = (one, two)
@@ -117,13 +114,13 @@ for n in range(options.nshots):
 
     now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
     filename = os.path.join(options.dir, options.prefix + now + ".jpg")
-    sys.stdout.write("Capturing %s..." % filename)
+    sys.stdout.write("Capturing %s... " % filename)
     sys.stdout.flush()
     cam.capture(filename)
 
     if daytime:
-        print(" daytime picture captured OK.")
+        print("daytime picture captured OK.")
     else:
-        print(" nighttime picture captured OK.")
+        print("nighttime picture captured OK.")
 
-    time.sleep(options.delay*60)
+    time.sleep(options.delay * 60)
