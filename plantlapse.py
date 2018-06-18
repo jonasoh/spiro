@@ -28,8 +28,8 @@ parser.add_option("--day-iso", default=100, dest="dayiso", type="int",
                   help="set daytime ISO value (0=auto) [default: 100]")
 parser.add_option("--night-iso", default=100, dest="nightiso", type="int",
                   help="set nighttime ISO value (0=auto) [default: 100]")
-parser.add_option("--resolution", default="2592x1944", dest="resolution",
-                  help="set camera resolution [default: 2592x1944]")
+parser.add_option("--resolution", default=None, dest="resolution",
+                  help="set camera resolution [default: use maximum supported resolution]")
 parser.add_option("--dir", default=".", dest="dir",
                   help="output pictures to directory 'DIR', creating it if needed [default: use current directory]")
 parser.add_option("--prefix", default="", dest="prefix",
@@ -47,7 +47,10 @@ parser.add_option("-t", "--test", action="store_true", default=False, dest="test
 
 def initCam():
     cam = PiCamera()
-    cam.resolution = options.resolution
+    if options.resolution:
+        cam.resolution = options.resolution
+    else:
+        cam.resolution = cam.MAX_RESOLUTION
     cam.meter_mode = "spot"
     if not options.led:
         cam.led = False

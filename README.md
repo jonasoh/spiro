@@ -8,7 +8,7 @@ Raspberry Pi timelapse imaging of seed growth. For now, this is mainly for inter
 ## usage
 
 ```
-Usage: plantlapse.py [options]
+Usage: plantlapse [options]
 
 Options:
   --version             show program's version number and exit
@@ -26,7 +26,8 @@ Options:
   --day-iso=DAYISO      set daytime ISO value (0=auto) [default: 100]
   --night-iso=NIGHTISO  set nighttime ISO value (0=auto) [default: 100]
   --resolution=RESOLUTION
-                        set camera resolution [default: 2592x1944]
+                        set camera resolution [default: use maximum supported
+                        resolution]
   --dir=DIR             output pictures to directory 'DIR', creating it if
                         needed [default: use current directory]
   --prefix=PREFIX       prefix to use for filenames [default: none]
