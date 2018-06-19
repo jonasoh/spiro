@@ -99,7 +99,7 @@ for n in range(options.nshots):
     daytime = isDaytime()
 
     # set new wb if there's a day/night shift
-    if prev_daytime != daytime and not options.awb:
+    if prev_daytime != daytime and not options.awb and not options.test:
         setWB()
 
     if daytime:
