@@ -8,41 +8,40 @@
 #
 
 from picamera import PiCamera
-from optparse import OptionParser
+import argparse
 import time
 import sys
 import os
 
-version = "0.1.0"
+parser = argparse.ArgumentParser(description="By default, plantlapse will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
-parser = OptionParser(version="plantlapse " + version)
-parser.add_option("-n", "--num-shots", default=168, type="int", dest="nshots",
+parser.add_argument("-n", "--num-shots", default=168, type=int, dest="nshots", action="store", metavar="N",
                   help="number of shots to capture [default: 168]")
-parser.add_option("-d", "--delay", type="float", default=60, dest="delay",
+parser.add_argument("-d", "--delay", type=float, default=60, dest="delay", metavar="D",
                   help="time, in minutes, to wait between shots [default: 60]")
-parser.add_option("--day-shutter", default=50, dest="dayshutter", type="int",
+parser.add_argument("--day-shutter", default=50, dest="dayshutter", type=int, metavar="DS",
                   help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 50]")
-parser.add_option("--night-shutter", default=200, dest="nightshutter", type="int",
+parser.add_argument("--night-shutter", default=200, dest="nightshutter", type=int, metavar="NS",
                   help="nighttime shutter in fractions of a second [default: 200]")
-parser.add_option("--day-iso", default=100, dest="dayiso", type="int",
+parser.add_argument("--day-iso", default=100, dest="dayiso", type=int,
                   help="set daytime ISO value (0=auto) [default: 100]")
-parser.add_option("--night-iso", default=100, dest="nightiso", type="int",
+parser.add_argument("--night-iso", default=100, dest="nightiso", type=int,
                   help="set nighttime ISO value (0=auto) [default: 100]")
-parser.add_option("--resolution", default=None, dest="resolution",
+parser.add_argument("--resolution", default=None, dest="resolution", metavar="RES",
                   help="set camera resolution [default: use maximum supported resolution]")
-parser.add_option("--dir", default=".", dest="dir",
+parser.add_argument("--dir", default=".", dest="dir",
                   help="output pictures to directory 'DIR', creating it if needed [default: use current directory]")
-parser.add_option("--prefix", default="", dest="prefix",
+parser.add_argument("--prefix", default="", dest="prefix",
                   help="prefix to use for filenames [default: none]")
-parser.add_option("--auto-wb", default=False, action="store_true", dest="awb",
+parser.add_argument("--auto-wb", default=False, action="store_true", dest="awb",
                   help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
-parser.add_option("--led", default=False, action="store_true", dest="led",
+parser.add_argument("--led", default=False, action="store_true", dest="led",
                   help="do not disable camera led; useful for running without GPIO privileges")
-parser.add_option("--preview", action="store_true", default=False, dest="preview",
-                  help="show a live preview of the current settings for 60 seconds, then exit")
-parser.add_option("-t", "--test", action="store_true", default=False, dest="test",
+parser.add_argument("--preview", nargs="?", default=False, const=60, dest="preview", metavar="P",
+                  help="show a live preview of the current settings for P seconds, then exit [default: 60]")
+parser.add_argument("-t", "--test", action="store_true", default=False, dest="test",
                   help="capture a test picture as 'test.jpg', then exit")
-(options, args) = parser.parse_args()
+options = parser.parse_args()
 
 
 def initCam():
