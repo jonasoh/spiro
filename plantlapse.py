@@ -19,10 +19,10 @@ parser.add_argument("-n", "--num-shots", default=168, type=int, dest="nshots", a
                   help="number of shots to capture [default: 168]")
 parser.add_argument("-d", "--delay", type=float, default=60, dest="delay", metavar="D",
                   help="time, in minutes, to wait between shots [default: 60]")
-parser.add_argument("--day-shutter", default=50, dest="dayshutter", type=int, metavar="DS",
-                  help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 50]")
-parser.add_argument("--night-shutter", default=200, dest="nightshutter", type=int, metavar="NS",
-                  help="nighttime shutter in fractions of a second [default: 200]")
+parser.add_argument("--day-shutter", default=100, dest="dayshutter", type=int, metavar="DS",
+                  help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 100]")
+parser.add_argument("--night-shutter", default=50, dest="nightshutter", type=int, metavar="NS",
+                  help="nighttime shutter in fractions of a second [default: 50]")
 parser.add_argument("--day-iso", default=100, dest="dayiso", type=int,
                   help="set daytime ISO value (0=auto) [default: 100]")
 parser.add_argument("--night-iso", default=100, dest="nightiso", type=int,
