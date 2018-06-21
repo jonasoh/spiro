@@ -40,3 +40,30 @@ optional arguments:
                         seconds, then exit [default: 60]
   -t, --test            capture a test picture as 'test.jpg', then exit
 ```
+
+## requirements and installation
+
+Plantlapse should run under Raspbian on any Raspberry Pi model with a camera interface (only tested on the Zero W). It works with both the official camera module as well as with third-party cameras. The one we use is [this 5 MP OV5647-based camera with near-IR illumation](https://www.modmypi.com/raspberry-pi/camera/camera-boards/raspberry-pi-night-vision-camera). 
+
+To install, first enable the camera module using raspi-config, and reboot. 
+
+```
+sudo raspi-config
+```
+
+Then, install the dependencies: 
+
+```
+# python3-rpi.gpio is required for turning off camera led
+sudo apt-get install python3-picamera python3-rpi.gpio
+```
+
+We recommend setting up a softlink to plantlapse.py somewhere in the default $PATH to facilitate its usage: 
+
+```
+sudo ln -s ~pi/plantlapse/plantlapse.py /usr/local/bin/plantlapse
+```
+
+You should now be all set to start using plantlapse!
+
+**Note:** Due to the unreliability of SD cards, we recommend that images be captured to a directory on another medium, such as a network-mounted filesystem or a USB drive (or at least to a separate partition on the SD card if this is not an option). Constantly writing to the SD cards can, in our experience, lead to irrecoverable errors on the root filesystem which may require a reinstallation of the OS. 
