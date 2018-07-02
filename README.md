@@ -8,10 +8,10 @@ Raspberry Pi timelapse imaging of seed growth. For now, this is mainly for inter
 ## usage
 
 ```
-usage: plantlapse [-h] [-n N] [-d D] [--day-shutter DS] [--night-shutter NS]
-                  [--day-iso DAYISO] [--night-iso NIGHTISO] [--resolution RES]
-                  [--dir DIR] [--prefix PREFIX] [--auto-wb] [--led]
-                  [--preview [P]] [-t]
+usage: plantlapse [-h] [-n N] [-d D] [--disable-motor] [--day-shutter DS]
+                  [--night-shutter NS] [--day-iso DAYISO]
+                  [--night-iso NIGHTISO] [--resolution RES] [--dir DIR]
+                  [--prefix PREFIX] [--auto-wb] [--led] [--preview [P]] [-t]
 
 By default, plantlapse will run an experiment for 7 days with hourly captures,
 saving images to the current directory.
@@ -20,10 +20,11 @@ optional arguments:
   -h, --help            show this help message and exit
   -n N, --num-shots N   number of shots to capture [default: 168]
   -d D, --delay D       time, in minutes, to wait between shots [default: 60]
+  --disable-motor       disable use of motor [default: false]
   --day-shutter DS      daytime shutter in fractions of a second, i.e. for
-                        1/100 specify '100' [default: 50]
+                        1/100 specify '100' [default: 100]
   --night-shutter NS    nighttime shutter in fractions of a second [default:
-                        200]
+                        50]
   --day-iso DAYISO      set daytime ISO value (0=auto) [default: 100]
   --night-iso NIGHTISO  set nighttime ISO value (0=auto) [default: 100]
   --resolution RES      set camera resolution [default: use maximum supported
@@ -63,6 +64,8 @@ We recommend setting up a softlink to plantlapse.py somewhere in the default $PA
 ```
 sudo ln -s ~pi/plantlapse/plantlapse.py /usr/local/bin/plantlapse
 ```
+
+In order to use the stepper motor functionality, you should also install [Adafruit's MotorHAT library](https://github.com/adafruit/Adafruit-Motor-HAT-Python-Library).
 
 You should now be all set to start using plantlapse!
 
