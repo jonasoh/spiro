@@ -93,16 +93,19 @@ def takePicture(name):
     else:
         cam.shutter_speed = 1000000 // options.nightshutter
         cam.iso=options.nightiso
+
     filename = os.path.join(options.dir, options.prefix + name + ".jpg")
     sys.stdout.write("Capturing %s... " % filename)
     sys.stdout.flush()
     cam.capture(filename)
+
     if daytime:
         print("daytime picture captured OK.")
     else:
         print("nighttime picture captured OK.")
 
 
+# intialize motor before camera to make sure that atexit hook is registered.
 if options.motor:
     from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor, Adafruit_StepperMotor
     import atexit
@@ -115,6 +118,7 @@ if options.motor:
     motor = mh.getStepper(200, 1)
     motor.setSpeed(10)
 
+# start here.
 cam = initCam()
 daytime = "TBD"
 
@@ -125,8 +129,8 @@ if options.preview:
     sys.exit()
 
 if not options.test:
-    print("Starting new experiment.\nWill take one picture every %i minutes, in total %i pictures." % (options.delay, options.nshots))
-    days = options.delay*options.nshots / (60*24)
+    print("Starting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, options.nshots))
+    days = options.delay * options.nshots / (60 * 24)
     print("Experiment will continue for approximately %i days." % days)
     if options.motor:
         print("Motor is ENABLED.")
@@ -153,5 +157,8 @@ for n in range(options.nshots):
 
             # rotate cube 90 degrees
             motor.step(49, Adafruit_MotorHAT.FORWARD, Adafruit_MotorHAT.MICROSTEP)
+            
+            # wait for the cube to stabilize
+            time.sleep(0.5)
 
     time.sleep(options.delay * 60)
