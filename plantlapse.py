@@ -2,7 +2,7 @@
 #
 # plantlapse.py -
 #   script for time-lapse imaging of petri dishes, with a focus on plants (i.e. it is adapted to day/night cycles).
-#   designed to be used with the 5 MP OV5647-based camera with IR illumation, which is widely available.
+#   designed to be used with the 5 MP OV5647-based camera with IR illumation, which is widely available. 
 #
 # - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
 #
@@ -19,6 +19,8 @@ parser.add_argument("-n", "--num-shots", default=168, type=int, dest="nshots", a
                   help="number of shots to capture [default: 168]")
 parser.add_argument("-d", "--delay", type=float, default=60, dest="delay", metavar="D",
                   help="time, in minutes, to wait between shots [default: 60]")
+parser.add_argument("--disable-motor", default=True, action="store_false", dest="motor",
+                  help="disable use of motor [default: false]")
 parser.add_argument("--day-shutter", default=100, dest="dayshutter", type=int, metavar="DS",
                   help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 100]")
 parser.add_argument("--night-shutter", default=50, dest="nightshutter", type=int, metavar="NS",
@@ -42,7 +44,6 @@ parser.add_argument("--preview", nargs="?", default=False, const=60, dest="previ
 parser.add_argument("-t", "--test", action="store_true", default=False, dest="test",
                   help="capture a test picture as 'test.jpg', then exit")
 options = parser.parse_args()
-
 
 def initCam():
     cam = PiCamera()
@@ -76,25 +77,9 @@ def setWB():
     cam.awb_mode = "off"
     cam.awb_gains = (one, two)
 
-cam = initCam()
-daytime = "TBD"
 
-if options.preview:
-    cam.start_preview()
-    time.sleep(60)
-    cam.stop_preview()
-    sys.exit()
-
-if not options.test:
-    print("Starting new experiment.\nWill take one picture every %i minutes, in total %i pictures." % (options.delay, options.nshots))
-    days = options.delay*options.nshots / (60*24)
-    print("Experiment will continue for approximately %i days." % days)
-
-if options.dir != ".":
-    if not os.path.exists(options.dir):
-        os.makedirs(options.dir)
-
-for n in range(options.nshots):
+def takePicture(name):
+    global daytime
     prev_daytime = daytime
     daytime = isDaytime()
 
@@ -108,21 +93,65 @@ for n in range(options.nshots):
     else:
         cam.shutter_speed = 1000000 // options.nightshutter
         cam.iso=options.nightiso
-
-    if options.test:
-        cam.capture(os.path.join(options.dir, "test.jpg"))
-        print("Test picture captured successfully.")
-        sys.exit()
-
-    now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
-    filename = os.path.join(options.dir, options.prefix + now + ".jpg")
+    filename = os.path.join(options.dir, options.prefix + name + ".jpg")
     sys.stdout.write("Capturing %s... " % filename)
     sys.stdout.flush()
     cam.capture(filename)
-
     if daytime:
         print("daytime picture captured OK.")
     else:
         print("nighttime picture captured OK.")
+
+
+if options.motor:
+    from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor, Adafruit_StepperMotor
+    import atexit
+  
+    mh = Adafruit_MotorHAT()
+    def turnOffMotors():
+        mh.getMotor(1).run(Adafruit_MotorHAT.RELEASE)
+
+    atexit.register(turnOffMotors)
+    motor = mh.getStepper(200, 1)
+    motor.setSpeed(10)
+
+cam = initCam()
+daytime = "TBD"
+
+if options.preview:
+    cam.start_preview()
+    time.sleep(60)
+    cam.stop_preview()
+    sys.exit()
+
+if not options.test:
+    print("Starting new experiment.\nWill take one picture every %i minutes, in total %i pictures." % (options.delay, options.nshots))
+    days = options.delay*options.nshots / (60*24)
+    print("Experiment will continue for approximately %i days." % days)
+    if options.motor:
+        print("Motor is ENABLED.")
+    else:
+        print("Motor is DISABLED.")
+
+if options.dir != ".":
+    if not os.path.exists(options.dir):
+        os.makedirs(options.dir)
+
+for n in range(options.nshots):
+    if options.test:
+        takePicture("test")
+        sys.exit()
+
+    if not options.motor:
+        name = time.strftime("%Y%m%d-%H%M%S", time.localtime())
+        takePicture(name)
+    else:
+        for i in range(4):
+            now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
+            name = "plate" + str(i) + "-" + now
+            takePicture(name)
+
+            # rotate cube 90 degrees
+            motor.step(49, Adafruit_MotorHAT.FORWARD, Adafruit_MotorHAT.MICROSTEP)
 
     time.sleep(options.delay * 60)
