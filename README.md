@@ -1,6 +1,8 @@
 # plantlapse
 Raspberry Pi timelapse imaging of seed growth. For now, this is mainly for internal use and the script contains constants which need to be modified for proper function (e.g. exposure speed cutoffs for day/night determination). 
 
+Plantlapse supports imaging of up to four plates at the same time, using a "cube holder" for the Petri dishes. A blueprint for the cube can be found [here](blueprints/aluminium-cube.pdf). 
+
 ## example
 
 <img src="examples/day-cropped-optim.gif">
