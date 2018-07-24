@@ -37,10 +37,6 @@ parser.add_argument("--prefix", default="", dest="prefix",
                   help="prefix to use for filenames [default: none]")
 parser.add_argument("--auto-wb", default=False, action="store_true", dest="awb",
                   help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
-parser.add_argument("--led", default=False, action="store_true", dest="led",
-                  help="do not disable camera led; useful for running without GPIO privileges")
-parser.add_argument("--preview", nargs="?", default=False, const=60, dest="preview", metavar="P",
-                  help="show a live preview of the current settings for P seconds, then exit [default: 60]")
 parser.add_argument("-t", "--test", action="store_true", default=False, dest="test",
                   help="capture a test picture as 'test.jpg', then exit")
 options = parser.parse_args()
@@ -52,8 +48,6 @@ def initCam():
     else:
         cam.resolution = cam.MAX_RESOLUTION
     cam.meter_mode = "spot"
-    if not options.led:
-        cam.led = False
     return cam
 
 
@@ -121,12 +115,6 @@ if options.motor:
 # start here.
 cam = initCam()
 daytime = "TBD"
-
-if options.preview:
-    cam.start_preview()
-    time.sleep(60)
-    cam.stop_preview()
-    sys.exit()
 
 if not options.test:
     print("Starting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, options.nshots))
