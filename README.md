@@ -37,10 +37,6 @@ optional arguments:
   --auto-wb             adjust white balance between shots (if false, only
                         adjust when day/night shift is detected) [default:
                         false]
-  --led                 do not disable camera led; useful for running without
-                        GPIO privileges
-  --preview [P]         show a live preview of the current settings for P
-                        seconds, then exit [default: 60]
   -t, --test            capture a test picture as 'test.jpg', then exit
 ```
 
@@ -57,14 +53,19 @@ sudo raspi-config
 Then, install the dependencies: 
 
 ```
-# python3-rpi.gpio is required for turning off camera led
-sudo apt-get install python3-picamera python3-rpi.gpio
+sudo apt-get install python3-picamera
 ```
 
 We recommend setting up a softlink to plantlapse.py somewhere in the default $PATH to facilitate its usage: 
 
 ```
 sudo ln -s ~pi/plantlapse/plantlapse.py /usr/local/bin/plantlapse
+```
+
+Add the following line to /boot/config.txt to disable the camera's LED (reduces reflections):
+
+```
+disable_camera_led=1
 ```
 
 In order to use the stepper motor functionality, you should also install [Adafruit's MotorHAT library](https://github.com/adafruit/Adafruit-Motor-HAT-Python-Library).
