@@ -10,10 +10,11 @@ Plantlapse supports imaging of up to four plates at the same time, using a "cube
 ## usage
 
 ```
-usage: plantlapse [-h] [-n N] [-d D] [--disable-motor] [--day-shutter DS]
-                  [--night-shutter NS] [--day-iso DAYISO]
-                  [--night-iso NIGHTISO] [--resolution RES] [--dir DIR]
-                  [--prefix PREFIX] [--auto-wb] [--led] [--preview [P]] [-t]
+usage: plantlapse.py [-h] [-n N] [-d D] [--disable-motor] [--i2c I2C]
+                     [--daycam DC] [--nightcam NC] [--day-shutter DS]
+                     [--night-shutter NS] [--day-iso DAYISO]
+                     [--night-iso NIGHTISO] [--resolution RES] [--dir DIR]
+                     [--prefix PREFIX] [--auto-wb] [-t]
 
 By default, plantlapse will run an experiment for 7 days with hourly captures,
 saving images to the current directory.
@@ -23,6 +24,9 @@ optional arguments:
   -n N, --num-shots N   number of shots to capture [default: 168]
   -d D, --delay D       time, in minutes, to wait between shots [default: 60]
   --disable-motor       disable use of motor [default: false]
+  --i2c I2C             I2C bus of the MotorHAT [default: 3]
+  --daycam DC           daylight camera number [default: 0]
+  --nightcam NC         night camera number [default: 1]
   --day-shutter DS      daytime shutter in fractions of a second, i.e. for
                         1/100 specify '100' [default: 100]
   --night-shutter NS    nighttime shutter in fractions of a second [default:
