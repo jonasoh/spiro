@@ -21,11 +21,11 @@ parser.add_argument("-d", "--delay", type=float, default=60, dest="delay", metav
                   help="time, in minutes, to wait between shots [default: 60]")
 parser.add_argument("--disable-motor", default=True, action="store_false", dest="motor",
                   help="disable use of motor [default: false]")
-parser.add_argument("--i2c", default=3, dest="i2c", type=int, metavar="DS",
+parser.add_argument("--i2c", default=3, dest="i2c", type=int,
                   help="I2C bus of the MotorHAT [default: 3]")
-parser.add_argument("--daycam", default=1, dest="daycam", type=int,
+parser.add_argument("--daycam", default=1, dest="daycam", type=int, metavar='DC'
                   help="daylight camera number [default: 0]")
-parser.add_argument("--nightcam", default=0, dest="nightcam", type=int,
+parser.add_argument("--nightcam", default=0, dest="nightcam", type=int, metavar='NC',
                   help="night camera number [default: 1]")
 parser.add_argument("--day-shutter", default=100, dest="dayshutter", type=int, metavar="DS",
                   help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 100]")
