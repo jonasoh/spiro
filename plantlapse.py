@@ -23,7 +23,7 @@ parser.add_argument("--disable-motor", default=True, action="store_false", dest=
                   help="disable use of motor [default: false]")
 parser.add_argument("--i2c", default=3, dest="i2c", type=int,
                   help="I2C bus of the MotorHAT [default: 3]")
-parser.add_argument("--daycam", default=1, dest="daycam", type=int, metavar='DC'
+parser.add_argument("--daycam", default=1, dest="daycam", type=int, metavar='DC',
                   help="daylight camera number [default: 0]")
 parser.add_argument("--nightcam", default=0, dest="nightcam", type=int, metavar='NC',
                   help="night camera number [default: 1]")
