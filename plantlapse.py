@@ -21,6 +21,8 @@ parser.add_argument("-d", "--delay", type=float, default=60, dest="delay", metav
                   help="time, in minutes, to wait between shots [default: 60]")
 parser.add_argument("--disable-motor", default=True, action="store_false", dest="motor",
                   help="disable use of motor [default: false]")
+parser.add_argument("--i2c", default=3, dest="i2c", type=int, metavar="DS",
+                  help="I2C bus of the MotorHAT [default: 3]")
 parser.add_argument("--day-shutter", default=100, dest="dayshutter", type=int, metavar="DS",
                   help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 100]")
 parser.add_argument("--night-shutter", default=50, dest="nightshutter", type=int, metavar="NS",
@@ -104,7 +106,7 @@ if options.motor:
     from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor, Adafruit_StepperMotor
     import atexit
   
-    mh = Adafruit_MotorHAT()
+    mh = Adafruit_MotorHAT(i2c_bus = options.i2c)
     def turnOffMotors():
         mh.getMotor(1).run(Adafruit_MotorHAT.RELEASE)
 
