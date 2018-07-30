@@ -129,6 +129,7 @@ if options.motor:
 # start here.
 daycam = initCam(num = options.daycam)
 nightcam = initCam(num = options.nightcam)
+nightcam.flash_mode = 'torch'
 daytime = "TBD"
 
 if not options.test:
