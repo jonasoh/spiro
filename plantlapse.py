@@ -96,11 +96,9 @@ def takePicture(name):
     if daytime:
         cam = daycam
         cam.shutter_speed = 1000000 // options.dayshutter
-        cam.iso=options.dayiso
     else:
         cam = nightcam
         cam.shutter_speed = 1000000 // options.nightshutter
-        cam.iso=options.nightiso
 
     filename = os.path.join(options.dir, options.prefix + name + ".jpg")
     sys.stdout.write("Capturing %s... " % filename)
@@ -129,6 +127,8 @@ if options.motor:
 # start here.
 daycam = initCam(num = options.daycam)
 nightcam = initCam(num = options.nightcam)
+daycam.iso = options.dayiso
+nightcam.iso = options.nightiso
 nightcam.flash_mode = 'torch'
 daytime = "TBD"
 
