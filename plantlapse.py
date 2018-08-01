@@ -65,7 +65,7 @@ def isDaytime(cam=None):
     time.sleep(1)
     exp = cam.exposure_speed
     print("Exposure speed: %i" % exp)
-    return exp < 20000
+    return exp < 24000
 
 
 def setWB(cam=None):
