@@ -21,6 +21,12 @@ parser.add_argument("-d", "--delay", type=float, default=60, dest="delay", metav
                   help="time, in minutes, to wait between shots [default: 60]")
 parser.add_argument("--disable-motor", default=True, action="store_false", dest="motor",
                   help="disable use of motor [default: false]")
+parser.add_argument("--i2c", default=3, dest="i2c", type=int,
+                  help="I2C bus of the MotorHAT [default: 3]")
+parser.add_argument("--daycam", default=1, dest="daycam", type=int, metavar='DC',
+                  help="daylight camera number [default: 0]")
+parser.add_argument("--nightcam", default=0, dest="nightcam", type=int, metavar='NC',
+                  help="night camera number [default: 1]")
 parser.add_argument("--day-shutter", default=100, dest="dayshutter", type=int, metavar="DS",
                   help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 100]")
 parser.add_argument("--night-shutter", default=50, dest="nightshutter", type=int, metavar="NS",
@@ -41,8 +47,9 @@ parser.add_argument("-t", "--test", action="store_true", default=False, dest="te
                   help="capture a test picture as 'test.jpg', then exit")
 options = parser.parse_args()
 
-def initCam():
-    cam = PiCamera()
+def initCam(num=0):
+    # XXX don't hardcode pins like this
+    cam = PiCamera(camera_num = num, led_pin = (2 + 28 * num))
     if options.resolution:
         cam.resolution = options.resolution
     else:
@@ -51,17 +58,17 @@ def initCam():
     return cam
 
 
-def isDaytime():
+def isDaytime(cam=None):
     # determine if it's day or not. give the camera 1 second to adjust.
     cam.shutter_speed = 0
     cam.iso = 100
     time.sleep(1)
     exp = cam.exposure_speed
     print("Exposure speed: %i" % exp)
-    return exp < 20000
+    return exp < 24000
 
 
-def setWB():
+def setWB(cam=None):
     sys.stdout.write("Determining white balance... ")
     cam.awb_mode = "auto"
     sys.stdout.flush()
@@ -75,18 +82,23 @@ def setWB():
 def takePicture(name):
     global daytime
     prev_daytime = daytime
-    daytime = isDaytime()
+    daytime = isDaytime(cam = daycam)
 
     # set new wb if there's a day/night shift
     if prev_daytime != daytime and not options.awb and not options.test:
-        setWB()
+        if daytime:
+            setWB(cam = daycam)
+        else:
+            setWB(cam = nightcam)
 
+    cam = None
+    
     if daytime:
+        cam = daycam
         cam.shutter_speed = 1000000 // options.dayshutter
-        cam.iso=options.dayiso
     else:
+        cam = nightcam
         cam.shutter_speed = 1000000 // options.nightshutter
-        cam.iso=options.nightiso
 
     filename = os.path.join(options.dir, options.prefix + name + ".jpg")
     sys.stdout.write("Capturing %s... " % filename)
@@ -104,7 +116,7 @@ if options.motor:
     from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor, Adafruit_StepperMotor
     import atexit
   
-    mh = Adafruit_MotorHAT()
+    mh = Adafruit_MotorHAT(i2c_bus = options.i2c)
     def turnOffMotors():
         mh.getMotor(1).run(Adafruit_MotorHAT.RELEASE)
 
@@ -113,7 +125,11 @@ if options.motor:
     motor.setSpeed(10)
 
 # start here.
-cam = initCam()
+daycam = initCam(num = options.daycam)
+nightcam = initCam(num = options.nightcam)
+daycam.iso = options.dayiso
+nightcam.iso = options.nightiso
+nightcam.flash_mode = 'torch'
 daytime = "TBD"
 
 if not options.test:
