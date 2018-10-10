@@ -5,7 +5,7 @@ Plantlapse supports imaging of up to four plates at the same time, using a "cube
 
 ## example
 
-<img src="examples/day-cropped-optim.gif">
+<img src="https://github.com/jonasoh/web/raw/master/day-cropped-optim.gif">
 
 ## usage
 
