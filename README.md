@@ -1,7 +1,13 @@
 # PetriPi
 Raspberry Pi timelapse imaging of seed growth. For now, this is mainly for internal use and the script contains constants which need to be modified for proper function (e.g. exposure speed cutoffs for day/night determination). 
 
-PetriPi supports imaging of up to four plates at the same time, using a "cube holder" for the Petri dishes. A blueprint for the cube can be found [here](blueprints/aluminium-cube.pdf). 
+PetriPi supports imaging of up to four plates at the same time, using a "cube holder" for the Petri dishes. A blueprint for an old version of the cube can be found [here](blueprints/aluminium-cube.pdf). Newer blueprints, designed for 3D printing, will be uploaded soon. 
+
+## hardware
+
+This is the current state of the PetriPi hardware, housed inside a growth chamber. This iteration uses 3D printed parts for housing the cameras and other electronics, as well as for the dish-holding cube. 
+
+<img src="https://raw.githubusercontent.com/jonasoh/web/master/petripi-3dprinted.jpg">
 
 ## example
 
