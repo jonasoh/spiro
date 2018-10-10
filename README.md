@@ -1,22 +1,22 @@
-# plantlapse
+# PetriPi
 Raspberry Pi timelapse imaging of seed growth. For now, this is mainly for internal use and the script contains constants which need to be modified for proper function (e.g. exposure speed cutoffs for day/night determination). 
 
-Plantlapse supports imaging of up to four plates at the same time, using a "cube holder" for the Petri dishes. A blueprint for the cube can be found [here](blueprints/aluminium-cube.pdf). 
+PetriPi supports imaging of up to four plates at the same time, using a "cube holder" for the Petri dishes. A blueprint for the cube can be found [here](blueprints/aluminium-cube.pdf). 
 
 ## example
 
 <img src="https://github.com/jonasoh/web/raw/master/day-cropped-optim.gif">
+(Note: the image quality has improved by a large degree since this image was captured.)
 
 ## usage
 
 ```
-usage: plantlapse.py [-h] [-n N] [-d D] [--disable-motor] [--i2c I2C]
-                     [--daycam DC] [--nightcam NC] [--day-shutter DS]
-                     [--night-shutter NS] [--day-iso DAYISO]
-                     [--night-iso NIGHTISO] [--resolution RES] [--dir DIR]
-                     [--prefix PREFIX] [--auto-wb] [-t]
+usage: petripi [-h] [-n N] [-d D] [--disable-motor] [--i2c I2C] [--daycam DC]
+               [--nightcam NC] [--day-shutter DS] [--night-shutter NS]
+               [--day-iso DAYISO] [--night-iso NIGHTISO] [--resolution RES]
+               [--dir DIR] [--prefix PREFIX] [--auto-wb] [-t]
 
-By default, plantlapse will run an experiment for 7 days with hourly captures,
+By default, PetriPi will run an experiment for 7 days with hourly captures,
 saving images to the current directory.
 
 optional arguments:
@@ -46,13 +46,9 @@ optional arguments:
 
 ## requirements and installation
 
-Plantlapse should run under Raspbian on any Raspberry Pi model with a camera interface (only tested on the Zero W). It works with both the official camera module as well as with third-party cameras. The one we use is [this 5 MP OV5647-based camera with near-IR illumation](https://www.modmypi.com/raspberry-pi/camera/camera-boards/raspberry-pi-night-vision-camera). 
+PetriPi is currently known to run only on the Raspberry Pi Compute Module 3. It works with both the official camera module as well as with third-party cameras. We use the official V2 camera for daylight imaging and [this 5 MP OV5647-based camera with near-IR illumation](https://www.modmypi.com/raspberry-pi/camera/camera-boards/raspberry-pi-night-vision-camera) for night time images. 
 
-To install, first enable the camera module using raspi-config, and reboot. 
-
-```
-sudo raspi-config
-```
+To install, first enable dual camera interfacing using the [official instructions](https://www.raspberrypi.org/documentation/hardware/computemodule/cmio-camera.md).   
 
 Then, install the dependencies: 
 
@@ -60,10 +56,10 @@ Then, install the dependencies:
 sudo apt-get install python3-picamera
 ```
 
-We recommend setting up a softlink to plantlapse.py somewhere in the default $PATH to facilitate its usage: 
+We recommend setting up a softlink to petripi.py somewhere in the default $PATH to facilitate its usage: 
 
 ```
-sudo ln -s ~pi/plantlapse/plantlapse.py /usr/local/bin/plantlapse
+sudo ln -s ~pi/petripi/petripi.py /usr/local/bin/petripi
 ```
 
 Add the following line to /boot/config.txt to disable the camera's LED (reduces reflections):
@@ -74,6 +70,6 @@ disable_camera_led=1
 
 In order to use the stepper motor functionality, you should also install [Adafruit's MotorHAT library](https://github.com/adafruit/Adafruit-Motor-HAT-Python-Library).
 
-You should now be all set to start using plantlapse!
+You should now be all set to start using PetriPi! To start a new experiment, simply create a folder to contain your images, and type `petripi`. By default, this will start an experiment that takes one image per hour for 7 days, utilizing the stepper motor functionality for imaging of multiple plates. 
 
 **Note:** Due to the unreliability of SD cards, we recommend that images be captured to a directory on another medium, such as a network-mounted filesystem or a USB drive (or at least to a separate partition on the SD card if this is not an option). Constantly writing to the SD cards can, in our experience, lead to irrecoverable errors on the root filesystem which may require a reinstallation of the OS. 

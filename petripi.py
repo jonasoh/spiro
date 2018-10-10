@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #
-# plantlapse.py -
-#   script for time-lapse imaging of petri dishes, with a focus on plants (i.e. it is adapted to day/night cycles).
-#   designed to be used with the 5 MP OV5647-based camera with IR illumation, which is widely available. 
+# petripi.py -
+#   script for time-lapse imaging of Petri dishes, with a focus on plants (i.e. it is adapted to day/night cycles).
+#   designed to be used with the Waveshare 5 MP OV5647-based camera with IR illumation, which is widely available. 
 #
 # - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
 #
@@ -13,7 +13,7 @@ import time
 import sys
 import os
 
-parser = argparse.ArgumentParser(description="By default, plantlapse will run an experiment for 7 days with hourly captures, saving images to the current directory.")
+parser = argparse.ArgumentParser(description="By default, PetriPi will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
 parser.add_argument("-n", "--num-shots", default=168, type=int, dest="nshots", action="store", metavar="N",
                   help="number of shots to capture [default: 168]")
@@ -133,7 +133,7 @@ nightcam.flash_mode = 'torch'
 daytime = "TBD"
 
 if not options.test:
-    print("Starting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, options.nshots))
+    print("Welcome to PetriPi!\n\nStarting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, options.nshots))
     days = options.delay * options.nshots / (60 * 24)
     print("Experiment will continue for approximately %i days." % days)
     if options.motor:
