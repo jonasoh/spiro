@@ -60,6 +60,7 @@ coilpin_M22 = 17	# bin2
 stdbypin = 18		# standby
 
 seqNumb = 0		# State of stepper motor sequence
+mdelay = 0.05		# Stepper motor movement delay
 
 # Number of steps to rotate motor after Hall sensor is lit
 calibration = 37
@@ -207,23 +208,24 @@ try:
             sys.exit()
 
         else:
-            gpio.output(stdbypin, True) #activate motor
-            time.sleep(0.005) #time for motor to activate
+            gpio.output(stdbypin, True) # activate motor
+            time.sleep(0.005) # time for motor to activate
+
             for i in range(4):
                 gpio.output(stdbypin, True)
-                # rotate cube to startingpoint
-                if(i==0):
-                    while True:
-                        halfStep(1, 0.03)
-                        time.sleep(0.01)
-                        if(gpio.input(hallpin) == False):
-                            print ("\nMagnet detected by hall effect sensor")
-                            halfStep(calibration,0.03)
-                            break
+                # rotate cube to starting position
+                if (i == 0):
+                    while gpio.input(hallpin):
+                        halfStep(1, mdelay)
+                        time.sleep(0.02)
+
+                    print ("\nMagnet detected by hall effect sensor")
+                    halfStep(calibration, mdelay)
                 else:
-                # rotate cube 90 degrees
+                    # rotate cube 90 degrees
                     print("Cube 90 degree")
-                    halfStep(100, 0.03)
+                    halfStep(100, mdelay)
+
                 # wait for the cube to stabilize
                 time.sleep(0.5)
 
@@ -239,7 +241,7 @@ try:
         for k in range(7):
             time.sleep(options.delay * 7.5)
             gpio.output(stdbypin, True)
-            halfStep(50, 0.03)
+            halfStep(50, mdelay)
             gpio.output(stdbypin, False)
 
 except KeyboardInterrupt:
