@@ -43,16 +43,17 @@ parser.add_argument("--day-iso", default=100, dest="dayiso", type=int,
                   help="set daytime ISO value (0=auto) [default: 100]")
 parser.add_argument("--night-iso", default=800, dest="nightiso", type=int,
                   help="set nighttime ISO value (0=auto) [default: 800]")
-parser.add_argument("--resolution", default=None, dest="resolution", metavar="RES",
+parser.add_argument("--resolution", dest="resolution", metavar="RES",
                   help="set camera resolution [default: use maximum supported resolution]")
 parser.add_argument("--dir", default=".", dest="dir",
                   help="output pictures to directory 'DIR', creating it if needed [default: use current directory]")
 parser.add_argument("--prefix", default="", dest="prefix",
                   help="prefix to use for filenames [default: none]")
-parser.add_argument("--auto-wb", default=False, action="store_true", dest="awb",
+parser.add_argument("--auto-wb", action="store_true", dest="awb",
                   help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
-parser.add_argument("-t", "--test", action="store_true", default=False, dest="test",
+parser.add_argument("-t", "--test", action="store_true", dest="test",
                   help="capture a test picture as 'test.jpg', then exit")
+parser.add_argument("--focus", action="store_true", help="start web server for focus assessment")
 options = parser.parse_args()
 
 seqNumb = 0 		# State of stepper motor sequence -- do not touch
@@ -98,7 +99,7 @@ def halfStep(steps, delay):
 
 
 def initCam():
-    cam = PiCamera()
+    cam = PiCamera(framerate_range = (Fraction(1, 6), 30))
     if options.resolution:
         cam.resolution = options.resolution
     else:
@@ -171,6 +172,13 @@ def takePicture(name, cam=None):
 
 # start here.
 try:
+    if options.focus:
+        options.resolution="1024x768"
+        cam = initCam()
+        import focusserver
+        focusserver.focusServer(cam = cam, ledpin = LEDpin)
+        sys.exit()
+
     cam = initCam()
     daytime = "TBD"
 
@@ -214,12 +222,12 @@ try:
 
         gpio.output(stdbypin, False) # deactivate motor to save energy
 
-        time.sleep(options.delay*7.5)
+        time.sleep(options.delay * 7.5)
         for k in range(7):
-            gpio.output(stdbypin,True)
-            halfStep(50,0.03)
-            gpio.output(stdbypin,False)
-            time.sleep(options.delay*7.5)
+            gpio.output(stdbypin, True)
+            halfStep(50, 0.03)
+            gpio.output(stdbypin, False)
+            time.sleep(options.delay * 7.5)
 
 except KeyboardInterrupt:
     print("\n User ended program by keyboard interrupt, turning of motor and cleaning GPIO")
