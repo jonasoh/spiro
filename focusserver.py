@@ -1,10 +1,11 @@
 import io
-import picamera
+from picamera import PiCamera
 import logging
 import socketserver
 from threading import Condition
 from http import server
 import RPi.GPIO as gpio
+from fractions import Fraction
 
 PAGE="""\
 <html>
@@ -99,11 +100,20 @@ def focusServer(cam=None, ledpin=None):
     camera = cam
     camera.meter_mode = 'spot'
     camera.iso = 0
-    camera.start_recording(output, format='mjpeg')
+    camera.start_recording(output, format='mjpeg', resize='1024x768')
     try:
         address = ('', 8080)
         print("Web server started on port 8080. Press Ctrl+C to exit.")
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nProgram ended by keyboard interrupt.")
     finally:
         cam.stop_recording()
+        if (__name__ == '__main__'):
+            cam.close()
+
+if (__name__ == '__main__'):
+    print("Starting focusing server, using LED pin 5.")
+    camera = PiCamera(framerate_range = (Fraction(1, 10), 15), resolution = '3280x2464')
+    focusServer(cam=camera, ledpin=5)
