@@ -27,8 +27,8 @@ PAGE="""\
 <body>
 <h1>PetriPi live view</h1>
 <img src="stream.mjpg" width="1024" height="768" />
-<p><a href="/zoom">Zoomed in view</a></p>
-<p><a href="/unzoom">Full view</a></p>
+<p>Zoom <a href="/zoom?-0.1">in</a> / <a href="/zoom?0.1">out</a></p>
+<p>Pan <a href="/panx?-0.1">left</a> / <a href="/panx?0.1">right</a> / <a href="/pany?-0.1">up</a> / <a href="/pany?0.1">down</a></p>
 <p><a href="/led">Toggle LED</a></p>
 </body>
 </html>
@@ -53,20 +53,55 @@ class StreamingOutput(object):
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
     def do_GET(self):
-        global ledState
-        if self.path == '/':
+        global ledState, roi, panx, pany
+        if '?' in self.path:
+            (p, arg) = self.path.split('?', maxsplit=1)
+        else:
+            p = self.path
+            arg = ''
+        if p == '/':
             self.send_response(301)
             self.send_header('Location', '/index.html')
             self.end_headers()
-        elif self.path == '/index.html' or self.path == '/zoom' or self.path == '/unzoom' or self.path=='/led':
-            if self.path == '/zoom':
-                camera.zoom = (0.4, 0.4, 0.2, 0.2)
-            elif self.path == '/unzoom':
-                camera.zoom = (0.0, 0.0, 1.0, 1.0)
-            elif self.path == '/led':
+        elif p == '/index.html' or p == '/zoom' or p == '/led' or p == '/panx' or p == '/pany' or p == '/start':
+            if p == '/zoom':
+                amt = float(arg)
+                roi = roi + amt
+                print("ROI increase by %f" % amt)
+                if roi > 1:
+                    roi = 1.0
+                elif roi < 0.1:
+                    roi = 0.1
+                zoom = (max(0, panx - roi / 2.0), max(0, pany - roi / 2.0), roi, roi)
+                print("new zoom:")
+                print(zoom)
+                camera.zoom = zoom
+            elif p == '/panx':
+                amt = float(arg)
+                panx = panx + amt
+                if panx < 0:
+                    panx = 0.0
+                elif panx > 1:
+                    panx = 1.0
+                zoom = (max(0, panx - roi / 2.0), max(0, pany - roi / 2.0), roi, roi)
+                print("new zoom:")
+                print(zoom)
+                camera.zoom = zoom
+            elif p == '/pany':
+                amt = float(arg)
+                pany = pany + amt
+                if pany < 0:
+                    pany = 0.0
+                elif pany > 1:
+                    pany = 1.0
+                zoom = (max(0, panx - roi / 2.0), max(0, pany - roi / 2.0), roi, roi)
+                print("new zoom:")
+                print(zoom)
+                camera.zoom = zoom
+            elif p == '/led':
                 ledState = not ledState
                 hw.LEDControl(pins, ledState)
-            elif self.path == '/start':
+            elif p == '/start':
                 hw.findStart(pins, ledState)
 
             content = PAGE.encode('utf-8')
@@ -108,6 +143,10 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 output = StreamingOutput()
 ledState = False
 camera = None
+# region of interest for zooming; 1 means full view
+roi = 1
+panx = 0.5
+pany = 0.5
 
 def focusServer(cam=None):
     global camera

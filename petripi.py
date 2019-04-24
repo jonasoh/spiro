@@ -141,7 +141,8 @@ if (__name__) == '__main__':
 
     try:
         if options.focus:
-            options.resolution="2592x1944"
+            # set lower resolution to reduce risk of PiCamera crashing :\
+            options.resolution="1640x1232"
             cam = initCam()
             import focusserver
             focusserver.focusServer(cam = cam)
