@@ -9,21 +9,23 @@
 
 ########################################################################
 # tunables; general settings
-calibration = 4     # number of steps taken after hall sensor is lit
-threshold = 60000   # threshold for day/night determination
-                    # shutter times longer than this, at iso 100, are
-                    # considered to be indicative of nighttime.
+calibration = 4   # number of steps taken after positional sensor is lit
+threshold = 60000 # threshold for day/night determination
+                  # shutter times longer than this, at iso 100, are
+                  # considered to be indicative of nighttime.
 ########################################################################
 # tunables; GPIO pins
-hallpin = 4		    # hall sensor
-LEDpin = 5		    # pin for turning on/off led
-PWMa = 11           # first pwm pin
-PWMb = 12           # second pwm pin
-coilpin_M11 = 14	# ain2
-coilpin_M12 = 15	# ain1
-coilpin_M21 = 16	# bin1
-coilpin_M22 = 17	# bin2
-stdbypin = 18		# stby
+pins = {
+'sensor': 4,       # positional sensor
+'LED': 5,          # pin for turning on/off led
+'PWMa': 11,        # first pwm pin
+'PWMb': 12,        # second pwm pin
+'coilpin_M11': 14, # ain2
+'coilpin_M12': 15, # ain1
+'coilpin_M21': 16, # bin1
+'coilpin_M22': 17, # bin2
+'stdby': 18,       # stby
+}
 ########################################################################
 # end tunables
 
@@ -34,6 +36,8 @@ import sys
 import os
 import RPi.GPIO as gpio
 from fractions import Fraction
+
+import hwcontrol as hw
 
 parser = argparse.ArgumentParser(description="By default, PetriPi will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
@@ -59,49 +63,6 @@ parser.add_argument("--auto-wb", action="store_true", dest="awb",
                   help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
 parser.add_argument("--focus", action="store_true", help="start web server for focus assessment")
 options = parser.parse_args()
-
-# state of stepper motor sequence -- do not touch
-seqNumb = 0
-
-# sequence for one coil rotation of stepper motor using half step
-halfstep_seq = [(1,0,0,0), (1,0,1,0), (0,0,1,0), (0,1,1,0),
-                (0,1,0,0), (0,1,0,1), (0,0,0,1), (1,0,0,1)]
-
-gpio.setmode(gpio.BCM)
-gpio.setwarnings(False)
-gpio.setup(LEDpin, gpio.OUT)
-gpio.setup(hallpin, gpio.IN)
-gpio.setup(PWMa, gpio.OUT)
-gpio.setup(PWMb, gpio.OUT)
-gpio.setup(coilpin_M11, gpio.OUT)
-gpio.setup(coilpin_M12, gpio.OUT)
-gpio.setup(coilpin_M21, gpio.OUT)
-gpio.setup(coilpin_M22, gpio.OUT)
-gpio.setup(stdbypin, gpio.OUT)
-
-gpio.output(stdbypin, False) # turn off motor while not in use
-gpio.output(PWMa, True)
-gpio.output(PWMb, True)
-
-# sets the motor pins as element in sequence
-def setStepper(M_seq, i):
-    gpio.output(coilpin_M11, M_seq[i][0])
-    gpio.output(coilpin_M12, M_seq[i][1])
-    gpio.output(coilpin_M21, M_seq[i][2])
-    gpio.output(coilpin_M22, M_seq[i][3])
-
-
-# steps the stepper motor using half steps, "delay" is time between coil change
-# 400 steps is 360 degrees
-def halfStep(steps, delay):
-    for i in range(0, steps):
-            global seqNumb
-            setStepper(halfstep_seq, seqNumb)
-            seqNumb = seqNumb + 1
-            if(seqNumb == 8):
-                seqNumb = 0
-            time.sleep(delay)
-
 
 def initCam():
     cam = PiCamera(framerate_range = (Fraction(1, 6), 30))
@@ -152,7 +113,7 @@ def takePicture(name, cam=None):
         filename = os.path.join(options.dir, options.prefix + name + "-day.jpg")
     else:
         # turn on led
-        gpio.output(LEDpin, True)
+        hw.LEDControl(pins, True)
         cam.exposure_mode = "off"
         cam.iso = options.nightiso
         cam.framerate = Fraction(1, 6)
@@ -168,67 +129,70 @@ def takePicture(name, cam=None):
         print("daytime picture captured OK.")
     else:
         # turn off led
-        gpio.output(LEDpin, False)
+        hw.LEDControl(pins, False)
         print("nighttime picture captured OK.")
 
 
 # start here.
-try:
-    if options.focus:
-        options.resolution="1024x768"
+if (__name__) == '__main__':
+    hw.setPins(pins)
+    hw.GPIOInit()
+    hw.motorOn(False) # turn off motor while not in use
+
+    try:
+        if options.focus:
+            options.resolution="2592x1944"
+            cam = initCam()
+            import focusserver
+            focusserver.focusServer(cam = cam)
+            sys.exit()
+
         cam = initCam()
-        import focusserver
-        focusserver.focusServer(cam = cam, ledpin = LEDpin)
-        sys.exit()
+        daytime = "TBD"
 
-    cam = initCam()
-    daytime = "TBD"
+        print("Welcome to PetriPi!\n\nStarting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, options.nshots))
+        days = options.delay * options.nshots / (60 * 24)
+        print("Experiment will continue for approximately %i days." % days)
 
-    print("Welcome to PetriPi!\n\nStarting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, options.nshots))
-    days = options.delay * options.nshots / (60 * 24)
-    print("Experiment will continue for approximately %i days." % days)
+        if options.dir != ".":
+            if not os.path.exists(options.dir):
+                os.makedirs(options.dir)
 
-    if options.dir != ".":
-        if not os.path.exists(options.dir):
-            os.makedirs(options.dir)
+        for n in range(options.nshots):
+            hw.motorOn(True) # activate motor
+            time.sleep(0.005) # time for motor to activate
+            for i in range(4):
+                # rotate stage to starting position
+                if(i == 0):
+                    print("Finding initial position... ", end='', flush=True)
+                    hw.findStart()
+                    print ("found.")
+                    hw.halfStep(calibration, 0.03)
+                else:
+                    # rotate cube 90 degrees
+                    print("Rotating stage...")
+                    hw.halfStep(100, 0.03)
 
-    for n in range(options.nshots):
-        gpio.output(stdbypin, True) # activate motor
-        time.sleep(0.005) # time for motor to activate
-        for i in range(4):
-            gpio.output(stdbypin, True)
-            # rotate stage to starting position
-            if(i == 0):
-                print("Finding initial position... ", end='', flush=True)
-                while gpio.input(hallpin):
-                    halfStep(1, 0.03)
-                print ("found.")
-                halfStep(calibration, 0.03)
-            else:
-                # rotate cube 90 degrees
-                print("Rotating stage...")
-                halfStep(100, 0.03)
+                # wait for the cube to stabilize
+                time.sleep(0.5)
 
-            # wait for the cube to stabilize
-            time.sleep(0.5)
+                now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
+                name = "plate" + str(i) + "-" + now
+                takePicture(name, cam)
 
-            now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
-            name = "plate" + str(i) + "-" + now
-            takePicture(name, cam)
+            hw.motorOn(False) # deactivate motor to save energy
 
-        gpio.output(stdbypin, False) # deactivate motor to save energy
-
-        time.sleep(options.delay * 7.5)
-        for k in range(7):
-            gpio.output(stdbypin, True)
-            halfStep(50, 0.03)
-            gpio.output(stdbypin, False)
             time.sleep(options.delay * 7.5)
+            for k in range(7):
+                hw.motorOn(True)
+                hw.halfStep(50, 0.03)
+                hw.motorOn(False)
+                time.sleep(options.delay * 7.5)
 
-except KeyboardInterrupt:
-    print("\nProgram ended by keyboard interrupt. Turning off motor and cleaning up GPIO.")
+    except KeyboardInterrupt:
+        print("\nProgram ended by keyboard interrupt. Turning off motor and cleaning up GPIO.")
 
-finally:
-    gpio.output(stdbypin,False)
-    gpio.cleanup()
-    cam.close()
+    finally:
+        hw.motorOn(False)
+        gpio.cleanup()
+        cam.close()

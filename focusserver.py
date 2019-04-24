@@ -1,11 +1,23 @@
+#!/usr/bin/env python3
+#
+# focusserver.py -
+#   live view web stream viewer for petripi.
+#   useful for making focus adjustments.
+#   can be run standalone or through petripi commandline option.
+#
+# - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
+#
+
 import io
 from picamera import PiCamera
 import logging
 import socketserver
 from threading import Condition
 from http import server
-import RPi.GPIO as gpio
 from fractions import Fraction
+
+import hwcontrol as hw
+from petripi import pins
 
 PAGE="""\
 <html>
@@ -41,6 +53,7 @@ class StreamingOutput(object):
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
     def do_GET(self):
+        global ledState
         if self.path == '/':
             self.send_response(301)
             self.send_header('Location', '/index.html')
@@ -52,7 +65,10 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 camera.zoom = (0.0, 0.0, 1.0, 1.0)
             elif self.path == '/led':
                 ledState = not ledState
-                gpio.output(LEDpin, ledState)
+                hw.LEDControl(pins, ledState)
+            elif self.path == '/start':
+                hw.findStart(pins, ledState)
+
             content = PAGE.encode('utf-8')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
@@ -89,13 +105,11 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
-
 output = StreamingOutput()
-camera = None
-ledpin = None
 ledState = False
+camera = None
 
-def focusServer(cam=None, ledpin=None):
+def focusServer(cam=None):
     global camera
     camera = cam
     camera.meter_mode = 'spot'
@@ -110,10 +124,11 @@ def focusServer(cam=None, ledpin=None):
         print("\nProgram ended by keyboard interrupt.")
     finally:
         cam.stop_recording()
-        if (__name__ == '__main__'):
-            cam.close()
 
 if (__name__ == '__main__'):
-    print("Starting focusing server, using LED pin 5.")
-    camera = PiCamera(framerate_range = (Fraction(1, 10), 15), resolution = '3280x2464')
-    focusServer(cam=camera, ledpin=5)
+    global mypins
+    print("Starting focusing server in standalone mode.")
+    with PiCamera(framerate_range = (Fraction(1, 10), 15), resolution = '2592x1944') as camera:
+        hw.GPIOInit(pins)
+        hw.LEDControl(pins, False)
+        focusServer(cam=camera)
