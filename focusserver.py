@@ -16,9 +16,6 @@ from threading import Condition
 from http import server
 from fractions import Fraction
 
-import hwcontrol as hw
-from petripi import pins
-
 PAGE="""\
 <html>
 <head>
@@ -29,6 +26,7 @@ PAGE="""\
 <img src="stream.mjpg" width="1024" height="768" />
 <p>Zoom <a href="/zoom?-0.1">in</a> / <a href="/zoom?0.1">out</a></p>
 <p>Pan <a href="/panx?-0.1">left</a> / <a href="/panx?0.1">right</a> / <a href="/pany?-0.1">up</a> / <a href="/pany?0.1">down</a></p>
+<p><a href="/start">Find start position</a> <a href="/90">Rotate 90 degrees</a></p>
 <p><a href="/led">Toggle LED</a></p>
 </body>
 </html>
@@ -63,7 +61,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_response(301)
             self.send_header('Location', '/index.html')
             self.end_headers()
-        elif p == '/index.html' or p == '/zoom' or p == '/led' or p == '/panx' or p == '/pany' or p == '/start':
+        elif p == '/index.html' or p == '/zoom' or p == '/led' or p == '/panx' or p == '/pany' or p == '/start' or p == '/90':
             if p == '/zoom':
                 amt = float(arg)
                 roi = roi + amt
@@ -83,7 +81,13 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                     panx = 0.0
                 elif panx > 1:
                     panx = 1.0
-                zoom = (max(0, panx - roi / 2.0), max(0, pany - roi / 2.0), roi, roi)
+                x = panx - roi / 2.0
+                y = pany - roi / 2.0
+                if x + roi > 1:
+                    x = x - (x + roi - 1)
+                if y + roi > 1:
+                    y = y - (y + roi - 1)
+                zoom = (max(0, x), max(0, y), roi, roi)
                 print("new zoom:")
                 print(zoom)
                 camera.zoom = zoom
@@ -94,15 +98,23 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                     pany = 0.0
                 elif pany > 1:
                     pany = 1.0
-                zoom = (max(0, panx - roi / 2.0), max(0, pany - roi / 2.0), roi, roi)
+                x = panx - roi / 2.0
+                y = pany - roi / 2.0
+                if x + roi > 1:
+                    x = x - (x + roi - 1)
+                if y + roi > 1:
+                    y = y - (y + roi - 1)
+                zoom = (max(0, x), max(0, y), roi, roi)
                 print("new zoom:")
                 print(zoom)
                 camera.zoom = zoom
             elif p == '/led':
                 ledState = not ledState
-                hw.LEDControl(pins, ledState)
+                hw.LEDControl(ledState)
             elif p == '/start':
-                hw.findStart(pins, ledState)
+                hw.findStart()
+            elif p == '/90':
+                hw.halfStep(100, 0.03)
 
             content = PAGE.encode('utf-8')
             self.send_response(200)
@@ -143,14 +155,16 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 output = StreamingOutput()
 ledState = False
 camera = None
+hw = None
 # region of interest for zooming; 1 means full view
 roi = 1
 panx = 0.5
 pany = 0.5
 
-def focusServer(cam=None):
-    global camera
+def focusServer(cam=None, myhw=hw):
+    global camera, hw
     camera = cam
+    hw = myhw
     camera.meter_mode = 'spot'
     camera.iso = 0
     camera.start_recording(output, format='mjpeg', resize='1024x768')
@@ -163,11 +177,3 @@ def focusServer(cam=None):
         print("\nProgram ended by keyboard interrupt.")
     finally:
         cam.stop_recording()
-
-if (__name__ == '__main__'):
-    global mypins
-    print("Starting focusing server in standalone mode.")
-    with PiCamera(framerate_range = (Fraction(1, 10), 15), resolution = '2592x1944') as camera:
-        hw.GPIOInit(pins)
-        hw.LEDControl(pins, False)
-        focusServer(cam=camera)

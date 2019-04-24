@@ -36,8 +36,7 @@ import sys
 import os
 import RPi.GPIO as gpio
 from fractions import Fraction
-
-import hwcontrol as hw
+from hwcontrol import HWControl
 
 parser = argparse.ArgumentParser(description="By default, PetriPi will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
@@ -135,7 +134,7 @@ def takePicture(name, cam=None):
 
 # start here.
 if (__name__) == '__main__':
-    hw.setPins(pins)
+    hw = HWControl(pins)
     hw.GPIOInit()
     hw.motorOn(False) # turn off motor while not in use
 
@@ -145,7 +144,7 @@ if (__name__) == '__main__':
             options.resolution="1640x1232"
             cam = initCam()
             import focusserver
-            focusserver.focusServer(cam = cam)
+            focusserver.focusServer(cam, hw)
             sys.exit()
 
         cam = initCam()
@@ -160,8 +159,6 @@ if (__name__) == '__main__':
                 os.makedirs(options.dir)
 
         for n in range(options.nshots):
-            hw.motorOn(True) # activate motor
-            time.sleep(0.005) # time for motor to activate
             for i in range(4):
                 # rotate stage to starting position
                 if(i == 0):
@@ -181,13 +178,9 @@ if (__name__) == '__main__':
                 name = "plate" + str(i) + "-" + now
                 takePicture(name, cam)
 
-            hw.motorOn(False) # deactivate motor to save energy
-
             time.sleep(options.delay * 7.5)
             for k in range(7):
-                hw.motorOn(True)
                 hw.halfStep(50, 0.03)
-                hw.motorOn(False)
                 time.sleep(options.delay * 7.5)
 
     except KeyboardInterrupt:
