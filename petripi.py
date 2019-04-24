@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 #
 # petripi.py -
-#   script for time-lapse imaging of Petri dishes, with a focus on plants (i.e. it is adapted to day/night cycles).
+#   script for time-lapse imaging of Petri dishes, with a focus on plants
+#   (i.e. it is adapted to day/night cycles).
 #
 # - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
 #
 
 ########################################################################
+# tunables; general settings
+calibration = 4     # number of steps taken after hall sensor is lit
+threshold = 60000   # threshold for day/night determination
+                    # shutter times longer than this, at iso 100, are
+                    # considered to be indicative of nighttime.
+########################################################################
 # tunables; GPIO pins
-hallpin = 4		# hall sensor
-LEDpin = 5		# pin for turning on/off led
-calibration = 4		# number of steps taken after hall sensor is lit
-PWMa = 11
-PWMb = 12
+hallpin = 4		    # hall sensor
+LEDpin = 5		    # pin for turning on/off led
+PWMa = 11           # first pwm pin
+PWMb = 12           # second pwm pin
 coilpin_M11 = 14	# ain2
 coilpin_M12 = 15	# ain1
 coilpin_M21 = 16	# bin1
 coilpin_M22 = 17	# bin2
 stdbypin = 18		# stby
-# end tunables
 ########################################################################
+# end tunables
 
 from picamera import PiCamera
 import argparse
@@ -51,20 +57,19 @@ parser.add_argument("--prefix", default="", dest="prefix",
                   help="prefix to use for filenames [default: none]")
 parser.add_argument("--auto-wb", action="store_true", dest="awb",
                   help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
-parser.add_argument("-t", "--test", action="store_true", dest="test",
-                  help="capture a test picture as 'test.jpg', then exit")
 parser.add_argument("--focus", action="store_true", help="start web server for focus assessment")
 options = parser.parse_args()
 
-seqNumb = 0 		# State of stepper motor sequence -- do not touch
+# state of stepper motor sequence -- do not touch
+seqNumb = 0
 
-# Sequence for one coil rotation of stepper motor using half step
-halfstep_seq = [(1,0,0,0), (1,0,1,0), (0,0,1,0), (0,1,1,0), (0,1,0,0), (0,1,0,1), (0,0,0,1), (1,0,0,1)]
+# sequence for one coil rotation of stepper motor using half step
+halfstep_seq = [(1,0,0,0), (1,0,1,0), (0,0,1,0), (0,1,1,0),
+                (0,1,0,0), (0,1,0,1), (0,0,0,1), (1,0,0,1)]
 
 gpio.setmode(gpio.BCM)
 gpio.setwarnings(False)
 gpio.setup(LEDpin, gpio.OUT)
-gpio.setup(hallpin, gpio.OUT)
 gpio.setup(hallpin, gpio.IN)
 gpio.setup(PWMa, gpio.OUT)
 gpio.setup(PWMb, gpio.OUT)
@@ -80,10 +85,10 @@ gpio.output(PWMb, True)
 
 # sets the motor pins as element in sequence
 def setStepper(M_seq, i):
-    gpio.output(coilpin_M11,M_seq[i][0])
-    gpio.output(coilpin_M12,M_seq[i][1])
-    gpio.output(coilpin_M21,M_seq[i][2])
-    gpio.output(coilpin_M22,M_seq[i][3])
+    gpio.output(coilpin_M11, M_seq[i][0])
+    gpio.output(coilpin_M12, M_seq[i][1])
+    gpio.output(coilpin_M21, M_seq[i][2])
+    gpio.output(coilpin_M22, M_seq[i][3])
 
 
 # steps the stepper motor using half steps, "delay" is time between coil change
@@ -112,15 +117,12 @@ def isDaytime(cam=None):
     # determine if it's day or not. give the camera 1 second to adjust.
     cam.shutter_speed = 0
     oldiso = cam.iso
-    oldrate = cam.framerate
     oldmode = cam.exposure_mode
     cam.iso = 100
-    cam.framerate = 10
     cam.exposure_mode = "auto"
     time.sleep(1)
     exp = cam.exposure_speed
     cam.iso = oldiso
-    cam.framerate = oldrate
     cam.exposure_mode = oldmode
     # the number below is the threshold
     return exp < 60000
@@ -149,7 +151,7 @@ def takePicture(name, cam=None):
         cam.exposure_mode = "auto"
         filename = os.path.join(options.dir, options.prefix + name + "-day.jpg")
     else:
-        # Turn on LED
+        # turn on led
         gpio.output(LEDpin, True)
         cam.exposure_mode = "off"
         cam.iso = options.nightiso
@@ -165,7 +167,7 @@ def takePicture(name, cam=None):
     if daytime:
         print("daytime picture captured OK.")
     else:
-        # Turn off LEDs
+        # turn off led
         gpio.output(LEDpin, False)
         print("nighttime picture captured OK.")
 
@@ -182,43 +184,37 @@ try:
     cam = initCam()
     daytime = "TBD"
 
-    if not options.test:
-        print("Welcome to PetriPi!\n\nStarting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, options.nshots))
-        days = options.delay * options.nshots / (60 * 24)
-        print("Experiment will continue for approximately %i days." % days)
+    print("Welcome to PetriPi!\n\nStarting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, options.nshots))
+    days = options.delay * options.nshots / (60 * 24)
+    print("Experiment will continue for approximately %i days." % days)
 
     if options.dir != ".":
         if not os.path.exists(options.dir):
             os.makedirs(options.dir)
 
     for n in range(options.nshots):
-        if options.test:
-            takePicture("test", cam)
-            sys.exit()
-        else:
-            gpio.output(stdbypin, True) # activate motor
-            time.sleep(0.005) # time for motor to activate
-            for i in range(4):
-                gpio.output(stdbypin, True)
-                # rotate stage to starting position
-                if(i == 0):
-                    while True:
-                        halfStep(1, 0.03)
-                        if(gpio.input(hallpin) == False):
-                            print ("\nMagnet detected by hall effect sensor")
-                            halfStep(calibration,0.03)
-                            break
-                else:
-                    # rotate cube 90 degrees
-                    print("Rotating stage...")
-                    halfStep(100, 0.03)
+        gpio.output(stdbypin, True) # activate motor
+        time.sleep(0.005) # time for motor to activate
+        for i in range(4):
+            gpio.output(stdbypin, True)
+            # rotate stage to starting position
+            if(i == 0):
+                print("Finding initial position... ", end='', flush=True)
+                while gpio.input(hallpin):
+                    halfStep(1, 0.03)
+                print ("found.")
+                halfStep(calibration, 0.03)
+            else:
+                # rotate cube 90 degrees
+                print("Rotating stage...")
+                halfStep(100, 0.03)
 
-                # wait for the cube to stabilize
-                time.sleep(0.5)
+            # wait for the cube to stabilize
+            time.sleep(0.5)
 
-                now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
-                name = "plate" + str(i) + "-" + now
-                takePicture(name, cam)
+            now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
+            name = "plate" + str(i) + "-" + now
+            takePicture(name, cam)
 
         gpio.output(stdbypin, False) # deactivate motor to save energy
 
@@ -230,7 +226,7 @@ try:
             time.sleep(options.delay * 7.5)
 
 except KeyboardInterrupt:
-    print("\n User ended program by keyboard interrupt, turning of motor and cleaning GPIO")
+    print("\nProgram ended by keyboard interrupt. Turning off motor and cleaning up GPIO.")
 
 finally:
     gpio.output(stdbypin,False)
