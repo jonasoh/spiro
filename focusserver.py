@@ -62,6 +62,12 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Location', '/index.html')
             self.end_headers()
         elif p == '/index.html' or p == '/zoom' or p == '/led' or p == '/panx' or p == '/pany' or p == '/start' or p == '/90':
+            content = PAGE.encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html')
+            self.send_header('Content-Length', len(content))
+            self.end_headers()
+            self.wfile.write(content)
             if p == '/zoom':
                 amt = float(arg)
                 roi = roi + amt
@@ -115,13 +121,6 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 hw.findStart()
             elif p == '/90':
                 hw.halfStep(100, 0.03)
-
-            content = PAGE.encode('utf-8')
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/html')
-            self.send_header('Content-Length', len(content))
-            self.end_headers()
-            self.wfile.write(content)
         elif self.path == '/stream.mjpg':
             self.send_response(200)
             self.send_header('Age', 0)
