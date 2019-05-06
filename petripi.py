@@ -54,6 +54,8 @@ parser.add_argument("--night-iso", default=800, dest="nightiso", type=int,
                   help="set nighttime ISO value (0=auto) [default: 800]")
 parser.add_argument("--resolution", dest="resolution", metavar="RES",
                   help="set camera resolution [default: use maximum supported resolution]")
+parser.add_argument("--rotation", dest="rotation", metavar="DEG", default=90, type=int,
+                  help="set image rotation in degrees [default: 90]")
 parser.add_argument("--dir", default=".", dest="dir",
                   help="output pictures to directory 'DIR', creating it if needed [default: use current directory]")
 parser.add_argument("--prefix", default="", dest="prefix",
@@ -69,6 +71,7 @@ def initCam():
         cam.resolution = options.resolution
     else:
         cam.resolution = cam.MAX_RESOLUTION
+    cam.rotation = options.rotation
     cam.meter_mode = "spot"
     return cam
 
