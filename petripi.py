@@ -7,26 +7,26 @@
 # - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
 #
 
-########################################################################
+#########################################################################
 # tunables; general settings
-calibration = 4   # number of steps taken after positional sensor is lit
-threshold = 60000 # threshold for day/night determination
-                  # shutter times longer than this, at iso 100, are
-                  # considered to be indicative of nighttime.
-########################################################################
+calibration = 4    # number of steps taken after positional sensor is lit
+threshold = 32000  # threshold for day/night determination
+                   # shutter times longer than this, at iso 100, are
+                   # considered to be indicative of nighttime.
+#########################################################################
 # tunables; GPIO pins
 pins = {
-'sensor': 4,       # positional sensor
-'LED': 5,          # pin for turning on/off led
-'PWMa': 11,        # first pwm pin
-'PWMb': 12,        # second pwm pin
-'coilpin_M11': 14, # ain2
-'coilpin_M12': 15, # ain1
-'coilpin_M21': 16, # bin1
-'coilpin_M22': 17, # bin2
-'stdby': 18,       # stby
+'sensor': 23,      # positional sensor
+'LED': 25,         # pin for turning on/off led
+'PWMa': 17,        # first pwm pin
+'PWMb': 16,        # second pwm pin
+'coilpin_M11': 27, # ain2
+'coilpin_M12': 22, # ain1
+'coilpin_M21': 6,  # bin1
+'coilpin_M22': 26, # bin2
+'stdby': 5,        # stby
 }
-########################################################################
+#########################################################################
 # end tunables
 
 from picamera import PiCamera
@@ -84,8 +84,7 @@ def isDaytime(cam=None):
     exp = cam.exposure_speed
     cam.iso = oldiso
     cam.exposure_mode = oldmode
-    # the number below is the threshold
-    return exp < 60000
+    return exp < threshold
 
 
 def setWB(cam=None):
