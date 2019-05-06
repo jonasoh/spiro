@@ -10,7 +10,7 @@ class HWControl:
         gpio.setmode(gpio.BCM)
         gpio.setwarnings(False)
         gpio.setup(self.pins['LED'], gpio.OUT)
-        gpio.setup(self.pins['sensor'], gpio.IN)
+        gpio.setup(self.pins['sensor'], gpio.IN, pull_up_down=gpio.PUD_DOWN)
         gpio.setup(self.pins['PWMa'], gpio.OUT)
         gpio.setup(self.pins['PWMb'], gpio.OUT)
         gpio.setup(self.pins['coilpin_M11'], gpio.OUT)
@@ -25,7 +25,7 @@ class HWControl:
 
     def findStart(self):
         """rotates the imaging stage until the positional switch is activated"""
-        while gpio.input(self.pins['sensor']):
+        while not gpio.input(self.pins['sensor']):
             self.halfStep(1, 0.03)
 
 
