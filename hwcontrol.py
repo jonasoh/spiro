@@ -20,6 +20,7 @@ class HWControl:
         gpio.setup(self.pins['stdby'], gpio.OUT)
         gpio.output(self.pins['PWMa'], True)
         gpio.output(self.pins['PWMb'], True)
+        self.LEDControl(False)
 
 
     def findStart(self):
