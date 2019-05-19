@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# petripi.py -
+# spiro.py -
 #   script for time-lapse imaging of Petri dishes, with a focus on plants
 #   (i.e. it is adapted to day/night cycles).
 #
@@ -9,22 +9,22 @@
 
 #########################################################################
 # tunables; general settings
-calibration = 4    # number of steps taken after positional sensor is lit
-threshold = 32000  # threshold for day/night determination
-                   # shutter times longer than this, at iso 100, are
-                   # considered to be indicative of nighttime.
-#########################################################################
+calibration = 8   # number of steps taken after positional sensor is lit
+threshold = 20000 # threshold for day/night determination
+                  # shutter times longer than this, at iso 100, are
+                  # considered to be indicative of nighttime.
+########################################################################
 # tunables; GPIO pins
 pins = {
-'sensor': 23,      # positional sensor
-'LED': 25,         # pin for turning on/off led
-'PWMa': 17,        # first pwm pin
-'PWMb': 16,        # second pwm pin
-'coilpin_M11': 27, # ain2
-'coilpin_M12': 22, # ain1
-'coilpin_M21': 6,  # bin1
-'coilpin_M22': 26, # bin2
-'stdby': 5,        # stby
+'sensor': 4,       # mini microswitch positional sensor
+'LED': 17,         # pin for turning on/off led
+'PWMa': 8,         # first pwm pin
+'PWMb': 14,        # second pwm pin
+'coilpin_M11': 25, # ain2
+'coilpin_M12': 24, # ain1
+'coilpin_M21': 18, # bin1
+'coilpin_M22': 15, # bin2
+'stdby': 23,       # stby
 }
 #########################################################################
 # end tunables
@@ -40,18 +40,18 @@ from hwcontrol import HWControl
 
 parser = argparse.ArgumentParser(description="By default, PetriPi will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
-parser.add_argument("-n", "--num-shots", default=168, type=int, dest="nshots", action="store", metavar="N",
-                  help="number of shots to capture [default: 168]")
+parser.add_argument("-l", "--duration", type=float, default=7, dest="duration", metavar="L",
+                  help="duration, in days, of the experiment [default: 7]")
 parser.add_argument("-d", "--delay", type=float, default=60, dest="delay", metavar="D",
                   help="time, in minutes, to wait between shots [default: 60]")
 parser.add_argument("--day-shutter", default=100, dest="dayshutter", type=int, metavar="DS",
                   help="daytime shutter in fractions of a second, i.e. for 1/100 specify '100' [default: 100]")
-parser.add_argument("--night-shutter", default=1, dest="nightshutter", type=int, metavar="NS",
+parser.add_argument("--night-shutter", default=10, dest="nightshutter", type=int, metavar="NS",
                   help="nighttime shutter in fractions of a second [default: 5]")
 parser.add_argument("--day-iso", default=100, dest="dayiso", type=int,
                   help="set daytime ISO value (0=auto) [default: 100]")
-parser.add_argument("--night-iso", default=800, dest="nightiso", type=int,
-                  help="set nighttime ISO value (0=auto) [default: 800]")
+parser.add_argument("--night-iso", default=100, dest="nightiso", type=int,
+                  help="set nighttime ISO value (0=auto) [default: 100]")
 parser.add_argument("--resolution", dest="resolution", metavar="RES",
                   help="set camera resolution [default: use maximum supported resolution]")
 parser.add_argument("--rotation", dest="rotation", metavar="DEG", default=90, type=int,
@@ -66,39 +66,41 @@ parser.add_argument("--focus", action="store_true", help="start web server for f
 options = parser.parse_args()
 
 def initCam():
-    cam = PiCamera(framerate_range = (Fraction(1, 6), 30))
+    cam = PiCamera()
+    cam.framerate = 15  
     if options.resolution:
         cam.resolution = options.resolution
     else:
         cam.resolution = cam.MAX_RESOLUTION
     cam.rotation = options.rotation
-    cam.meter_mode = "spot"
     return cam
+    cam.image_denoise = False
+    return cam    
 
 
 def isDaytime(cam=None):
     # determine if it's day or not. give the camera 1 second to adjust.
-    cam.shutter_speed = 0
+    cam.shutter_speed = 0 # a "nice" hack as jonas calls it to determine shutter speed automatically
     oldiso = cam.iso
     oldmode = cam.exposure_mode
     cam.iso = 100
     cam.exposure_mode = "auto"
-    time.sleep(1)
+    time.sleep(6)
     exp = cam.exposure_speed
+    print (exp)
     cam.iso = oldiso
-    cam.exposure_mode = oldmode
+    cam.exposure_mode = "off"
     return exp < threshold
 
 
 def setWB(cam=None):
-    sys.stdout.write("Determining white balance... ")
+    print("Determining white balance... ", end='', flush=True)
     cam.awb_mode = "auto"
-    sys.stdout.flush()
-    time.sleep(1)
+    time.sleep(2)
     print("done.")
-    (one, two) = cam.awb_gains
+    g = cam.awb_gains
     cam.awb_mode = "off"
-    cam.awb_gains = (one, two)
+    cam.awb_gains = g
 
 
 def takePicture(name, cam=None):
@@ -110,27 +112,33 @@ def takePicture(name, cam=None):
     if daytime:
         cam.iso = options.dayiso
         cam.shutter_speed = 1000000 // options.dayshutter
-        cam.exposure_mode = "auto"
+        cam.color_effects = None
         filename = os.path.join(options.dir, options.prefix + name + "-day.jpg")
+        
     else:
         # turn on led
-        hw.LEDControl(pins, True)
-        cam.exposure_mode = "off"
+        hw.LEDControl(True)
         cam.iso = options.nightiso
-        cam.framerate = Fraction(1, 6)
+        cam.color_effects = (128, 128)
+      #  cam.framerate = Fraction(1, 6)
         cam.shutter_speed = 1000000 // options.nightshutter
         time.sleep(2)
         filename = os.path.join(options.dir, options.prefix + name + "-night.jpg")
+    
+    if not options.awb and prev_daytime != daytime and daytime and cam.awb_mode != "off":
+        # if there is a daytime shift, AND it is daytime, AND white balance was not previously set,
+        # set the white balance to a fixed value.
+        # thus, white balance will only be fixed for the first occurence of daylight.
+        setWB(cam)
 
-    sys.stdout.write("Capturing %s... " % filename)
-    sys.stdout.flush()
-    cam.capture(filename)
-
+    print("Capturing %s... " % filename, end='', flush=True)
+    cam.capture(filename) 
+   
     if daytime:
         print("daytime picture captured OK.")
     else:
         # turn off led
-        hw.LEDControl(pins, False)
+        hw.LEDControl(False)
         print("nighttime picture captured OK.")
 
 
@@ -145,44 +153,49 @@ if (__name__) == '__main__':
             # set lower resolution to reduce risk of PiCamera crashing :\
             options.resolution="1640x1232"
             cam = initCam()
+            cam.framerate_range = (1, 15)
             import focusserver
             focusserver.focusServer(cam, hw)
             sys.exit()
 
         cam = initCam()
         daytime = "TBD"
+        nshots = int(options.duration * 24 * 60 // options.delay)
 
-        print("Welcome to PetriPi!\n\nStarting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, options.nshots))
-        days = options.delay * options.nshots / (60 * 24)
-        print("Experiment will continue for approximately %i days." % days)
+        print("Welcome to SPIRO!\n\nStarting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, nshots))
+        print("Experiment will continue for approximately %i days." % options.duration)
+
+        for i in range(4):
+            platedir = "plate" + str(i + 1)
+            os.makedirs(os.path.join(options.dir, platedir), exist_ok=True)
 
         if options.dir != ".":
             if not os.path.exists(options.dir):
                 os.makedirs(options.dir)
 
-        for n in range(options.nshots):
+        for n in range(nshots):
             for i in range(4):
                 # rotate stage to starting position
                 if(i == 0):
                     print("Finding initial position... ", end='', flush=True)
                     hw.findStart()
                     print ("found.")
-                    hw.halfStep(calibration, 0.03)
+                    hw.halfStep(calibration, 0.1)
                 else:
                     # rotate cube 90 degrees
                     print("Rotating stage...")
-                    hw.halfStep(100, 0.03)
+                    hw.halfStep(100, 0.1)
 
                 # wait for the cube to stabilize
                 time.sleep(0.5)
 
                 now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
-                name = "plate" + str(i) + "-" + now
+                name = os.path.join("plate" + str(i + 1), "plate" + str(i + 1) + "-" + now)
                 takePicture(name, cam)
 
             time.sleep(options.delay * 7.5)
             for k in range(7):
-                hw.halfStep(50, 0.03)
+                hw.halfStep(50, 0.1)
                 time.sleep(options.delay * 7.5)
 
     except KeyboardInterrupt:
