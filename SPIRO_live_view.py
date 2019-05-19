@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 #
 # focusserver.py -
-#   live view web stream viewer for petripi.
+#   live view web stream viewer for SPIRO.
 #   useful for making focus adjustments.
-#   can be run standalone or through petripi commandline option.
+#   can be run standalone or through SPIRO commandline option.
 #
 # - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
 #
@@ -15,14 +15,16 @@ import socketserver
 from threading import Condition
 from http import server
 from fractions import Fraction
+import time
+
 
 PAGE="""\
 <html>
 <head>
-<title>PetriPi live view</title>
+<title>SPIRO live view</title>
 </head>
 <body>
-<h1>PetriPi live view</h1>
+<h1>SPIRO live view</h1>
 <img src="stream.mjpg" width="1024" height="768" />
 <p>Zoom <a href="/zoom?-0.1">in</a> / <a href="/zoom?0.1">out</a></p>
 <p>Pan <a href="/panx?-0.1">left</a> / <a href="/panx?0.1">right</a> / <a href="/pany?-0.1">up</a> / <a href="/pany?0.1">down</a></p>
@@ -173,6 +175,6 @@ def focusServer(cam=None, myhw=hw):
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\nProgram ended by keyboard interrupt.")
+        print("  Quitting the SPIRO live view.")
     finally:
-        cam.stop_recording()
+        camera.stop_recording()
