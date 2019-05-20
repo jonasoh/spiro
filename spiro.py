@@ -38,7 +38,7 @@ import RPi.GPIO as gpio
 from fractions import Fraction
 from hwcontrol import HWControl
 
-parser = argparse.ArgumentParser(description="By default, PetriPi will run an experiment for 7 days with hourly captures, saving images to the current directory.")
+parser = argparse.ArgumentParser(description="By default, SPIRO will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
 parser.add_argument("-l", "--duration", type=float, default=7, dest="duration", metavar="L",
                   help="duration, in days, of the experiment [default: 7]")
