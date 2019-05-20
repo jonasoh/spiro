@@ -62,7 +62,7 @@ parser.add_argument("--prefix", default="", dest="prefix",
                   help="prefix to use for filenames [default: none]")
 parser.add_argument("--auto-wb", action="store_true", dest="awb",
                   help="adjust white balance between shots (if false, only adjust when day/night shift is detected) [default: false]")
-parser.add_argument("--focus", action="store_true", help="start web server for focus assessment")
+parser.add_argument("--live", action="store_true", help="start live view web server")
 options = parser.parse_args()
 
 def initCam():
@@ -148,11 +148,11 @@ if (__name__) == '__main__':
     hw.motorOn(False) # turn off motor while not in use
 
     try:
-        if options.focus:
+        if options.live:
             # set lower resolution to reduce risk of PiCamera crashing :\
             options.resolution="1640x1232"
             cam = initCam()
-            cam.framerate_range = (1, 15)
+            cam.framerate_range = (1, 10)
             import focusserver
             focusserver.focusServer(cam, hw)
             sys.exit()
