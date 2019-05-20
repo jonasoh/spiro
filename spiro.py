@@ -9,10 +9,10 @@
 
 #########################################################################
 # tunables; general settings
-calibration = 8   # number of steps taken after positional sensor is lit
-threshold = 20000 # threshold for day/night determination
-                  # shutter times longer than this, at iso 100, are
-                  # considered to be indicative of nighttime.
+calibration = 8    # number of steps taken after positional sensor is lit
+threshold = 20000  # threshold for day/night determination
+                   # shutter times longer than this, at iso 100, are
+                   # considered to be indicative of nighttime.
 ########################################################################
 # tunables; GPIO pins
 pins = {
@@ -79,8 +79,9 @@ def initCam():
 
 
 def isDaytime(cam=None):
-    # determine if it's day or not. give the camera 1 second to adjust.
-    cam.shutter_speed = 0 # a "nice" hack as jonas calls it to determine shutter speed automatically
+    # determine if it's day or not.
+    # XXX determine how long we need to wait, probably less than 6 seconds.
+    cam.shutter_speed = 0
     oldiso = cam.iso
     oldmode = cam.exposure_mode
     cam.iso = 100
@@ -114,13 +115,11 @@ def takePicture(name, cam=None):
         cam.shutter_speed = 1000000 // options.dayshutter
         cam.color_effects = None
         filename = os.path.join(options.dir, options.prefix + name + "-day.jpg")
-        
     else:
         # turn on led
         hw.LEDControl(True)
         cam.iso = options.nightiso
         cam.color_effects = (128, 128)
-      #  cam.framerate = Fraction(1, 6)
         cam.shutter_speed = 1000000 // options.nightshutter
         time.sleep(2)
         filename = os.path.join(options.dir, options.prefix + name + "-night.jpg")
@@ -203,5 +202,5 @@ if (__name__) == '__main__':
 
     finally:
         hw.motorOn(False)
-        gpio.cleanup()
         cam.close()
+        gpio.cleanup()
