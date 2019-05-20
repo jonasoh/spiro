@@ -1,11 +1,11 @@
 # SPIRO
-SPIRO = Smart Plate Imaging RObot. It is a Raspberry Pi -based imaging platform designed for time-lapse imaging of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies etc.
+SPIRO = Smart Plate Imaging RObot. It is a Raspberry Pi based imaging platform designed for time-lapse imaging of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies etc.
 
-Currently, SPIRO supports imaging of up to four plates at the same time, using a "cube holder" for the Petri dishes. We designed it to be suitable for two most poular Petri dishes formats: round9 cm plates and square 12 cm plates. Newer blueprints, designed for 3D printing, will be uploaded soon. 
+Currently, SPIRO supports imaging of up to four plates at the same time, using a "cube holder" for the Petri dishes. We designed it to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates. Newer blueprints, designed for 3D printing, will be uploaded soon.
 
 ## hardware
 
-This is the previous prototype of SPIRO placed inside a plant growth chamber. This iteration uses 3D printed parts for housing the cameras and other electronics, as well as for the dish-holding cube. 
+This is the previous prototype of SPIRO placed inside a plant growth chamber. This iteration uses 3D printed parts for housing the camera and other electronics, as well as for the dish-holding cube.
 
 <img src="https://raw.githubusercontent.com/jonasoh/web/master/petripi-3dprinted.jpg">
 
@@ -26,7 +26,7 @@ saving images to the current directory.
 
 optional arguments:
   -h, --help            show this help message and exit
-  -l, --duration        length or duration of the experiment [default: 7 ]
+  -l, --duration        length or duration of the experiment [default: 7]
   -d D, --delay D       time, in minutes, to wait between shots [default: 60]
   --disable-motor       disable use of motor [default: false]
   --day-shutter DS      daytime shutter in fractions of a second, i.e. for
@@ -46,8 +46,4 @@ optional arguments:
 
 ## requirements and installation
 
-SPIRO is currently run on the Raspberry Pi Compute Module 3. It works with both the official camera module as well as with third-party cameras. We use the official V2 camera and Arducam.
-
-To install, first enable dual amera interfacing using the [official instructions]
-
-**Note:** Due to the unreliability of SD cards, we recommend that images be captured to a directory on another medium, such as a network-mounted filesystem or a USB drive (or at least to a separate partition on the SD card if this is not an option). Constantly writing to the SD cards can, in our experience, lead to irrecoverable errors on the root filesystem which may require a reinstallation of the OS. 
+SPIRO is currently run on the Raspberry Pi 3 Model B+. It works with both the official camera module as well as with third-party cameras. We use the [Arducam Motorized Focus camera](http://www.arducam.com/programmable-motorized-focus-camera-raspberry-pi/).
