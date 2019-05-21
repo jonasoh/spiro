@@ -152,10 +152,10 @@ if (__name__) == '__main__':
 
     try:
         if options.live:
-            # set lower resolution to reduce risk of PiCamera crashing :\
-            options.resolution="1640x1232"
+            # at this resolution, we do not experience PiCamera crashes (it seems)
+            options.resolution="2592x1944"
             cam = initCam()
-            cam.framerate_range = (1, 10)
+            cam.framerate = 10
             import focusserver
             focusserver.focusServer(cam, hw)
             sys.exit()
