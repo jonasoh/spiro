@@ -34,6 +34,7 @@ import argparse
 import time
 import sys
 import os
+import shutil
 import RPi.GPIO as gpio
 from fractions import Fraction
 from hwcontrol import HWControl
@@ -173,6 +174,11 @@ if (__name__) == '__main__':
         if options.dir != ".":
             if not os.path.exists(options.dir):
                 os.makedirs(options.dir)
+
+        df = shutil.disk_usage(options.dir)
+        print("Free space: %i MB Required: %i MB" % (df.free / 1024 ** 2, nshots * 4 * 4))
+        if (nshots * 4 * 4 > df.free / 1024 ** 2):
+            print("WARNING! Required disk space exceeds available disk space on target filesystem!")
 
         for n in range(nshots):
             for i in range(4):
