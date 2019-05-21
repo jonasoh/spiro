@@ -181,6 +181,8 @@ if (__name__) == '__main__':
             print("WARNING! Required disk space exceeds available disk space on target filesystem!")
 
         for n in range(nshots):
+            starttime = time.time()
+
             for i in range(4):
                 # rotate stage to starting position
                 if(i == 0):
@@ -200,10 +202,18 @@ if (__name__) == '__main__':
                 name = os.path.join("plate" + str(i + 1), "plate" + str(i + 1) + "-" + now)
                 takePicture(name, cam)
 
-            time.sleep(options.delay * 7.5)
+            # this part is "active waiting", rotating the cube slowly over the period of options.delay
+            # this ensures consistent lighting for all plates.
+            # account for the time spent capturing images.
+            aftertime = time.time()
+            losttime = aftertime - starttime
+            time.sleep(options.delay * 7.5 - losttime / 7.5)
             for k in range(7):
+                starttime = time.time()
                 hw.halfStep(50, 0.1)
-                time.sleep(options.delay * 7.5)
+                aftertime = time.time()
+                motortime = aftertime - starttime
+                time.sleep(options.delay * 7.5 - losttime / 7.5 - motortime)
 
     except KeyboardInterrupt:
         print("\nProgram ended by keyboard interrupt. Turning off motor and cleaning up GPIO.")
