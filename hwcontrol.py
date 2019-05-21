@@ -2,8 +2,18 @@ import RPi.GPIO as gpio
 import time
 
 class HWControl:
-    def __init__(self, mypins):
-        self.pins = mypins
+    def __init__(self, cfg):
+        self.pins = {
+            'LED' : cfg.get('LED'),
+            'sensor' : cfg.get('sensor'),
+            'PWMa' : cfg.get('PWMa'),
+            'PWMb' : cfg.get('PWMb'),
+            'coilpin_M11' : cfg.get('coilpin_M11'),
+            'coilpin_M12' : cfg.get('coilpin_M12'),
+            'coilpin_M21' : cfg.get('coilpin_M21'),
+            'coilpin_M22' : cfg.get('coilpin_M22'),
+            'stdby' : cfg.get('stdby')
+        }
 
 
     def GPIOInit(self):

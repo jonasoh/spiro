@@ -37,6 +37,7 @@ import os
 import RPi.GPIO as gpio
 from fractions import Fraction
 from hwcontrol import HWControl
+from spiroconfig import Config
 
 parser = argparse.ArgumentParser(description="By default, SPIRO will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
@@ -143,7 +144,8 @@ def takePicture(name, cam=None):
 
 # start here.
 if (__name__) == '__main__':
-    hw = HWControl(pins)
+    cfg = Config()
+    hw = HWControl(cfg)
     hw.GPIOInit()
     hw.motorOn(False) # turn off motor while not in use
 
