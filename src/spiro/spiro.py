@@ -37,8 +37,8 @@ import os
 import shutil
 import RPi.GPIO as gpio
 from fractions import Fraction
-from hwcontrol import HWControl
-from spiroconfig import Config
+from spiro.hwcontrol import HWControl
+from spiro.spiroconfig import Config
 
 parser = argparse.ArgumentParser(description="By default, SPIRO will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
@@ -144,7 +144,7 @@ def takePicture(name, cam=None):
 
 
 # start here.
-if (__name__) == '__main__':
+def main():
     cfg = Config()
     hw = HWControl(cfg)
     hw.GPIOInit()
@@ -156,7 +156,7 @@ if (__name__) == '__main__':
             options.resolution="2592x1944"
             cam = initCam()
             cam.framerate = 10
-            import focusserver
+            import spiro.focusserver as focusserver
             focusserver.focusServer(cam, hw)
             sys.exit()
 
