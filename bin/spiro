@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+#
+# small shell script wrapper for spiro
+
+import spiro.spiro
+spiro.spiro.main()
