@@ -25,13 +25,31 @@ PAGE="""\
 </head>
 <body>
 <h1>SPIRO live view</h1>
+<div style="position:relative;">
 <img src="stream.mjpg" width="1024" height="768" />
+<img src="grid.svg" style="position:absolute; left:0px; top: 0px; width: 1024px; height: 768px;" />
+</div>
 <p>Zoom <a href="/zoom?-0.1">in</a> / <a href="/zoom?0.1">out</a></p>
 <p>Pan <a href="/panx?-0.1">left</a> / <a href="/panx?0.1">right</a> / <a href="/pany?-0.1">up</a> / <a href="/pany?0.1">down</a></p>
 <p><a href="/start">Find start position</a> <a href="/90">Rotate 90 degrees</a></p>
 <p><a href="/led">Toggle LED</a></p>
 </body>
 </html>
+"""
+
+GRID="""\
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 3280 2464" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g id="Layer1">
+        <g transform="matrix(0.834385,0,0,0.906683,503.74,219.769)">
+            <rect x="204.506" y="-30.735" width="2559.38" height="2385.81" style="fill:none;stroke:rgb(221,52,52);stroke-width:10.33px;"/>
+        </g>
+        <g transform="matrix(0.969955,0,0,0.969955,78.409,84.5988)">
+            <circle cx="1715.26" cy="1649.07" r="833.816" style="fill:none;stroke:rgb(221,52,52);stroke-width:9.28px;"/>
+        </g>
+    </g>
+</svg>
 """
 
 class StreamingOutput(object):
@@ -145,6 +163,13 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 logging.warning(
                     'Removed streaming client %s: %s',
                     self.client_address, str(e))
+        elif self.path == '/grid.svg':
+            content = GRID.encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'image/svg+xml')
+            self.send_header('Content-Length', len(content))
+            self.end_headers()
+            self.wfile.write(content)
         else:
             self.send_error(404)
             self.end_headers()
