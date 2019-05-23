@@ -67,7 +67,7 @@ parser.add_argument("--auto-wb", action="store_true", dest="awb",
 parser.add_argument("--live", action="store_true", help="start live view web server")
 options = parser.parse_args()
 
-def initCam():
+Rdef initCam():
     cam = PiCamera()
     cam.framerate = 15  
     if options.resolution:
@@ -85,12 +85,10 @@ def isDaytime(cam=None):
     # XXX determine how long we need to wait, probably less than 6 seconds.
     cam.shutter_speed = 0
     oldiso = cam.iso
-    oldmode = cam.exposure_mode
     cam.iso = 100
     cam.exposure_mode = "auto"
     time.sleep(6)
     exp = cam.exposure_speed
-    print (exp)
     cam.iso = oldiso
     cam.exposure_mode = "off"
     return exp < threshold
