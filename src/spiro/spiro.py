@@ -7,28 +7,6 @@
 # - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
 #
 
-#########################################################################
-# tunables; general settings
-calibration = 8    # number of steps taken after positional sensor is lit
-threshold = 20000  # threshold for day/night determination
-                   # shutter times longer than this, at iso 100, are
-                   # considered to be indicative of nighttime.
-########################################################################
-# tunables; GPIO pins
-pins = {
-'sensor': 4,       # mini microswitch positional sensor
-'LED': 17,         # pin for turning on/off led
-'PWMa': 8,         # first pwm pin
-'PWMb': 14,        # second pwm pin
-'coilpin_M11': 25, # ain2
-'coilpin_M12': 24, # ain1
-'coilpin_M21': 18, # bin1
-'coilpin_M22': 15, # bin2
-'stdby': 23,       # stby
-}
-#########################################################################
-# end tunables
-
 from picamera import PiCamera
 import argparse
 import time
@@ -141,9 +119,11 @@ def takePicture(name, cam=None):
         print("nighttime picture captured OK.")
 
 
+cfg = Config()
+threshold = cfg.get('threshold')
+
 # start here.
 def main():
-    cfg = Config()
     hw = HWControl(cfg)
     hw.GPIOInit()
     hw.motorOn(False) # turn off motor while not in use
