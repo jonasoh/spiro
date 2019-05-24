@@ -5,15 +5,15 @@ class Config(object):
     defaults = {
         'calibration' : 8,   # number of steps taken after positional sensor is lit
         'threshold' : 20000, # threshold for day/night determination
-        'sensor': 4,         # mini microswitch positional sensor
+        'sensor': 4,         # pin for mini microswitch positional sensor
         'LED': 17,           # pin for turning on/off led
         'PWMa': 8,           # first pwm pin
         'PWMb': 14,          # second pwm pin
-        'coilpin_M11': 25,   # ain2
-        'coilpin_M12': 24,   # ain1
-        'coilpin_M21': 18,   # bin1
-        'coilpin_M22': 15,   # bin2
-        'stdby': 23,         # stby
+        'coilpin_M11': 25,   # ain2 pin
+        'coilpin_M12': 24,   # ain1 pin
+        'coilpin_M21': 18,   # bin1 pin
+        'coilpin_M22': 15,   # bin2 pin
+        'stdby': 23,         # stby pin
     }
 
     config = {}
@@ -37,12 +37,7 @@ class Config(object):
 
 
     def get(self, key):
-        if key in self.config:
-            return self.config[key]
-        elif key in self.defaults:
-            return self.defaults[key]
-        else:
-            return None
+        return self.config.get(key, self.defaults.get(key))
 
 
     def set(self, key, value):
