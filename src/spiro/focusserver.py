@@ -22,17 +22,25 @@ PAGE="""\
 <html>
 <head>
 <title>SPIRO live view</title>
+<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+<script>
+function t(id) {
+  var e = document.getElementById(id);
+  if(e.style.display == 'block') { e.style.display = 'none'; } else { e.style.display = 'block'; }
+}
+</script>
 </head>
 <body>
 <h1>SPIRO live view</h1>
 <div style="position:relative;">
 <img src="stream.mjpg" width="1024" height="768" />
-<img src="grid.svg" style="position:absolute; left:0px; top: 0px; width: 1024px; height: 768px;" />
+<img src="grid.svg" id="grid" style="position:absolute; left:0px; top: 0px; width: 1024px; height: 768px; opacity: 0.5; display: none;" />
 </div>
-<p>Zoom <a href="/zoom?-0.1">in</a> / <a href="/zoom?0.1">out</a></p>
-<p>Pan <a href="/panx?-0.1">left</a> / <a href="/panx?0.1">right</a> / <a href="/pany?-0.1">up</a> / <a href="/pany?0.1">down</a></p>
-<p><a href="/start">Find start position</a> <a href="/90">Rotate 90 degrees</a></p>
-<p><a href="/led">Toggle LED</a></p>
+<p>Zoom <a href="/zoom?-0.1" class="pure-button">in</a> / <a href="/zoom?0.1" class="pure-button">out</a></p>
+<p>Pan <a href="/panx?-0.1" class="pure-button">left</a> / <a href="/panx?0.1" class="pure-button">right</a> / <a href="/pany?-0.1" class="pure-button">up</a> / <a href="/pany?0.1" class="pure-button">down</a></p>
+<p><a href="/start" class="pure-button">Find start position</a> <a href="/90" class="pure-button">Rotate 90 degrees</a></p>
+<p><a href="/led" class="pure-button">Toggle LED</a></p>
+<p><a href="#" class="pure-button" onclick="t('grid')">Toggle grid</a></p>
 </body>
 </html>
 """
