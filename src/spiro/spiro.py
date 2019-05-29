@@ -45,7 +45,7 @@ parser.add_argument("--auto-wb", action="store_true", dest="awb",
 parser.add_argument("--live", action="store_true", help="start live view web server")
 options = parser.parse_args()
 
-Rdef initCam():
+def initCam():
     cam = PiCamera()
     cam.framerate = 15  
     if options.resolution:
