@@ -5,9 +5,9 @@ Currently, SPIRO supports imaging of up to four plates at the same time, using a
 
 ## hardware
 
-SPIRO is based around Raspberry Pi 3B+, using 3D printed parts to hold everything together. Below is a link to a video showing some of its features. 
+SPIRO is based around Raspberry Pi 3B+, using 3D printed parts to hold everything together. The image below is a link to a YouTube video showing some of its design and features. 
 
-[![SPIRO intro](http://img.youtube.com/vi/fh5NMvDNjNc/0.jpg)](http://www.youtube.com/watch?v=fh5NMvDNjNc "SPIRO intro")
+[![SPIRO intro](https://user-images.githubusercontent.com/6480370/60589568-1e46ed80-9d9a-11e9-96ae-08fe85d8b415.png)](http://www.youtube.com/watch?v=fh5NMvDNjNc "SPIRO intro")
 
 ## example
 
