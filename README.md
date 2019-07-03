@@ -14,6 +14,41 @@ SPIRO is based around Raspberry Pi 3B+, using 3D printed parts to hold everythin
 <img src="https://github.com/jonasoh/web/raw/master/day-cropped-optim.gif">
 (Note: the image quality has improved by a large degree since this image was captured.)
 
+## installation
+
+First, prepare the SD card with a fresh release of Raspbian Lite (follow the official [instructions](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)). 
+
+Connect the Raspberry Pi to a screen and keyboard. Log in using the default credentials (username `pi`, password `raspberry`). Start the system configuration:
+```
+sudo raspi-config
+```
+
+In the raspi-config interface, make the following changes:
+* Change the password
+* Under *Interfacing*, enable *Camera*, *I2C*, and *SSH*. 
+* In the *Advanced Options*, set *Memory Split* to 256.
+* If needed, configure *Network* and *Localization* options here as well.
+* Finally, choose *Finish*. 
+
+Next, make sure the system is up to date, and install the required tools (answer yes to any questions):
+
+```
+sudo apt update
+sudo apt upgrade
+sudo apt install python3-pip git
+```
+
+Finally, install the SPIRO software and its dependencies:
+
+```
+sudo pip3 install git+https://github.com/jonasoh/spiro#egg=spiro
+```
+
+You may now run the spiro software using the command
+```
+spiro
+```
+
 ## usage
 
 ```
