@@ -29,6 +29,7 @@ In the raspi-config interface, make the following changes:
 * Change the password
 * Under *Interfacing*, enable *Camera*, *I2C*, and *SSH*. 
 * In the *Advanced Options*, set *Memory Split* to 256.
+* Under *Localisation Options*, make sure to set the *Timezone*. Please note that a working network connection is required to maintain the correct date.
 * If needed, configure *Network* and *Localization* options here as well.
 * Finally, select *Finish*, and choose to reboot the system when asked. 
 
