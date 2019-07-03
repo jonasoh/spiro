@@ -59,7 +59,7 @@ spiro
 
 ### Working with SPIRO
 
-To issue commands to SPIRO, and to download the images, you need an SSH client. Depending on your operating system and how comfortable you are with a computer, there are several choices.
+To issue commands to SPIRO, and to download the images, you need an SSH client. Depending on your operating system and how comfortable you are with a computer, there are several choices. A few of them are listed below.
 
 **Windows**
 * [MobaXterm](https://mobaxterm.mobatek.net/) is a popular SSH client that also supports file transfer. Recommended for beginners. 
@@ -70,3 +70,13 @@ To issue commands to SPIRO, and to download the images, you need an SSH client. 
 * On Mac, an SSH client is built in to the system. Using the *Terminal*, connect to SPIRO using the command `ssh pi@1.2.3.4` (where `1.2.3.4` is the IP address of your system). Images can be transferred using the builtin commands `scp` and `sftp`, although this requires some knowledge about using the command line.
 * [Transmit](https://panic.com/transmit/) is the best graphical SFTP client for Mac.
 * [Cyberduck](https://cyberduck.io/) may be another alternative.
+
+### Connecting via SSH
+
+### Initial setup and live view
+
+### Starting and stopping experiments
+
+### Useful Linux commands
+
+### Caveats and troubleshooting
