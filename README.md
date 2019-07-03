@@ -1,11 +1,13 @@
 # SPIRO
 SPIRO = Smart Plate Imaging RObot. It is a Raspberry Pi based imaging platform designed for time-lapse imaging of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies etc.
 
-Currently, SPIRO supports imaging of up to four plates at the same time, using a "cube holder" for the Petri dishes. We designed it to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates. Newer blueprints, designed for 3D printing, will be uploaded soon.
+SPIRO supports imaging of up to four plates at the same time. It is designed it to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates.
 
 ## hardware
 
-SPIRO is based around Raspberry Pi 3B+, using 3D printed parts to hold everything together. The image below is a link to a YouTube video showing some of its design and features. 
+SPIRO is based around [Raspberry Pi 3 B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/), using 3D printed parts to hold everything together. It works with both the [official camera module](https://www.raspberrypi.org/products/camera-module-v2/) as well as with third-party cameras. We use the [Arducam Motorized Focus camera](http://www.arducam.com/programmable-motorized-focus-camera-raspberry-pi/), which allows focusing the images via the built-in live view web server.
+
+The image below is a link to a YouTube video showing some of its design and features.
 
 [![SPIRO intro](https://user-images.githubusercontent.com/6480370/60589568-1e46ed80-9d9a-11e9-96ae-08fe85d8b415.png)](http://www.youtube.com/watch?v=fh5NMvDNjNc "SPIRO intro")
 
@@ -78,7 +80,3 @@ optional arguments:
                         false]
   -t, --test            capture a test picture as 'test.jpg', then exit
 ```
-
-## requirements and installation
-
-SPIRO is currently run on the Raspberry Pi 3 Model B+. It works with both the official camera module as well as with third-party cameras. We use the [Arducam Motorized Focus camera](http://www.arducam.com/programmable-motorized-focus-camera-raspberry-pi/).
