@@ -1,9 +1,9 @@
-# SPIRO
-SPIRO = Smart Plate Imaging RObot. It is a Raspberry Pi based imaging platform designed for time-lapse imaging of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies etc.
+# SPIRO is a Smart Plate Imaging Robot
+SPIRO is a Raspberry Pi based imaging platform designed for highly reproducible, high temporal resolution timelapse imaging of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies etc.
 
 SPIRO supports imaging of up to four plates at the same time. It is designed it to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates.
 
-## hardware
+## Hardware
 
 SPIRO is based around [Raspberry Pi 3 B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/), using 3D printed parts to hold everything together. It works with both the [official camera module](https://www.raspberrypi.org/products/camera-module-v2/) as well as with third-party cameras. We use the [Arducam Motorized Focus camera](http://www.arducam.com/programmable-motorized-focus-camera-raspberry-pi/), which allows focusing the images via the built-in live view web server.
 
@@ -11,12 +11,15 @@ The image below is a link to a YouTube video showing some of its design and feat
 
 [![SPIRO intro](https://user-images.githubusercontent.com/6480370/60589568-1e46ed80-9d9a-11e9-96ae-08fe85d8b415.png)](http://www.youtube.com/watch?v=fh5NMvDNjNc "SPIRO intro")
 
-## example
+## 3D printer models
 
-<img src="https://github.com/jonasoh/web/raw/master/day-cropped-optim.gif">
-(Note: the image quality has improved by a large degree since this image was captured.)
+Models for the 3D printed hardware components can be found at [AlyonaMinina/SPIRO](https://github.com/AlyonaMinina/SPIRO).
 
-## installation
+## ImageJ macros
+
+A few ImageJ macros that take advantage of the capabilities of SPIRO can be found at [jiaxuanleong/spiro-IJmacros](https://github.com/jiaxuanleong/spiro-IJmacros).
+
+## Installation
 
 First, prepare the SD card with a fresh release of Raspbian Lite (follow the official [instructions](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)). 
 
@@ -52,7 +55,7 @@ You may now run the spiro software using the command
 spiro
 ```
 
-## usage
+## Usage
 
 ```
 usage: spiro   [-h] [-l] [-d D] [--dir] [--day-shutter DS] [--night-shutter NS]
