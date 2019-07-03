@@ -5,9 +5,9 @@ Currently, SPIRO supports imaging of up to four plates at the same time, using a
 
 ## hardware
 
-This is the previous prototype of SPIRO placed inside a plant growth chamber. This iteration uses 3D printed parts for housing the camera and other electronics, as well as for the dish-holding cube.
+SPIRO is based around Raspberry Pi 3B+, using 3D printed parts to hold everything together. Below is a link to a video showing some of its features. 
 
-<img src="https://raw.githubusercontent.com/jonasoh/web/master/petripi-3dprinted.jpg">
+[![SPIRO intro](http://img.youtube.com/vi/fh5NMvDNjNc/0.jpg)](http://www.youtube.com/watch?v=fh5NMvDNjNc "SPIRO intro")
 
 ## example
 
