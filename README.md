@@ -57,30 +57,16 @@ spiro
 
 ## Usage
 
-```
-usage: spiro   [-h] [-l] [-d D] [--dir] [--day-shutter DS] [--night-shutter NS]
-               [--day-iso DAYISO] [--night-iso NIGHTISO] [--resolution RES]
-               [--dir DIR] [--prefix PREFIX] [--auto-wb] [-t]
+### Working with SPIRO
 
-By default, SPIRO will run an experiment for 7 days with hourly captures,
-saving images to the current directory.
+To issue commands to SPIRO, and to download the images, you need an SSH client. Depending on your operating system and how comfortable you are with a computer, there are several choices.
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -l, --duration        length or duration of the experiment [default: 7]
-  -d D, --delay D       time, in minutes, to wait between shots [default: 60]
-  --disable-motor       disable use of motor [default: false]
-  --day-shutter DS      daytime shutter in fractions of a second, i.e. for
-                        1/100 specify '100' [default: 100]
-  --day-iso DAYISO      set daytime ISO value (0=auto) [default: 100]
-  --night-iso NIGHTISO  set nighttime ISO value (0=auto) [default: 100]
-  --resolution RES      set camera resolution [default: use maximum supported
-                        resolution]
-  --dir DIR             output pictures to directory 'DIR', creating it if
-                        needed [default: use current directory]
-  --prefix PREFIX       prefix to use for filenames [default: none]
-  --auto-wb             adjust white balance between shots (if false, only
-                        adjust when day/night shift is detected) [default:
-                        false]
-  -t, --test            capture a test picture as 'test.jpg', then exit
-```
+**Windows**
+* [MobaXterm](https://mobaxterm.mobatek.net/) is a popular SSH client that also supports file transfer. Recommended for beginners. 
+* [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) is a lightweight and popular SSH client.
+* [WinSCP](https://winscp.net/eng/index.php) can be used to transfer files from SPIRO using the SFTP protocol.
+
+**Mac**
+* On Mac, an SSH client is built in to the system. Using the *Terminal*, connect to SPIRO using the command `ssh pi@1.2.3.4` (where `1.2.3.4` is the IP address of your system). Images can be transferred using the builtin commands `scp` and `sftp`, although this requires some knowledge about using the command line.
+* [Transmit](https://panic.com/transmit/) is the best graphical SFTP client for Mac.
+* [Cyberduck](https://cyberduck.io/) may be another alternative.
