@@ -28,7 +28,7 @@ In the raspi-config interface, make the following changes:
 * Under *Interfacing*, enable *Camera*, *I2C*, and *SSH*. 
 * In the *Advanced Options*, set *Memory Split* to 256.
 * If needed, configure *Network* and *Localization* options here as well.
-* Finally, choose *Finish*. 
+* Finally, select *Finish*, and choose to reboot the system when asked. 
 
 Next, make sure the system is up to date, and install the required tools (answer yes to any questions):
 
