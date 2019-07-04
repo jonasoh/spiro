@@ -11,6 +11,26 @@ The image below is a link to a YouTube video showing some of its design and feat
 
 [![SPIRO intro](https://user-images.githubusercontent.com/6480370/60589568-1e46ed80-9d9a-11e9-96ae-08fe85d8b415.png)](http://www.youtube.com/watch?v=fh5NMvDNjNc "SPIRO intro")
 
+The system basically consists of a camera, a green LED illuminator for imaging in the dark, and a motor-controlled imaging stage, as shown below. 
+
+![SPIRO close-up](https://user-images.githubusercontent.com/6480370/60649718-d7610280-9e42-11e9-9159-17a45b490068.jpeg)
+
+It is relatively cheap and easy to assemble multiple systems for running larger experiments.
+
+![Multiple SPIROs](https://user-images.githubusercontent.com/6480370/60649933-5ce4b280-9e43-11e9-8fa7-c288fa599c59.png)
+
+## Examples
+
+Below is a timelapse sequence of *Arabidopsis* seedlings growing on agar. The image has been heavily downscaled due to size constraints.
+
+![Timelapse example](https://user-images.githubusercontent.com/6480370/60673063-350f4200-9e77-11e9-9fad-f9ec3140b05c.gif)
+
+Below are examples of the image quality for day and night images. Click for full resolution.
+
+![Day example picture](https://user-images.githubusercontent.com/6480370/60673390-e2825580-9e77-11e9-853c-9be434a332e5.jpg)
+
+![Night example picture](https://user-images.githubusercontent.com/6480370/60673407-eca45400-9e77-11e9-8c57-25c65ecdbf42.jpg)
+
 ## 3D printer models
 
 Models for the 3D printed hardware components can be found at [AlyonaMinina/SPIRO](https://github.com/AlyonaMinina/SPIRO).
