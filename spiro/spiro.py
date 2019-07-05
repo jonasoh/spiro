@@ -121,6 +121,7 @@ def takePicture(name, cam=None):
 
 cfg = Config()
 threshold = cfg.get('threshold')
+calibration = cfg.get('calibration')
 
 # start here.
 def main():
