@@ -122,10 +122,11 @@ def takePicture(name, cam=None):
 cfg = Config()
 threshold = cfg.get('threshold')
 calibration = cfg.get('calibration')
+daytime = "TBD"
+hw = HWControl(cfg)
 
 # start here.
 def main():
-    hw = HWControl(cfg)
     hw.GPIOInit()
     hw.motorOn(False) # turn off motor while not in use
 
@@ -140,7 +141,6 @@ def main():
             sys.exit()
 
         cam = initCam()
-        daytime = "TBD"
         nshots = int(options.duration * 24 * 60 // options.delay)
 
         print("Welcome to SPIRO!\n\nStarting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, nshots))
