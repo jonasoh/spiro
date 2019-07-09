@@ -14,6 +14,7 @@ class Config(object):
         'coilpin_M21': 18,   # bin1 pin
         'coilpin_M22': 15,   # bin2 pin
         'stdby': 23,         # stby pin
+        'focus': 250,	     # default focus distance
     }
 
     config = {}

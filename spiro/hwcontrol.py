@@ -1,5 +1,6 @@
 import RPi.GPIO as gpio
 import time
+import os
 
 class HWControl:
     def __init__(self, cfg):
@@ -68,6 +69,14 @@ class HWControl:
     # turns on and off led
     def LEDControl(self, value):
         gpio.output(self.pins['LED'], value)
+
+    # focuses the ArduCam motorized focus camera
+    # code is from ArduCam GitHub repo
+    def focusCam(self, val):
+        value = (val << 4) & 0x3ff0
+        data1 = (value >> 8) & 0x3f
+        data2 = value & 0xf0
+        os.system("i2cset -y 1 0x0c %d %d" % (data1,data2))
 
     # my copy of the pinout
     pins = {}
