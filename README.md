@@ -13,11 +13,11 @@ The image below is a link to a YouTube video showing some of its design and feat
 
 The system basically consists of a camera, a green LED illuminator for imaging in the dark, and a motor-controlled imaging stage, as shown below. 
 
-![SPIRO close-up](https://user-images.githubusercontent.com/6480370/60649718-d7610280-9e42-11e9-9159-17a45b490068.jpeg)
+![SPIRO close-up](https://user-images.githubusercontent.com/6480370/60957134-6a4ae280-a304-11e9-8a03-0d854267297b.jpeg)
 
 It is relatively cheap and easy to assemble multiple systems for running larger experiments.
 
-![Multiple SPIROs](https://user-images.githubusercontent.com/6480370/60649933-5ce4b280-9e43-11e9-8fa7-c288fa599c59.png)
+![Multiple SPIROs](https://user-images.githubusercontent.com/6480370/60957494-0bd23400-a305-11e9-85d2-895cf8936120.jpeg)
 
 ## Examples
 
