@@ -9,19 +9,17 @@
 <h2>Experiment info</h2>
 {% if running %}
 <p><b>Experiment is running</b></p>
+<p>Status: <b>{{ status }}</b></p>
 <p>Saving to directory: {{ directory }}</p>
-<p>Run time: {{ runtime }} days</p>
+<p>End time: {{ endtime }} days</p>
 <p>Planned duration: {{ duration }}</p>
 <p>Remaining disk space: {{ diskspace }} GB</p>
-</div>
-<div>
-<a href="/experiment/terminate" class="pure-button" style="background: rgb(202, 60, 60);">Stop experiment</a>
 </div>
 {% else %}
 <p><b>System is idle</b></p>
 <p>Remaining disk space: {{ diskspace }} GB</p>
-{% endif %}
 </div>
+{% endif %}
 </div>
 <div class="pure-u-4-5" id="main">
 <div class="pure-menu pure-menu-horizontal" id="topmenu">
@@ -34,6 +32,12 @@
 {% if running %}
 <div>
 <img src="lastcapture.jpg" class="pure-img">
+<form method="post" class="pure-form">
+<div class="pure-controls">
+<input type="hidden" name="action" value="stop">
+<button type="submit" class="pure-button pure-button-primary">Stop experiment</button>
+</div>
+</form>
 {% else %}
 <div id="runcontrol">
 <form method="post" class="pure-form pure-form-aligned">
@@ -54,7 +58,8 @@
 <span class="pure-form-message-inline">minutes</span>
 </div>
 <div class="pure-controls">
-<button type="submit" class="pure-button pure-button-primary">Submit</button>
+<input type="hidden" name="action" value="start">
+<button type="submit" class="pure-button pure-button-primary">Start experiment</button>
 </div>
 </fieldset>
 </form>

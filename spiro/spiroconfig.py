@@ -17,6 +17,10 @@ class Config(object):
         'focus': 250,	     # default focus distance
         'password': '',      # an empty password will trigger password initialization for web ui
         'secret': '',        # secret key for flask sessions
+        'dayiso': 100,       # iso value for daytime images
+        'nightiso': 100,     # iso value for night images
+        'dayshutter': 100,   # day exposure time in fractions of a second, e.g. 100 means 1/100
+        'nightshutter': 10,  # night exposure time
     }
 
     config = {}

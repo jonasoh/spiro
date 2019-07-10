@@ -6,16 +6,14 @@
 
 from flask import Flask, render_template, Response, request, redirect, url_for, session, flash
 import io
-from picamera import PiCamera
 import logging
-from threading import Condition
-from fractions import Fraction
 import time
 import os
 import hashlib
 import shutil
 from spiro.spiroconfig import Config
-from threading import Thread, Lock
+from spiro.experimenter import Experimenter
+from threading import Thread, Lock, Condition
 
 app = Flask(__name__)
 
@@ -194,6 +192,19 @@ def switch_live(value):
         zoomer.set(0.5, 0.5, 1)
     return redirect(url_for('index'))
 
+def setLive(val):
+    global livestream
+    prev = livestream
+    if val == 'on' and livestream != True:
+        print("enable live stream")
+        livestream = True
+        camera.start_recording(liveoutput, format='mjpeg', resize='1024x768')
+    elif val == 'off' and livestream == True:
+        print("disable live stream")
+        livestream = False
+        camera.stop_recording()
+    return prev != livestream
+
 @app.route('/led/<value>')
 def led(value):
     if value == 'on':
@@ -256,35 +267,28 @@ def focus(value):
     return redirect(url_for('index'))
 
 
-def setLive(val):
-    global livestream
-    prev = livestream
-    if val == 'on' and livestream != True:
-        print("enable live stream")
-        livestream = True
-        camera.start_recording(liveoutput, format='mjpeg', resize='1024x768')
-    elif val == 'off' and livestream == True:
-        print("disable live stream")
-        livestream = False
-        camera.stop_recording()
-    return prev != livestream
-
 @app.route('/experiment', methods=['GET', 'POST'])
 def experiment():
-    if request.method == 'GET':
-        runtime = time.time() - exp['start'] / 60 / 24
-        df = shutil.disk_usage(os.path.expanduser(os.path.join('~', exp['dir'])))
-        diskspace = round(df.free / 1024 ** 3, 1)
-        return render_template('experiment.html', running=exp['running'], directory=exp['dir'], delay=exp['delay'], runtime=runtime, diskspace=diskspace)
+    if request.method == 'POST':
+        if request.form['action'] == 'start':
+            if experimenter.running:
+                flash("Experiment is already running.")
+            else:
+                # XXX set experiment options
+                setLive('off')
+                experimenter.next_status = 'run'
+                experimenter.status_change.set()
+                # give thread time to start before presenting template
+                time.sleep(1)
+        elif request.form['action'] == 'stop':
+            experimenter.stop()
 
-exp = {
-    'running': False,
-    'dir': '',
-    'duration': 0,
-    'start': 0,
-    'delay': 0,
-}
-    
+    df = shutil.disk_usage(experimenter.dir)
+    diskspace = round(df.free / 1024 ** 3, 1)
+    return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
+                           delay=experimenter.delay, endtime=experimenter.endtime, diskspace=diskspace,
+                           status=experimenter.status)
+
 livestream = True
 liveoutput = StreamingOutput()
 stilloutput = io.BytesIO()
@@ -293,12 +297,15 @@ lock = Lock()
 cfg = Config()
 camera = None
 hw = None
+experimenter = None
 
 #if __name__ == '__main__':
 def start(cam, myhw):
-    global camera, hw
+    global camera, hw, experimenter
     camera = cam
     hw = myhw
+    experimenter = Experimenter(hw=hw, cam=cam)
+    experimenter.start()
     if cfg.get('secret') == '':
         secret = hashlib.sha1(os.urandom(16))
         cfg.set('secret', secret.hexdigest())
@@ -310,5 +317,8 @@ def start(cam, myhw):
         camera.start_recording(liveoutput, format='mjpeg', resize='1024x768')
         app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)
     finally:
+        experimenter.stop()
+        experimenter.quit = True
+        experimenter.status_change.set()
         if livestream:
             camera.stop_recording()

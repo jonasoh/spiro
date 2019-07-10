@@ -133,73 +133,10 @@ def main():
 
     try:
         if options.live:
-            # at this resolution, we do not experience PiCamera crashes (it seems)
-            options.resolution="2592x1944"
             cam = initCam()
             cam.framerate = 10
             webui.start(cam, hw)
             sys.exit()
-
-        cam = initCam()
-        nshots = int(options.duration * 24 * 60 // options.delay)
-
-        print("Welcome to SPIRO!\n\nStarting new experiment.\nWill take one picture every %i minutes, in total %i pictures (per plate)." % (options.delay, nshots))
-        print("Experiment will continue for approximately %i days." % options.duration)
-
-        for i in range(4):
-            platedir = "plate" + str(i + 1)
-            os.makedirs(os.path.join(options.dir, platedir), exist_ok=True)
-
-        if options.dir != ".":
-            if not os.path.exists(options.dir):
-                os.makedirs(options.dir)
-
-        df = shutil.disk_usage(options.dir)
-        print("Free space: %i MB Required: %i MB" % (df.free / 1024 ** 2, nshots * 4 * 4))
-        if (nshots * 4 * 4 > df.free / 1024 ** 2):
-            print("WARNING! Required disk space exceeds available disk space on target filesystem!")
-
-        for n in range(nshots):
-            starttime = time.time()
-
-            for i in range(4):
-                # rotate stage to starting position
-                if(i == 0):
-                    hw.motorOn(True)
-                    print("Finding initial position... ", end='', flush=True)
-                    hw.findStart(calibration=calibration)
-                    print ("done.")
-                else:
-                    # rotate cube 90 degrees
-                    print("Rotating stage...")
-                    hw.halfStep(100, 0.03)
-
-                # wait for the cube to stabilize
-                time.sleep(0.5)
-
-                now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
-                name = os.path.join("plate" + str(i + 1), "plate" + str(i + 1) + "-" + now)
-                takePicture(name, cam)
-
-            hw.motorOn(False)
-
-            # this part is "active waiting", rotating the cube slowly over the period of options.delay
-            # this ensures consistent lighting for all plates.
-            # account for the time spent capturing images.
-            aftertime = time.time()
-            losttime = aftertime - starttime
-            if options.delay > 5:
-                time.sleep(options.delay * 7.5 - losttime / 7.5)
-                for k in range(7):
-                    starttime = time.time()
-                    hw.motorOn(True)
-                    hw.halfStep(50, 0.1)
-                    hw.motorOn(False)
-                    aftertime = time.time()
-                    motortime = aftertime - starttime
-                    time.sleep(options.delay * 7.5 - losttime / 7.5 - motortime)
-            else:
-                time.sleep(max(0, options.delay - losttime))
 
     except KeyboardInterrupt:
         print("\nProgram ended by keyboard interrupt. Turning off motor and cleaning up GPIO.")
