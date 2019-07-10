@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}Main view{% endblock %}
+{% block content %}
+<div id="layout">
+<div class="pure-g">
+<div class="pure-u-1-5" id="leftbar">
+<h1>SPIRO control</h1>
+<p><h2>LED</h2>
+<a href="#" class="pure-button" onclick="bgGet('/led/on')">On</a>
+<a href="#" onclick="bgGet('/led/off')" class="pure-button">Off</a></p>
+{% if live %}
+<p><h2>Zoom</h2>
+<a href="#" onclick="bgGet('/zoom/0.1')" class="pure-button">in</a>
+<a href="#" onclick="bgGet('/zoom/-0.1')" class="pure-button">out</a></p>
+<p><h2>Pan</h2>
+<a href="#" onclick="bgGet('/pan/x/-0.1')" class="pure-button">left</a>
+<a href="#" onclick="bgGet('/pan/x/0.1')" class="pure-button">right</a>
+<a href="#" onclick="bgGet('/pan/y/-0.1')" class="pure-button">up</a>
+<a href="#" onclick="bgGet('/pan/y/0.1')" class="pure-button">down</a></p>
+<p><h2>Focus</h2>
+<a href="#" onclick="bgGet('/focus/-100')" class="pure-button">---</a>
+<a href="#" onclick="bgGet('/focus/-15')" class="pure-button">--</a>
+<a href="#" onclick="bgGet('/focus/-5')" class="pure-button">-</a>
+<a href="#" onclick="bgGet('/focus/5')" class="pure-button">+</a>
+<a href="#" onclick="bgGet('/focus/15')" class="pure-button">++</a>
+<a href="#" onclick="bgGet('/focus/100')" class="pure-button">+++</a></p>
+<p><h2>Rotate</h2>
+<a href="#" onclick="bgGet('/rotate/1')" class="pure-button">1 halfstep</a>
+<a href="#" onclick="bgGet('/rotate/100')" class="pure-button">90 degrees</a>
+<a href="#" onclick="bgGet('/findstart')" class="pure-button">Find start position</a></p>
+{% else %}
+<p><a href="#" onclick="bgGet('/grab')" class="pure-button pure-button-primary" id="grab">Take a new picture</a></p>
+{% endif %}
+</div>
+<div class="pure-u-4-5" id="main">
+<div class="pure-menu pure-menu-horizontal" id="topmenu">
+<ul class="pure-menu-list">
+{% if live %}
+<li class="pure-menu-item pure-menu-selected"><a href="/live/on" class="pure-menu-link">Live view</a></li>
+<li class="pure-menu-item"><a href="/live/off" class="pure-menu-link">Still image view</a></li>
+{% else %}
+<li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
+<li class="pure-menu-item pure-menu-selected"><a href="/live/off" class="pure-menu-link">Still image view</a></li>
+{% endif %}
+<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
+</ul>
+</div>
+<div>
+{% if live %}
+<img src="stream.mjpg" class="pure-img">
+{% else %}
+<img src="capture.jpg" class="pure-img">
+{% endif %}
+</div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Set new password{% endblock %}
+{% block content %}
+<div class="center padtop">
+<form method="post" class="pure-form pure-form-aligned">
+<fieldset>
+<legend class="label">Set new password</legend>
+<div class="pure-control-group">
+<label for="currpass">Current password</label><input type="password" name="currpass">
+</div>
+<div class="pure-control-group">
+<label for="pwd1">Password</label><input type="password" name="pwd1">
+</div>
+<div class="pure-control-group">
+<label for="pwd2">Password again</label><input type="password" name="pwd2">
+</div>
+<div class="pure-controls">
+<button type="submit" class="pure-button pure-button-primary">Set password</button>
+</div>
+</fieldset>
+</form>
+</div>
+{% endblock %}

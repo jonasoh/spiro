@@ -17,6 +17,7 @@ import RPi.GPIO as gpio
 from fractions import Fraction
 from spiro.hwcontrol import HWControl
 from spiro.spiroconfig import Config
+import spiro.webui as webui
 
 parser = argparse.ArgumentParser(description="By default, SPIRO will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
@@ -53,9 +54,9 @@ def initCam():
     else:
         cam.resolution = cam.MAX_RESOLUTION
     cam.rotation = options.rotation
-    return cam
     cam.image_denoise = False
-    return cam    
+    hw.focusCam(cfg.get('focus'))
+    return cam
 
 
 def isDaytime(cam=None):
@@ -136,8 +137,7 @@ def main():
             options.resolution="2592x1944"
             cam = initCam()
             cam.framerate = 10
-            import spiro.focusserver as focusserver
-            focusserver.focusServer(cam, hw)
+            webui.start(cam, hw)
             sys.exit()
 
         cam = initCam()
@@ -165,14 +165,14 @@ def main():
             for i in range(4):
                 # rotate stage to starting position
                 if(i == 0):
+                    hw.motorOn(True)
                     print("Finding initial position... ", end='', flush=True)
-                    hw.findStart()
-                    print ("found.")
-                    hw.halfStep(calibration, 0.1)
+                    hw.findStart(calibration=calibration)
+                    print ("done.")
                 else:
                     # rotate cube 90 degrees
                     print("Rotating stage...")
-                    hw.halfStep(100, 0.1)
+                    hw.halfStep(100, 0.03)
 
                 # wait for the cube to stabilize
                 time.sleep(0.5)
@@ -181,18 +181,25 @@ def main():
                 name = os.path.join("plate" + str(i + 1), "plate" + str(i + 1) + "-" + now)
                 takePicture(name, cam)
 
+            hw.motorOn(False)
+
             # this part is "active waiting", rotating the cube slowly over the period of options.delay
             # this ensures consistent lighting for all plates.
             # account for the time spent capturing images.
             aftertime = time.time()
             losttime = aftertime - starttime
-            time.sleep(options.delay * 7.5 - losttime / 7.5)
-            for k in range(7):
-                starttime = time.time()
-                hw.halfStep(50, 0.1)
-                aftertime = time.time()
-                motortime = aftertime - starttime
-                time.sleep(options.delay * 7.5 - losttime / 7.5 - motortime)
+            if options.delay > 5:
+                time.sleep(options.delay * 7.5 - losttime / 7.5)
+                for k in range(7):
+                    starttime = time.time()
+                    hw.motorOn(True)
+                    hw.halfStep(50, 0.1)
+                    hw.motorOn(False)
+                    aftertime = time.time()
+                    motortime = aftertime - starttime
+                    time.sleep(options.delay * 7.5 - losttime / 7.5 - motortime)
+            else:
+                time.sleep(max(0, options.delay - losttime))
 
     except KeyboardInterrupt:
         print("\nProgram ended by keyboard interrupt. Turning off motor and cleaning up GPIO.")

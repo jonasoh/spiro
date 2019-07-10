@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<div class="center padtop">
+<form method="post" class="pure-form pure-form-aligned">
+<fieldset>
+<legend class="label">Log in</legend>
+<div class="pure-control-group">
+<label for="password">Password</label>
+<input type="password" name="password">
+</div>
+<div class="pure-controls">
+<button type="submit" class="pure-button pure-button-primary">Log in</button>
+</div>
+</fieldset>
+</form>
+</div>
+{% endblock %}

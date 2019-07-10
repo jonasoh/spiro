@@ -34,10 +34,11 @@ class HWControl:
         self.LEDControl(False)
 
 
-    def findStart(self):
+    def findStart(self, calibration=0):
         """rotates the imaging stage until the positional switch is activated"""
         while not gpio.input(self.pins['sensor']):
             self.halfStep(1, 0.03)
+        self.halfStep(calibration, 0.03)
 
 
     # sets the motor pins as element in sequence
@@ -50,8 +51,7 @@ class HWControl:
 
     # steps the stepper motor using half steps, "delay" is time between coil change
     # 400 steps is 360 degrees
-    def halfStep(self, steps, delay):
-        self.motorOn(True)
+    def halfStep(self, steps, delay, keep_motor_on=False):
         time.sleep(0.005) # time for motor to activate
         for i in range(0, steps):
             self.setStepper(self.halfstep_seq, self.seqNumb)
@@ -59,7 +59,6 @@ class HWControl:
             if(self.seqNumb == 8):
                 self.seqNumb = 0
             time.sleep(delay)
-        self.motorOn(False)
 
 
     # sets motor standby status

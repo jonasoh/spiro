@@ -15,6 +15,8 @@ class Config(object):
         'coilpin_M22': 15,   # bin2 pin
         'stdby': 23,         # stby pin
         'focus': 250,	     # default focus distance
+        'password': '',      # an empty password will trigger password initialization for web ui
+        'secret': '',        # secret key for flask sessions
     }
 
     config = {}

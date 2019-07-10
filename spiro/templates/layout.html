@@ -1,0 +1,22 @@
+<!doctype html>
+<title>SPIRO: {% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='pure-min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='grids-responsive-min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='spiro.css') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+function bgGet(url) {
+    var x=new XMLHttpRequest;
+    x.open('GET', url);
+    x.send();}
+</script>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class="flashes">
+{% for message in messages %}
+<li>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
