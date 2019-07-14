@@ -15,6 +15,7 @@ class HWControl:
             'coilpin_M22' : cfg.get('coilpin_M22'),
             'stdby' : cfg.get('stdby')
         }
+        self.GPIOInit()
 
 
     def GPIOInit(self):
@@ -32,6 +33,11 @@ class HWControl:
         gpio.output(self.pins['PWMa'], True)
         gpio.output(self.pins['PWMb'], True)
         self.LEDControl(False)
+        self.motorOn(False)
+
+
+    def cleanup(self):
+        gpio.cleanup()
 
 
     def findStart(self, calibration=0):

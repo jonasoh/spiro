@@ -244,7 +244,10 @@ def rotate(value):
 @not_while_running
 @app.route('/findstart')
 def findstart():
+    hw.motorOn(True)
     hw.findStart(calibration=cfg.get('calibration'))
+    time.sleep(0.5)
+    hw.motorOn(False)
     return redirect(url_for('index'))
 
 def liveGen():
