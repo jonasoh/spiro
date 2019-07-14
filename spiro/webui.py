@@ -89,7 +89,7 @@ class ZoomObject(object):
         camera.zoom = (self.y - self.roi/2.0, self.x - self.roi/2.0, self.roi, self.roi)
 
     def zoom(self, amt):
-        self.roi = self.roi - round(amt, 1)
+        self.roi = round(amt, 1)
         print("new roi", self.roi)
         self.apply()
     
@@ -182,9 +182,9 @@ def newpass():
         return render_template('newpass.html')
 
 @not_while_running
-@app.route('/zoom/<value>')
+@app.route('/zoom/<int:value>')
 def zoom(value):
-    zoomer.zoom(float(value))
+    zoomer.zoom(float(value / 100))
     return redirect(url_for('index'))
 
 @not_while_running
@@ -304,6 +304,8 @@ def focus(value):
 
 @app.route('/experiment', methods=['GET', 'POST'])
 def experiment():
+    global init
+    if init: init = False
     if request.method == 'POST':
         if request.form['action'] == 'start':
             if experimenter.running:

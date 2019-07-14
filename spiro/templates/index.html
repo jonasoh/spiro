@@ -10,13 +10,22 @@
 <a href="#" onclick="bgGet('/led/off')" class="pure-button">Off</a></p>
 {% if live %}
 <p><h2>Zoom</h2>
-<a href="#" onclick="bgGet('/zoom/0.1')" class="pure-button">in</a>
-<a href="#" onclick="bgGet('/zoom/-0.1')" class="pure-button">out</a></p>
+<input type="range" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
 <p><h2>Pan</h2>
-<a href="#" onclick="bgGet('/pan/x/-0.1')" class="pure-button">left</a>
-<a href="#" onclick="bgGet('/pan/x/0.1')" class="pure-button">right</a>
-<a href="#" onclick="bgGet('/pan/y/-0.1')" class="pure-button">up</a>
-<a href="#" onclick="bgGet('/pan/y/0.1')" class="pure-button">down</a></p>
+<div class="pan">
+<div class="pan-left">
+<a href="#" onclick="bgGet('/pan/x/-0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-left"></a>
+</div>
+<div class="pan-right">
+<a href="#" onclick="bgGet('/pan/x/0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-right"></a>
+</div>
+<div class="pan-up">
+<a href="#" onclick="bgGet('/pan/y/-0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-up"></a>
+</div>
+<div class="pan-down">
+<a href="#" onclick="bgGet('/pan/y/0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-down"></a>
+</div>
+</div>
 <p><h2>Focus</h2>
 <a href="#" onclick="bgGet('/focus/-100')" class="pure-button">---</a>
 <a href="#" onclick="bgGet('/focus/-15')" class="pure-button">--</a>
