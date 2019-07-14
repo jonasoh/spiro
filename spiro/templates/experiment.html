@@ -3,6 +3,8 @@
 {% block content %}
 {% if status == "Stopping" %}
 <meta http-equiv="refresh" content="10">
+{% elif status == "Running" %}
+<meta http-equiv="refresh" content="300">
 {% endif %}
 <div id="layout">
 <div class="pure-g">
@@ -12,11 +14,13 @@
 <h2>Experiment info</h2>
 {% if running %}
 <p><b>Experiment is running</b></p>
-<p>Status: <b>{{ status }}</b></p>
-<p>Saving to directory: {{ directory }}</p>
-<p>Started: {{ starttime }}</p>
-<p>Ends: {{ endtime }}</p>
-<p>Remaining disk space: {{ diskspace }} GB</p>
+<p><b>Status:</b> {{ status }}</p>
+<p><b>Folder:</b> {{ directory }}</p>
+<p><b>Started:</b> {{ starttime }}</p>
+<p><b>Ends:</b> {{ endtime }}</p>
+<p><b>Images remaining:</b> {{ nshots }}</p>
+<p><b>Disk required:</b> {{ diskreq }}</p>
+<p><b>Disk remaining:</b> {{ diskspace }} GB</p>
 </div>
 <div>
 <form method="post" class="pure-form">
@@ -51,16 +55,16 @@
 <legend class="label">Start new experiment</legend>
 <div class="pure-control-group">
 <label for="directory">Directory</label>
-<input id="directory" type="text" placeholder="experiment1">
+<input name="directory" type="text" placeholder="experiment1">
 </div>
 <div class="pure-control-group">
 <label for="duration">Duration</label>
-<input id="duration" type="number" value="7" min="1">
+<input name="duration" type="number" value="7" min="1">
 <span class="pure-form-message-inline">days</span>
 </div>
 <div class="pure-control-group">
 <label for="delay">Delay between images</label>
-<input id="delay" type="number" value="60" min=1 max=1440>
+<input name="delay" type="number" value="60" min=1 max=1440>
 <span class="pure-form-message-inline">minutes</span>
 </div>
 <div class="pure-controls">

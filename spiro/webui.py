@@ -225,6 +225,17 @@ def stillImage():
     stilloutput.seek(0)
     return Response(stilloutput.read(), mimetype="image/jpeg")
 
+@app.route('/lastcapture.jpg')
+def lastCapture():
+    if not experimenter.last_captured:
+        return redirect(url_for('static', filename='empty.jpg'))
+    else:
+        try:
+            with open(experimenter.last_captured, 'rb') as f:
+                return Response(f.read(), mimetype="image/jpeg")
+        except:
+            return redirect(url_for('static', filename='empty.jpg'))
+
 @app.route('/grab')
 def grab():
     stilloutput.truncate()
@@ -259,7 +270,7 @@ def experiment():
                 else: experimenter.duration = 7
                 if request.form.get('delay'): experimenter.delay = int(request.form['delay'])
                 else: experimenter.delay = 60
-                if request.form.get('directory'): experimenter.dir = request.form['directory']
+                if request.form.get('directory'): experimenter.dir = os.path.expanduser(os.path.join('~', request.form['directory']))
                 else: experimenter.dir = os.path.expanduser('~')
                 setLive('off')
                 experimenter.next_status = 'run'
@@ -268,12 +279,14 @@ def experiment():
                 time.sleep(1)
         elif request.form['action'] == 'stop':
             experimenter.stop()
+            time.sleep(1)
     df = shutil.disk_usage(experimenter.dir)
     diskspace = round(df.free / 1024 ** 3, 1)
+    diskreq = round(experimenter.nshots * 4 * 4 / 1024, 1)
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
                            starttime=time.ctime(experimenter.starttime), delay=experimenter.delay, 
                            endtime=time.ctime(experimenter.endtime), diskspace=diskspace,
-                           status=experimenter.status)
+                           status=experimenter.status, nshots=experimenter.nshots, diskreq=diskreq)
 
 livestream = True
 liveoutput = StreamingOutput()

@@ -20,6 +20,8 @@ class Experimenter(threading.Thread):
         self.stop_experiment = False
         self.status_change = threading.Event()
         self.next_status = ''
+        self.last_captured = None
+        self.nshots = 0
         threading.Thread.__init__(self)
 
     def stop(self):
@@ -76,7 +78,8 @@ class Experimenter(threading.Thread):
             self.setWB()
 
         print("Capturing %s... " % filename, end='', flush=True)
-        self.cam.capture(filename) 
+        self.cam.capture(filename)
+        self.last_captured = filename
        
         if self.daytime:
             print("daytime picture captured OK.")
@@ -109,6 +112,9 @@ class Experimenter(threading.Thread):
             self.status = "Running"
             self.starttime = time.time()
             self.endtime = time.time() + 60 * 60 * 24 * self.duration
+            self.last_captured = None
+            self.nshots = self.duration * 24 * 60 // self.delay
+
             for i in range(4):
                 platedir = "plate" + str(i + 1)
                 os.makedirs(os.path.join(self.dir, platedir), exist_ok=True)
@@ -138,6 +144,7 @@ class Experimenter(threading.Thread):
                     name = os.path.join("plate" + str(i + 1), "plate" + str(i + 1) + "-" + now)
                     self.takePicture(name)
 
+                self.nshots -= 1
                 self.hw.motorOn(False)
 
                 # this part is "active waiting", rotating the cube slowly over the period of options.delay
