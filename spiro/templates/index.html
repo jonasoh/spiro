@@ -25,9 +25,8 @@
 <a href="#" onclick="bgGet('/focus/15')" class="pure-button">++</a>
 <a href="#" onclick="bgGet('/focus/100')" class="pure-button">+++</a></p>
 <p><h2>Rotate</h2>
-<a href="#" onclick="bgGet('/rotate/1')" class="pure-button">1 halfstep</a>
-<a href="#" onclick="bgGet('/rotate/100')" class="pure-button">90 degrees</a>
-<a href="#" onclick="bgGet('/findstart')" class="pure-button">Find start position</a></p>
+<a href="#" onclick="bgGet('/rotate/100')" class="pure-button"><img src="{{ url_for('static', filename='rotate90.svg') }}" class="icon"></a>
+<a href="#" onclick="bgGet('/findstart')" class="pure-button"><img src="{{ url_for('static', filename='home.svg') }}" class="icon"></a></p>
 {% else %}
 <p><a href="#" onclick="bgGet('/grab')" class="pure-button pure-button-primary" id="grab">Take a new picture</a></p>
 {% endif %}

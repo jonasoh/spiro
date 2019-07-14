@@ -44,3 +44,8 @@ ul.flashes li {
     font-weight: bold;
     font-size: 16px;
 }
+
+img.icon {
+    width: 50px;
+    height: auto;
+}
