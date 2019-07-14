@@ -26,6 +26,7 @@ class Experimenter(threading.Thread):
 
     def stop(self):
         self.status = "Stopping"
+        self.next_status = ''
         self.stop_experiment = True
 
     def isDaytime(self):

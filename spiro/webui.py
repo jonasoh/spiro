@@ -15,7 +15,10 @@ from spiro.spiroconfig import Config
 from spiro.experimenter import Experimenter
 from threading import Thread, Lock, Condition
 
+logging.basicConfig(format='%(asctime)s %(message)s')
 app = Flask(__name__)
+# used for determining whether this is the first access to the ui since boot
+init = True
 
 class Rotator(Thread):
     def __init__(self, value):
@@ -120,7 +123,9 @@ def check_route_access():
 
 @app.route('/')
 def index():
-    if experimenter.running:
+    global init
+    if experimenter.running or init:
+        init = False
         return redirect(url_for('experiment'))
     else:
         return render_template('index.html', live=livestream)
@@ -208,11 +213,14 @@ def setLive(val):
     if val == 'on' and livestream != True:
         print("enable live stream")
         livestream = True
+        camera.resolution = "2592x1944"
+        camera.iso = 0
         camera.start_recording(liveoutput, format='mjpeg', resize='1024x768')
     elif val == 'off' and livestream == True:
         print("disable live stream")
         livestream = False
         camera.stop_recording()
+        camera.resolution = camera.MAX_RESOLUTION
     return prev != livestream
 
 @not_while_running
@@ -323,7 +331,7 @@ def experiment():
                            endtime=time.ctime(experimenter.endtime), diskspace=diskspace,
                            status=experimenter.status, nshots=experimenter.nshots, diskreq=diskreq)
 
-livestream = True
+livestream = False
 liveoutput = StreamingOutput()
 stilloutput = io.BytesIO()
 zoomer = ZoomObject()
@@ -348,7 +356,6 @@ def start(cam, myhw):
         camera.meter_mode = 'spot'
         camera.iso = 0
         camera.rotation = 90
-        camera.start_recording(liveoutput, format='mjpeg', resize='1024x768')
         app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)
     finally:
         experimenter.stop()

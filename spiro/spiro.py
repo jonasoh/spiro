@@ -18,6 +18,7 @@ from fractions import Fraction
 from spiro.hwcontrol import HWControl
 from spiro.spiroconfig import Config
 import spiro.webui as webui
+import logging, logging.handlers
 
 parser = argparse.ArgumentParser(description="By default, SPIRO will run an experiment for 7 days with hourly captures, saving images to the current directory.")
 
@@ -125,6 +126,10 @@ threshold = cfg.get('threshold')
 calibration = cfg.get('calibration')
 daytime = "TBD"
 hw = HWControl(cfg)
+logging.basicConfig(format='%(asctime)s %(message)s')
+logger = logging.getLogger()
+handler = logging.handlers.RotatingFileHandler(os.path.expanduser('~/spiro.log'), maxBytes=10*1024**2, backupCount=4)
+logger.addHandler(handler)
 
 # start here.
 def main():
@@ -135,6 +140,7 @@ def main():
         if options.live:
             cam = initCam()
             cam.framerate = 10
+            logger.debug('Starting web UI.')
             webui.start(cam, hw)
             sys.exit()
 
