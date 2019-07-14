@@ -2,35 +2,28 @@
     padding-left: 25px;
     padding-right: 25px;
 }
-
 #topmenu {
     height: 50px;
 }
-
 #runcontrol {
     padding-left: 25px;
     border-top: 25px;
 }
-
 #main {
     padding-top: 20px;
 }
-
 div.center {
     margin-left: auto;
     margin-right: auto;
     max-width: 768px;
 }
-
 div.padtop {
     padding-top: 50px;
 }
-
 legend.label {
     font-size: 24px;
     font-weight: bold;
 }
-
 ul.flashes {
     margin-left: auto;
     margin-right: auto;
@@ -38,28 +31,23 @@ ul.flashes {
     max-width: 768px;
     background-color: rgb(255,160,160);
 }
-
 ul.flashes li {
     list-style-type: none;
     font-weight: bold;
     font-size: 16px;
 }
-
 img.icon {
     width: 50px;
     height: auto;
 }
-
 div.pan {
     height: 50px;
     width: 50px;
     position: relative;
 }
-
 input.zoom {
     transform:rotate(180deg);
 }
-
 div.pan-left {
     position: absolute;
     left: 0px;
@@ -67,12 +55,10 @@ div.pan-left {
     height: 10px;
     width: 10px;
 }
-
 img.pan-left {
     transform: rotate(-90deg);
     height: 10px;
 }
-
 div.pan-right {
     position: absolute;
     right: 0px;
@@ -80,12 +66,10 @@ div.pan-right {
     height: 10px;
     width: 10px;
 }
-
 img.pan-right {
     transform: rotate(90deg);
     height: 10px;
 }
-
 div.pan-up {
     position: absolute;
     left: 20px;
@@ -93,11 +77,9 @@ div.pan-up {
     height: 10px;
     width: 10px;
 }
-
 img.pan-up {
     height: 10px;
 }
-
 div.pan-down {
     position: absolute;
     left: 20px;
@@ -105,8 +87,55 @@ div.pan-down {
     height: 10px;
     width: 10px;
 }
-
 img.pan-down {
     transform: rotate(180deg);
     height: 10px;
+}
+
+/* on/off switch courtesy of proto.io */
+
+.onoffswitch {
+    position: relative; width: 90px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 26px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+    font-size: 16px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 10px;
+    background-color: #53E012; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 10px;
+    background-color: #EEEEEE; color: #999999;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 30px; margin: 0px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 56px;
+    border: 2px solid #999999; border-radius: 26px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
 }

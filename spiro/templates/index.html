@@ -1,13 +1,27 @@
 {% extends "layout.html" %}
 {% block title %}Main view{% endblock %}
 {% block content %}
+<script>
+function toggleLED(value) {
+    if(value){
+        bgGet('/led/on');
+    }else{
+        bgGet('/led/off');
+    }
+}
+</script>
 <div id="layout">
 <div class="pure-g">
 <div class="pure-u-1-5" id="leftbar">
 <h1>SPIRO control</h1>
 <p><h2>LED</h2>
-<a href="#" class="pure-button" onclick="bgGet('/led/on')">On</a>
-<a href="#" onclick="bgGet('/led/off')" class="pure-button">Off</a></p>
+<div class="onoffswitch">
+<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onclick="toggleLED(this.checked)">
+<label class="onoffswitch-label" for="myonoffswitch">
+<span class="onoffswitch-inner"></span>
+<span class="onoffswitch-switch"></span>
+</label>
+</div>
 {% if live %}
 <p><h2>Zoom</h2>
 <input type="range" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
