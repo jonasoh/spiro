@@ -78,41 +78,22 @@ class ZoomObject(object):
         self.apply()
 
     def apply(self):
+        self.roi = max(min(self.roi, 1.0), 0.2)
+        limits = (self.roi / 2.0, 1 - self.roi / 2.0)
+        self.x = max(min(self.x, limits[1]), limits[0])
+        self.y = max(min(self.y, limits[1]), limits[0])
         print("applying zoom (x,y,roi):", self.x, self.y, self.roi)
         camera.zoom = (self.y - self.roi/2.0, self.x - self.roi/2.0, self.roi, self.roi)
 
     def zoom(self, amt):
-        print("zoom with amt", amt)
-        amt = round(amt, 1)
-        if amt < 0:
-            # zoom out
-            self.roi = min(1.0, self.roi - amt)
-        else:
-            # zoom in
-            self.roi = max(0.2, self.roi - amt)
+        self.roi = self.roi - round(amt, 1)
         print("new roi", self.roi)
         self.apply()
     
     def pan(self, panx = 0, pany = 0):
-        xlimits = self.x - self.roi / 2.0, 1 - (self.x + self.roi / 2.0)
-        ylimits = self.y - self.roi / 2.0, 1 - (self.y + self.roi / 2.0)
-
-        if panx > 0:
-            # pan right
-            panx = min(panx, xlimits[1])
-        elif panx < 0:
-            # pan left
-            panx = max(panx, -xlimits[0])
-        if pany > 0:
-            # pan down
-            pany = min(pany, ylimits[1])
-        elif pany < 0:
-            # pan up
-            pany = max(pany, -ylimits[0])
-        
         print("pan x, y:", panx, pany)
-        self.x = self.x + panx
-        self.y = self.y + pany
+        self.x = self.x + round(panx, 1)
+        self.y = self.y + round(pany, 1)
         self.apply()
 
 
@@ -282,7 +263,7 @@ def experiment():
                 time.sleep(1)
         elif request.form['action'] == 'stop':
             experimenter.stop()
-
+    # XXX correct endtime
     df = shutil.disk_usage(experimenter.dir)
     diskspace = round(df.free / 1024 ** 3, 1)
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 

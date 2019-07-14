@@ -17,14 +17,14 @@ class Experimenter(threading.Thread):
         self.status = "Stopped"
         self.daytime = "TBD"
         self.quit = False
-        self.stop_experiment = threading.Event()
+        self.stop_experiment = False
         self.status_change = threading.Event()
         self.next_status = ''
         threading.Thread.__init__(self)
 
     def stop(self):
         self.status = "Stopping"
-        self.stop_experiment.set()
+        self.stop_experiment = True
 
     def isDaytime(self):
         # determine if it's day or not.
@@ -110,22 +110,19 @@ class Experimenter(threading.Thread):
 
 
     def runExperiment(self):
-        print("hi from experimenter")
         if self.running:
             raise RuntimeError('An experiment is already running.')
 
         try:
-            print("lets go")
             self.running = True
             self.status = "Running"
-            self.stop_experiment.clear()
             self.starttime = time.time()
             self.endtime = time.time() + 60 * 60 * 24 * self.duration
             for i in range(4):
                 platedir = "plate" + str(i + 1)
                 os.makedirs(os.path.join(self.dir, platedir), exist_ok=True)
 
-            while time.time() < self.endtime and not self.stop_experiment.is_set():
+            while time.time() < self.endtime and not self.stop_experiment:
                 loopstart = time.time()
                 nextloop = time.time() + 60 * self.delay
                 if nextloop > self.endtime:
@@ -156,7 +153,7 @@ class Experimenter(threading.Thread):
                 # this ensures consistent lighting for all plates.
                 # account for the time spent capturing images.
                 secs = 0
-                while time.time() < nextloop and not self.stop_experiment.is_set():
+                while time.time() < nextloop and not self.stop_experiment:
                     time.sleep(1)
                     secs += 1
                     if self.delay > 900 and secs == int(self.delay / 7.5):
@@ -169,4 +166,5 @@ class Experimenter(threading.Thread):
         finally:
             self.cam.framerate = 10
             self.status = "Stopped"
+            self.stop_experiment = False
             self.running = False
