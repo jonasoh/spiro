@@ -86,15 +86,6 @@ class Experimenter(threading.Thread):
             print("nighttime picture captured OK.")
 
 
-    def set(self, delay=None, duration=None, dir=None):
-        if delay:
-            self.delay = delay
-        if duration:
-            self.duration = duration
-        if dir:
-            self.dir = os.path.expanduser(os.path.join('~', dir))
-
-
     def run(self):
         while not self.quit:
             self.status_change.wait()

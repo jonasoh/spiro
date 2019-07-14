@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}Experiment view{% endblock %}
 {% block content %}
+{% if status == "Stopping" %}
+<meta http-equiv="refresh" content="10">
+{% endif %}
 <div id="layout">
 <div class="pure-g">
 <div class="pure-u-1-5" id="leftbar">
@@ -11,9 +14,17 @@
 <p><b>Experiment is running</b></p>
 <p>Status: <b>{{ status }}</b></p>
 <p>Saving to directory: {{ directory }}</p>
-<p>End time: {{ endtime }} days</p>
-<p>Planned duration: {{ duration }}</p>
+<p>Started: {{ starttime }}</p>
+<p>Ends: {{ endtime }}</p>
 <p>Remaining disk space: {{ diskspace }} GB</p>
+</div>
+<div>
+<form method="post" class="pure-form">
+<div class="pure-controls">
+<input type="hidden" name="action" value="stop">
+<button type="submit" class="pure-button pure-button-primary">Stop experiment</button>
+</div>
+</form>
 </div>
 {% else %}
 <p><b>System is idle</b></p>
@@ -32,16 +43,11 @@
 {% if running %}
 <div>
 <img src="lastcapture.jpg" class="pure-img">
-<form method="post" class="pure-form">
-<div class="pure-controls">
-<input type="hidden" name="action" value="stop">
-<button type="submit" class="pure-button pure-button-primary">Stop experiment</button>
-</div>
-</form>
 {% else %}
 <div id="runcontrol">
 <form method="post" class="pure-form pure-form-aligned">
 <fieldset>
+<input type="hidden" name="action" value="start">
 <legend class="label">Start new experiment</legend>
 <div class="pure-control-group">
 <label for="directory">Directory</label>
@@ -49,16 +55,15 @@
 </div>
 <div class="pure-control-group">
 <label for="duration">Duration</label>
-<input id="duration" type="text" placeholder="7">
+<input id="duration" type="number" value="7" min="1">
 <span class="pure-form-message-inline">days</span>
 </div>
 <div class="pure-control-group">
 <label for="delay">Delay between images</label>
-<input id="delay" type="text" placeholder="60">
+<input id="delay" type="number" value="60" min=1 max=1440>
 <span class="pure-form-message-inline">minutes</span>
 </div>
 <div class="pure-controls">
-<input type="hidden" name="action" value="start">
 <button type="submit" class="pure-button pure-button-primary">Start experiment</button>
 </div>
 </fieldset>

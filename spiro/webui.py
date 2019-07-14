@@ -255,7 +255,12 @@ def experiment():
             if experimenter.running:
                 flash("Experiment is already running.")
             else:
-                # XXX set experiment options
+                if request.form.get('duration'): experimenter.duration = int(request.form['duration'])
+                else: experimenter.duration = 7
+                if request.form.get('delay'): experimenter.delay = int(request.form['delay'])
+                else: experimenter.delay = 60
+                if request.form.get('directory'): experimenter.dir = request.form['directory']
+                else: experimenter.dir = os.path.expanduser('~')
                 setLive('off')
                 experimenter.next_status = 'run'
                 experimenter.status_change.set()
@@ -263,11 +268,11 @@ def experiment():
                 time.sleep(1)
         elif request.form['action'] == 'stop':
             experimenter.stop()
-    # XXX correct endtime
     df = shutil.disk_usage(experimenter.dir)
     diskspace = round(df.free / 1024 ** 3, 1)
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
-                           delay=experimenter.delay, endtime=experimenter.endtime, diskspace=diskspace,
+                           starttime=time.ctime(experimenter.starttime), delay=experimenter.delay, 
+                           endtime=time.ctime(experimenter.endtime), diskspace=diskspace,
                            status=experimenter.status)
 
 livestream = True
