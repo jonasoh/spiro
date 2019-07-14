@@ -39,8 +39,13 @@
 <div class="pure-u-4-5" id="main">
 <div class="pure-menu pure-menu-horizontal" id="topmenu">
 <ul class="pure-menu-list">
+{% if running %}
+<li class="pure-menu-item pure-menu-disabled">Live view</li>
+<li class="pure-menu-item pure-menu-disabled">Still image view</li>
+{% else %}
 <li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
 <li class="pure-menu-item"><a href="/live/off" class="pure-menu-link">Still image view</a></li>
+{% endif %}
 <li class="pure-menu-item pure-menu-selected"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
 </ul>
 </div>

@@ -97,20 +97,43 @@ class ZoomObject(object):
         self.apply()
 
 
-@app.route('/')
-def index():
+def public_route(decorated_function):
+    decorated_function.is_public = True
+    return decorated_function
+
+def not_while_running(decorated_function):
+    decorated_function.not_while_running = True
+    return decorated_function
+
+@app.before_request
+def check_route_access():
     if cfg.get('password') == '':
         return redirect(url_for('newpass'))
-    if not 'password' in session:
+    if any([request.endpoint.startswith('static/'),
+            session.get('password').__eq__(cfg.get('password')),
+            getattr(app.view_functions[request.endpoint], 'is_public', False)]):
+        if experimenter.running and getattr(app.view_functions[request.endpoint], 'not_while_running', False):
+            return redirect(url_for('empty'))
+        return  # Access granted
+    else:
         return redirect(url_for('login'))
-    if not session['password'] == cfg.get('password'):
-        return redirect(url_for('login'))
-    return render_template('index.html', live=livestream)
+
+@app.route('/')
+def index():
+    if experimenter.running:
+        return redirect(url_for('experiment'))
+    else:
+        return render_template('index.html', live=livestream)
 
 @app.route('/index.html')
 def redir_index():
     return redirect(url_for('index'))
 
+@app.route('/empty')
+def empty():
+    return render_template('unavailable.html'), 409
+
+@public_route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -124,11 +147,13 @@ def login():
     else:
         return render_template('login.html')
 
+@public_route
 @app.route('/logout')
 def logout():
     session['password'] = ''
     return redirect(url_for('login'))
 
+@public_route
 @app.route('/newpass', methods=['GET', 'POST'])
 def newpass():
     if request.method == 'POST':
@@ -151,21 +176,25 @@ def newpass():
     else:
         return render_template('newpass.html')
 
+@not_while_running
 @app.route('/zoom/<value>')
 def zoom(value):
     zoomer.zoom(float(value))
     return redirect(url_for('index'))
 
+@not_while_running
 @app.route('/pan/x/<value>')
 def panx(value):
     zoomer.pan(panx = float(value))
     return redirect(url_for('index'))
 
+@not_while_running
 @app.route('/pan/y/<value>')
 def pany(value):
     zoomer.pan(pany = float(value))
     return redirect(url_for('index'))
 
+@not_while_running
 @app.route('/live/<value>')
 def switch_live(value):
     if setLive(value):
@@ -186,6 +215,7 @@ def setLive(val):
         camera.stop_recording()
     return prev != livestream
 
+@not_while_running
 @app.route('/led/<value>')
 def led(value):
     if value == 'on':
@@ -194,6 +224,7 @@ def led(value):
         hw.LEDControl(False)
     return redirect(url_for('index'))
 
+@not_while_running
 @app.route('/rotate/<value>')
 def rotate(value):
     value = int(value)
@@ -202,6 +233,7 @@ def rotate(value):
         rotator.start()
     return redirect(url_for('index'))
 
+@not_while_running
 @app.route('/findstart')
 def findstart():
     hw.findStart(calibration=cfg.get('calibration'))
@@ -214,6 +246,7 @@ def liveGen():
             frame = liveoutput.frame
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+@not_while_running
 @app.route('/stream.mjpg')
 def liveStream():
     return Response(liveGen(), mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -236,6 +269,7 @@ def lastCapture():
         except:
             return redirect(url_for('static', filename='empty.jpg'))
 
+@not_while_running
 @app.route('/grab')
 def grab():
     stilloutput.truncate()
@@ -244,6 +278,7 @@ def grab():
     stilloutput.seek(0)
     return redirect(url_for('index'))
 
+@not_while_running
 @app.route('/focus/<value>')
 def focus(value):
     value = int(value)
