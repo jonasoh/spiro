@@ -4,7 +4,7 @@
 # - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
 #
 
-from flask import Flask, render_template, Response, request, redirect, url_for, session, flash
+from flask import Flask, render_template, Response, request, redirect, url_for, session, flash, abort
 import io
 import logging
 import time
@@ -214,7 +214,6 @@ def setLive(val):
         print("enable live stream")
         livestream = True
         camera.resolution = "2592x1944"
-        camera.iso = 0
         camera.start_recording(liveoutput, format='mjpeg', resize='1024x768')
     elif val == 'off' and livestream == True:
         print("disable live stream")
@@ -280,14 +279,25 @@ def lastCapture():
         except:
             return redirect(url_for('static', filename='empty.jpg'))
 
-@not_while_running
-@app.route('/grab')
-def grab():
+def takePicture():
     stilloutput.truncate()
     stilloutput.seek(0)
     camera.capture(stilloutput, format="jpeg", quality=90)
     stilloutput.seek(0)
+
+@not_while_running
+@app.route('/grab')
+def grab():
+    takePicture()
     return redirect(url_for('index'))
+
+@app.route('/grab/exposure/<time>')
+def grabExposure(time):
+    if time in ['day', 'night']:
+        setLive('off')
+        takePicture()
+        setLive('on')
+        return redirect(url_for('exposure', time=time))
 
 @not_while_running
 @app.route('/focus/<int:value>')
@@ -330,6 +340,78 @@ def experiment():
                            starttime=time.ctime(experimenter.starttime), delay=experimenter.delay, 
                            endtime=time.ctime(experimenter.endtime), diskspace=diskspace,
                            status=experimenter.status, nshots=experimenter.nshots, diskreq=diskreq)
+
+@not_while_running
+@app.route('/setexposure/<time>')
+def exposureMode(time):
+    if time == 'day':
+        camera.iso = cfg.get('dayiso')
+        camera.shutter_speed = 1000000 // cfg.get('dayshutter')
+        hw.LEDControl(False)
+        return redirect(url_for('exposure', time='day'))
+    elif time == 'night':
+        camera.iso = cfg.get('nightiso')
+        camera.shutter_speed = 1000000 // cfg.get('nightshutter')
+        hw.LEDControl(True)
+        return redirect(url_for('exposure', time='night'))
+    elif time == 'auto':
+        camera.iso = 0
+        camera.shutter_speed = 0
+        return redirect(url_for('index'))
+    abort(404)
+
+@not_while_running
+@app.route('/iso/<time>/<int:value>')
+def iso(time, value):
+    if time in ['day', 'night', 'live']:
+        value = max(0, min(value, 1600))
+        camera.iso = value
+        return redirect(url_for('index'))
+    else:
+        abort(404)
+
+@not_while_running
+@app.route('/shutter/<time>/<int:value>')
+def shutter(time, value):
+    if time in ['day', 'night', 'live']:
+        value = max(10, min(value, 1000))
+        camera.shutter_speed = 1000000 // value
+        return redirect(url_for('index'))
+    else:
+        abort(404)
+
+@not_while_running
+@app.route('/exposure/<time>', methods=['GET', 'POST'])
+def exposure(time):
+    if not time in ['day', 'night']: abort(404)
+
+    if request.method == 'POST':
+        iso = request.form.get('iso')
+        shutter = request.form.get('shutter')
+        if iso:
+            iso = int(iso)
+            iso = max(0, min(iso, 1600))
+            print("setting new iso", iso)
+            cfg.set(time + 'iso', iso)
+        if shutter:
+            shutter = int(shutter)
+            shutter = max(10, min(shutter, 1000))
+            print("setting new shutter", shutter)
+            cfg.set(time + 'shutter', shutter)
+        exposureMode(time)
+        grabExposure(time)
+    else:
+        exposureMode(time)
+        setLive('on')
+        camera.exposure_mode = "off"
+    return render_template('exposure.html', shutter=cfg.get(time+'shutter'), iso=cfg.get(time+'iso'),
+                           time=time)
+
+def set_exposure():
+    if time in ['day', 'night']:
+        pass
+    if request.method == 'POST':
+        pass
 
 livestream = False
 liveoutput = StreamingOutput()

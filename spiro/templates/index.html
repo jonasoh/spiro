@@ -30,13 +30,9 @@ function updateFocusSlider(value) {
 </div>
 <div class="pure-menu">
 <ul class="pure-menu-list">
-{% if live %}
 <li class="pure-menu-item pure-menu-selected"><a href="/live/on" class="pure-menu-link">Live view</a></li>
-<li class="pure-menu-item"><a href="/live/off" class="pure-menu-link">Still image view</a></li>
-{% else %}
-<li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
-<li class="pure-menu-item pure-menu-selected"><a href="/live/off" class="pure-menu-link">Still image view</a></li>
-{% endif %}
+<li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Set up day image</a></li>
+<li class="pure-menu-item"><a href="/exposure/night" class="pure-menu-link">Set up night image</a></li>
 <li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
 </ul>
 </div>

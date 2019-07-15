@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block title %}Exposure controls{% endblock %}
+{% block content %}
+<script>
+function updateISO(value) {
+    isorange = document.getElementById('isorange');
+    isonumber = document.getElementById('isonumber');
+    bgGet('/iso/live/' + value);
+    isorange.value = value;
+    isonumber.value = value;
+}
+function updateShutter(value) {
+    shutterrange = document.getElementById('shutterrange');
+    shutternumber = document.getElementById('shutternumber');
+    bgGet('/shutter/live/' + value);
+    shutterrange.value = value;
+    shutternumber.value = value;
+}
+</script>
+<div>
+<form class="pure-form" method="post">
+<fieldset>
+<label for="iso">ISO</label>
+<input name="iso" type="number" min="0" max="1600" step="100" value="{{ iso }}" onchange="updateISO(this.value);">
+<label for="shutter">Shutter speed (1/n)</label>
+<input name="shutter" type="number" min="10" max="1000" step="1" value="{{ shutter }}" onchange="updateShutter(this.value);">
+<button type="submit" class="pure-button pure-button-primary">Update and save</button>
+</fieldset>
+</form>
+</div>
+<div class="pure-g">
+<div class="pure-u-1-5">
+<div class="logo">
+<img src="{{ url_for('static', filename='spiro.svg') }}" class="pure-img">
+</div>
+<div class="pure-menu">
+<ul class="pure-menu-list">
+<li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
+{% if time == 'day' %}
+<li class="pure-menu-item pure-menu-selected"><a href="/exposure/day" class="pure-menu-link">Set up day image</a></li>
+<li class="pure-menu-item"><a href="/exposure/night" class="pure-menu-link">Set up night image</a></li>
+{% else %}
+<li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Set up day image</a></li>
+<li class="pure-menu-item pure-menu-selected"><a href="/exposure/night" class="pure-menu-link">Set up night image</a></li>
+{% endif %}
+<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
+</ul>
+</div>
+</div>
+<div class="pure-u-2-5">
+<img class="pure-img" src="/stream.mjpg">
+<form class="pure-form pure-form-aligned" method="post">
+<fieldset>
+<legend class="label">Exposure parameters</legend>
+<div class="pure-control-group">
+<label for="iso">ISO</label>
+<input id="isonumber" name="iso" type="number" min="0" max="1600" step="100" value="{{ iso }}" oninput="updateISO(this.value);">
+<input id="isorange" type="range" min="0" max="1600" step="100" value="{{ iso }}" oninput="updateISO(this.value);">
+</div>
+<div class="pure-control-group">
+<label for="shutter">Shutter speed (1/n)</label>
+<input id="shutternumber" name="shutter" type="number" min="10" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">
+<input id="shutterrange" type="range" min="10" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">
+</div>
+<div class="pure-controls">
+<button type="submit" class="pure-button pure-button-primary">Update and save</button>
+</div>
+</fieldset>
+</form>
+
+</div>
+<div class="pure-u-2-5">
+<img class="pure-img" src="/capture.jpg">
+</div>
+</div>
+{% endblock %}
