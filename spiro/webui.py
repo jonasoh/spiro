@@ -121,7 +121,7 @@ def check_route_access():
 
 @app.route('/')
 def index():
-    return render_template('index.html', live=livestream, focus=cfg.get('focus'))
+    return render_template('index.html', live=livestream, focus=cfg.get('focus'), led=hw.led)
 
 @app.route('/index.html')
 def redir_index():

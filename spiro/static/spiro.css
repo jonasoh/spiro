@@ -39,6 +39,12 @@ div#center {
 div.padtop {
     padding-top: 50px;
 }
+div.padleft {
+    padding-left: 50px;
+}
+div.padright {
+    padding-right:50px;
+}
 legend.label {
     font-size: 24px;
     font-weight: bold;

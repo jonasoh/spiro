@@ -15,6 +15,7 @@ class HWControl:
             'coilpin_M22' : cfg.get('coilpin_M22'),
             'stdby' : cfg.get('stdby')
         }
+        self.led = False
         self.GPIOInit()
 
 
@@ -74,6 +75,7 @@ class HWControl:
     # turns on and off led
     def LEDControl(self, value):
         gpio.output(self.pins['LED'], value)
+        self.led = value
 
     # focuses the ArduCam motorized focus camera
     # code is from ArduCam GitHub repo

@@ -41,7 +41,11 @@ function updateFocusSlider(value) {
 <div class="pure-g" id="topmenu">
 <div class="pure-u-3-24 vcenter" id="led">
 <div class="onoffswitch">
+{% if led %}
+<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onclick="toggleLED(this.checked)" checked>
+{% else %}
 <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onclick="toggleLED(this.checked)">
+{% endif %}
 <label class="onoffswitch-label" for="myonoffswitch">
 <span class="onoffswitch-inner"></span>
 <span class="onoffswitch-switch"></span>
