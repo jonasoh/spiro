@@ -286,14 +286,17 @@ def takePicture(obj):
     obj.seek(0)
 
 def grabExposure(time):
+    global dayshutter, nightshutter
     if time in ['day', 'night']:
         setLive('off')
         if time == 'day':
             takePicture(daystill)
+            dayshutter = camera.shutter_speed
         else:
             camera.color_effects = (128, 128)
             takePicture(nightstill)
             camera.color_effects = None
+            nightshutter = camera.shutter_speed
         setLive('on')
         return redirect(url_for('exposure', time=time))
     else:
@@ -335,8 +338,8 @@ def experiment():
     diskspace = round(df.free / 1024 ** 3, 1)
     diskreq = round(experimenter.nshots * 4 * 4 / 1024, 1)
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
-                           starttime=time.ctime(experimenter.starttime), delay=experimenter.delay, 
-                           endtime=time.ctime(experimenter.endtime), diskspace=diskspace,
+                           starttime=time.ctime(experimenter.starttime), delay=experimenter.delay,
+                           endtime=time.ctime(experimenter.endtime), diskspace=diskspace, duration=experimenter.duration,
                            status=experimenter.status, nshots=experimenter.nshots, diskreq=diskreq)
 
 @not_while_running
@@ -369,6 +372,8 @@ def shutter(time, value):
 @app.route('/exposure/<time>', methods=['GET', 'POST'])
 def exposure(time):
     if not time in ['day', 'night']: abort(404)
+    ns=None
+    ds=None
 
     if request.method == 'POST':
         shutter = request.form.get('shutter')
@@ -383,12 +388,19 @@ def exposure(time):
         exposureMode(time)
         setLive('on')
         camera.exposure_mode = "off"
-    return render_template('exposure.html', shutter=cfg.get(time+'shutter'), time=time)
+    if nightshutter:
+        ns = 1000000 // nightshutter
+    if dayshutter:
+        ds = 1000000 // dayshutter
+    return render_template('exposure.html', shutter=cfg.get(time+'shutter'), time=time, 
+                           nightshutter=ns, dayshutter=ds)
 
 livestream = False
 liveoutput = StreamingOutput()
 daystill = io.BytesIO()
 nightstill = io.BytesIO()
+dayshutter = None
+nightshutter = None
 zoomer = ZoomObject()
 lock = Lock()
 cfg = Config()

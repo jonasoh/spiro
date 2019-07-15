@@ -105,7 +105,7 @@ class Experimenter(threading.Thread):
 
         try:
             self.running = True
-            self.status = "Running"
+            self.status = "Finding start position"
             self.starttime = time.time()
             self.endtime = time.time() + 60 * 60 * 24 * self.duration
             self.last_captured = None
@@ -129,6 +129,7 @@ class Experimenter(threading.Thread):
                         self.hw.findStart(calibration=self.cfg.get('calibration'))
                         print ("done.")
                     else:
+                        self.status = "Imaging"
                         # rotate cube 90 degrees
                         print("Rotating stage...")
                         self.hw.halfStep(100, 0.03)
@@ -146,6 +147,7 @@ class Experimenter(threading.Thread):
                 # this part is "active waiting", rotating the cube slowly over the period of options.delay
                 # this ensures consistent lighting for all plates.
                 # account for the time spent capturing images.
+                self.status = "Waiting"
                 secs = 0
                 while time.time() < nextloop and not self.stop_experiment:
                     time.sleep(1)
@@ -159,6 +161,7 @@ class Experimenter(threading.Thread):
 
         finally:
             self.cam.framerate = 10
+            self.cam.color_effects = None
             self.status = "Stopped"
             self.stop_experiment = False
             self.running = False

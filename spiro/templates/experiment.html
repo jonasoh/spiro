@@ -2,10 +2,25 @@
 {% block title %}Experiment view{% endblock %}
 {% block content %}
 {% if status == "Stopping" %}
+<meta http-equiv="refresh" content="5">
+{% elif status == "Waiting" %}
+<meta http-equiv="refresh" content="60">
+{% elif status == "Finding start position" %}
+<meta http-equiv="refresh" content="5">
+{% elif status == "Imaging" %}
 <meta http-equiv="refresh" content="10">
-{% elif status == "Running" %}
-<meta http-equiv="refresh" content="300">
 {% endif %}
+<script>
+function calcDiskSpace(){
+    disk = document.getElementById('disk');
+    delay = document.getElementById('delay');
+    delay = parseFloat(delay.value);
+    duration = document.getElementById('duration');
+    duration = parseFloat(duration.value);
+    req = 4 * 4 * duration * 24 * 60 / delay / 1024;
+    disk.innerHTML = req.toFixed(1) + " GB";
+}
+</script>
 <div class="pure-g">
 <div class="pure-u-1-5">
 <div class="logo">
@@ -59,13 +74,20 @@
 </div>
 <div class="pure-control-group">
 <label for="duration">Duration</label>
-<input name="duration" type="number" value="7" min="1">
+<input id="duration" name="duration" type="number" value="7" min="1" oninput="calcDiskSpace();">
 <span class="pure-form-message-inline">days</span>
 </div>
 <div class="pure-control-group">
-<label for="delay">Delay between images</label>
-<input name="delay" type="number" value="60" min=1 max=1440>
+<label for="delay">Image every</label>
+<input id="delay" name="delay" type="number" value="60" min=1 max=1440 oninput="calcDiskSpace();">
 <span class="pure-form-message-inline">minutes</span>
+</div>
+<div>
+<div class="pure-control-group">
+<label>Disk space required:</label><span id="disk">{{ (4 * 4 * duration * 24 * 60 / delay / 1024)|round(1) }} GB</span>
+</div>
+<div class="pure-control-group">
+<label>Disk space available:</label><span id="diskavail">{{ diskspace }} GB</span>
 </div>
 <div class="pure-controls">
 <button type="submit" class="pure-button pure-button-primary">Start experiment</button>
@@ -79,12 +101,6 @@
 <div class="pure-u-2-5">
 <div>
 <img src="lastcapture.jpg" class="pure-img">
-</div>
-{% else %}
-<div class="pure-u-1-5 padtop">
-<div>
-<p><b>System is idle</b></p>
-<p>Remaining disk space: {{ diskspace }} GB</p>
 </div>
 {% endif %}
 </div>

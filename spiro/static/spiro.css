@@ -32,6 +32,9 @@ img.logo {
 #focusnumber {
     width:65px;
 }
+#shutternumber {
+    width:75px;
+}
 div#center {
     margin-right: auto;
     max-width: 1024px;
@@ -44,6 +47,17 @@ div.padleft {
 }
 div.padright {
     padding-right:50px;
+}
+div.imgview {
+    position: relative;
+}
+div.topleft-caption {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 1;
+    color: white;
+    font-weight: bold;
 }
 legend.label {
     font-size: 24px;

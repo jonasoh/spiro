@@ -30,28 +30,46 @@ function updateShutter(value) {
 </div>
 </div>
 <div class="pure-u-2-5">
+<div class="imgview">
 <img class="pure-img" src="/stream.mjpg">
-<form class="pure-form pure-form-aligned" method="post">
+<div class="topleft-caption">Live view</div>
+</div>
+<form class="pure-form pure-form-aligned padleft padtop" method="post">
 <fieldset>
 <legend class="label">Exposure parameters</legend>
 <div class="pure-control-group">
 <label for="shutter">Shutter speed (1/n)</label>
-<input id="shutternumber" name="shutter" type="number" min="10" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">
 <input id="shutterrange" type="range" min="10" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">
+<input id="shutternumber" name="shutter" type="number" min="10" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">
 </div>
 <div class="pure-controls">
 <button type="submit" class="pure-button pure-button-primary">Update and save</button>
 </div>
 </fieldset>
 </form>
-
 </div>
 <div class="pure-u-2-5">
+<div class="imgview">
 {% if time == 'day' %}
+<a href="/daystill.jpg" target="_blank">
 <img class="pure-img" src="/daystill.jpg">
-{% else %}
-<img class="pure-img" src="/nightstill.jpg">
+</a>
+{% if dayshutter %}
+<div class="topleft-caption">
+Day image captured at 1/{{ dayshutter }} s
+</div>
 {% endif %}
+{% else %}
+<a href="/nightstill.jpg" target="_blank">
+<img class="pure-img" src="/nightstill.jpg">
+</a>
+{% if nightshutter %}
+<div class="topleft-caption">
+Night image captured at 1/{{ nightshutter }} s
+</div>
+{% endif %}
+{% endif %}
+</div>
 </div>
 </div>
 {% endblock %}
