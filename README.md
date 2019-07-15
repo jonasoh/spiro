@@ -53,7 +53,7 @@ In the raspi-config interface, make the following changes:
 * Under *Interfacing*, enable *Camera*, *I2C*, and *SSH*. 
 * In the *Advanced Options*, set *Memory Split* to 256.
 * Under *Localisation Options*, make sure to set the *Timezone*. Please note that a working network connection is required to maintain the correct date.
-* If needed, configure *Network* and *Localization* options here as well.
+* If needed, configure *Network* and *Localization* options here as well. Set a *Hostname* under Network if you plan on running several SPIROs.
 * Finally, select *Finish*, and choose to reboot the system when asked. 
 
 Next, make sure the system is up to date, and install the required tools (answer yes to any questions):
@@ -61,7 +61,7 @@ Next, make sure the system is up to date, and install the required tools (answer
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install python3-pip git
+sudo apt install python3-pip git i2c-tools
 ```
 
 Finally, install the SPIRO software and its dependencies:
@@ -79,10 +79,11 @@ spiro
 
 ### Working with SPIRO
 
-To issue commands to SPIRO, and to download the images, you need an SSH client. Depending on your operating system and how comfortable you are with a computer, there are several choices. A few of them are listed below.
+To manage your images (and possibly diagnose problems), you need an SSH/SFTP client. Depending on your operating system and how comfortable you are with a computer, there are several choices. A few of them are listed below.
 
 **Windows**
 * [MobaXterm](https://mobaxterm.mobatek.net/) is a popular SSH client that also supports file transfer. Recommended for beginners. 
+* [FileZilla](https://filezilla-project.org/) is also a popular SFTP client, but has been known to bundle malware with its installer.
 * [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) is a lightweight and popular SSH client.
 * [WinSCP](https://winscp.net/eng/index.php) can be used to transfer files from SPIRO using the SFTP protocol.
 
@@ -90,13 +91,4 @@ To issue commands to SPIRO, and to download the images, you need an SSH client. 
 * On Mac, an SSH client is built in to the system. Using the *Terminal*, connect to SPIRO using the command `ssh pi@1.2.3.4` (where `1.2.3.4` is the IP address of your system). Images can be transferred using the builtin commands `scp` and `sftp`, although this requires some knowledge about using the command line.
 * [Transmit](https://panic.com/transmit/) is the best graphical SFTP client for Mac.
 * [Cyberduck](https://cyberduck.io/) may be another alternative.
-
-### Connecting via SSH
-
-### Initial setup and live view
-
-### Starting and stopping experiments
-
-### Useful Linux commands
-
-### Caveats and troubleshooting
+* [FileZilla](https://filezilla-project.org/) also has a Mac version.
