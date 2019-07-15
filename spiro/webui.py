@@ -108,7 +108,7 @@ def not_while_running(decorated_function):
 
 @app.before_request
 def check_route_access():
-    if cfg.get('password') == '':
+    if cfg.get('password') == '' and not request.endpoint == url_for('newpass'):
         return redirect(url_for('newpass'))
     if any([request.endpoint.startswith('static/'),
             session.get('password').__eq__(cfg.get('password')),
