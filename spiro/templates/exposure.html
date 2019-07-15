@@ -19,13 +19,14 @@ function updateShutter(value) {
 <ul class="pure-menu-list">
 <li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
 {% if time == 'day' %}
-<li class="pure-menu-item pure-menu-selected"><a href="/exposure/day" class="pure-menu-link">Set up day image</a></li>
-<li class="pure-menu-item"><a href="/exposure/night" class="pure-menu-link">Set up night image</a></li>
+<li class="pure-menu-item pure-menu-selected"><a href="/exposure/day" class="pure-menu-link">Day image settings</a></li>
+<li class="pure-menu-item"><a href="/exposure/night" class="pure-menu-link">Night image settings</a></li>
 {% else %}
-<li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Set up day image</a></li>
-<li class="pure-menu-item pure-menu-selected"><a href="/exposure/night" class="pure-menu-link">Set up night image</a></li>
+<li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Day image settings</a></li>
+<li class="pure-menu-item pure-menu-selected"><a href="/exposure/night" class="pure-menu-link">Night image settings</a></li>
 {% endif %}
-<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
+<li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Start position calibration</a></li>
+<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Start/view experiment</a></li>
 </ul>
 </div>
 </div>

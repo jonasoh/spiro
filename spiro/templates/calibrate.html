@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}Main view{% endblock %}
+{% block content %}
+<script>
+function tryCalibration(){
+    calib = document.getElementById('calibration');
+    bgGet('/findstart/' + calib.value);
+}
+</script>
+<div id="layout">
+<div class="pure-g">
+<div id="menu" class="pure-u-1-5">
+<div class="logo">
+<img src="{{ url_for('static', filename='spiro.svg') }}" class="pure-img">
+</div>
+<div class="pure-menu">
+<ul class="pure-menu-list">
+<li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
+<li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Day image settings</a></li>
+<li class="pure-menu-item"><a href="/exposure/night" class="pure-menu-link">Night image settings</a></li>
+<li class="pure-menu-item pure-menu-selected"><a href="/calibrate" class="pure-menu-link">Start position calibration</a></li>
+<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
+</ul>
+</div>
+</div>
+<div id="center" class="pure-u-4-5">
+<form class="pure-form" method="post">
+<fieldset>
+<legend>Set up start position</legend>
+<input type="number" step="1" value="{{ calibration }}" id="calibration" name="calibration">
+<a href="#" onclick="tryCalibration();" class="pure-button">Try value</a>
+<button type="submit">Save value</button>
+</fieldset>
+</form>
+<div>
+<img src="/stream.mjpg" class="pure-img">
+</div>
+{% endblock %}

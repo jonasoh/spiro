@@ -235,9 +235,13 @@ def rotate(value):
 
 @not_while_running
 @app.route('/findstart')
-def findstart():
+@app.route('/findstart/<int:value>')
+def findstart(value=None):
     hw.motorOn(True)
-    hw.findStart(calibration=cfg.get('calibration'))
+    if not value:
+        hw.findStart(calibration=cfg.get('calibration'))
+    elif value > 0 and value < 400:
+        hw.findStart(calibration=cfg.get('calibration'))
     time.sleep(0.5)
     hw.motorOn(False)
     return redirect(url_for('index'))
@@ -394,6 +398,21 @@ def exposure(time):
         ds = 1000000 // dayshutter
     return render_template('exposure.html', shutter=cfg.get(time+'shutter'), time=time, 
                            nightshutter=ns, dayshutter=ds)
+
+@not_while_running
+@app.route('/calibrate', methods=['GET', 'POST'])
+def calibrate():
+    if request.method == 'POST':
+        value = request.form.get('calibration')
+        print("raw value", value)
+        if value:
+            value = int(value)
+            value = max(0, min(value, 399))
+            print("writing new value", value)
+            cfg.set('calibration', value)
+            flash("New value for start position: " + str(value))
+    setLive('on')
+    return render_template('calibrate.html', calibration=cfg.get('calibration'))
 
 livestream = False
 liveoutput = StreamingOutput()
