@@ -254,12 +254,19 @@ def liveGen():
 def liveStream():
     return Response(liveGen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/capture.jpg')
-def stillImage():
-    if stilloutput.seek(0, io.SEEK_END) == 0:
+@app.route('/nightstill.jpg')
+def nightStill():
+    if nightstill.seek(0, io.SEEK_END) == 0:
         return redirect(url_for('static', filename='empty.jpg'))
-    stilloutput.seek(0)
-    return Response(stilloutput.read(), mimetype="image/jpeg")
+    nightstill.seek(0)
+    return Response(nightstill.read(), mimetype="image/jpeg")
+
+@app.route('/daystill.jpg')
+def dayStill():
+    if daystill.seek(0, io.SEEK_END) == 0:
+        return redirect(url_for('static', filename='empty.jpg'))
+    daystill.seek(0)
+    return Response(daystill.read(), mimetype="image/jpeg")
 
 @app.route('/lastcapture.jpg')
 def lastCapture():
@@ -272,25 +279,22 @@ def lastCapture():
         except:
             return redirect(url_for('static', filename='empty.jpg'))
 
-def takePicture():
-    stilloutput.truncate()
-    stilloutput.seek(0)
-    camera.capture(stilloutput, format="jpeg", quality=90)
-    stilloutput.seek(0)
-
-@not_while_running
-@app.route('/grab')
-def grab():
-    takePicture()
-    return redirect(url_for('index'))
+def takePicture(obj):
+    obj.truncate()
+    obj.seek(0)
+    camera.capture(obj, format="jpeg", quality=90)
+    obj.seek(0)
 
 @app.route('/grab/exposure/<time>')
 def grabExposure(time):
     if time in ['day', 'night']:
         setLive('off')
-        takePicture()
+        if time == 'day': takePicture(daystill)
+        else: takePicture(nightstill)
         setLive('on')
         return redirect(url_for('exposure', time=time))
+    else:
+        abort(404)
 
 @not_while_running
 @app.route('/focus/<int:value>')
@@ -406,7 +410,8 @@ def set_exposure():
 
 livestream = False
 liveoutput = StreamingOutput()
-stilloutput = io.BytesIO()
+daystill = io.BytesIO()
+nightstill = io.BytesIO()
 zoomer = ZoomObject()
 lock = Lock()
 cfg = Config()

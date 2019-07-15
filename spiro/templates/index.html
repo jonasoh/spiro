@@ -48,7 +48,6 @@ function updateFocusSlider(value) {
 </label>
 </div>
 </div>
-{% if live %}
 <div class="pure-u-7-24 vcenter" id="zoom">
 <label for="zoom">Zoom</label>
 <input name="zoom" type="range" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
@@ -80,19 +79,10 @@ function updateFocusSlider(value) {
 <a href="#" onclick="bgGet('/rotate/100')" class="pure-button"><img src="{{ url_for('static', filename='rotate90.svg') }}" class="icon"></a>
 <a href="#" onclick="bgGet('/findstart')" class="pure-button"><img src="{{ url_for('static', filename='home.svg') }}" class="icon"></a>
 </div>
-{% else %}
-<div class="pure-u-6-24 vcenter" id="grab">
-<a href="#" onclick="bgGet('/grab')" class="pure-button pure-button-primary" id="grab">Take a new picture</a>
-</div>
-{% endif %}
 </div>
 <div id="main">
 <div>
-{% if live %}
 <img src="stream.mjpg" class="pure-img">
-{% else %}
-<img src="capture.jpg" class="pure-img">
-{% endif %}
 </div>
 </div>
 </div>

@@ -59,7 +59,11 @@ function updateShutter(value) {
 
 </div>
 <div class="pure-u-2-5">
-<img class="pure-img" src="/capture.jpg">
+{% if time == 'day' %}
+<img class="pure-img" src="/daystill.jpg">
+{% else %}
+<img class="pure-img" src="/nightstill.jpg">
+{% endif %}
 </div>
 </div>
 {% endblock %}
