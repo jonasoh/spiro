@@ -33,12 +33,9 @@ class Experimenter(threading.Thread):
         # determine if it's day or not.
         # XXX determine how long we need to wait, probably less than 6 seconds.
         self.cam.shutter_speed = 0
-        oldiso = self.cam.iso
-        self.cam.iso = 100
         self.cam.exposure_mode = "auto"
         time.sleep(6)
         exp = self.cam.exposure_speed
-        self.cam.iso = oldiso
         self.cam.exposure_mode = "off"
         return exp < self.cfg.get('threshold')
 
@@ -59,14 +56,12 @@ class Experimenter(threading.Thread):
         self.daytime = self.isDaytime()
         
         if self.daytime:
-            self.cam.iso = cfg.get('dayiso')
             self.cam.shutter_speed = 1000000 // cfg.get('dayshutter')
             self.cam.color_effects = None
             filename = os.path.join(self.dir, name + "-day.jpg")
         else:
             # turn on led
             self.hw.LEDControl(True)
-            self.cam.iso = self.cfg.get('nightiso')
             self.cam.color_effects = (128, 128)
             self.cam.shutter_speed = 1000000 // self.cfg.get('nightshutter')
             time.sleep(2)

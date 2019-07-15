@@ -16,7 +16,8 @@ import logging, logging.handlers
 
 def initCam():
     cam = PiCamera()
-    cam.framerate = 15  
+    cam.framerate = 10
+    cam.iso = 100
     cam.resolution = cam.MAX_RESOLUTION
     cam.rotation = 90
     cam.image_denoise = False
@@ -37,7 +38,6 @@ def main():
 
     try:
         cam = initCam()
-        cam.framerate = 10
         logger.debug('Starting web UI.')
         webui.start(cam, hw)
 

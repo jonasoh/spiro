@@ -2,13 +2,6 @@
 {% block title %}Exposure controls{% endblock %}
 {% block content %}
 <script>
-function updateISO(value) {
-    isorange = document.getElementById('isorange');
-    isonumber = document.getElementById('isonumber');
-    bgGet('/iso/live/' + value);
-    isorange.value = value;
-    isonumber.value = value;
-}
 function updateShutter(value) {
     shutterrange = document.getElementById('shutterrange');
     shutternumber = document.getElementById('shutternumber');
@@ -41,11 +34,6 @@ function updateShutter(value) {
 <form class="pure-form pure-form-aligned" method="post">
 <fieldset>
 <legend class="label">Exposure parameters</legend>
-<div class="pure-control-group">
-<label for="iso">ISO</label>
-<input id="isonumber" name="iso" type="number" min="0" max="1600" step="100" value="{{ iso }}" oninput="updateISO(this.value);">
-<input id="isorange" type="range" min="0" max="1600" step="100" value="{{ iso }}" oninput="updateISO(this.value);">
-</div>
 <div class="pure-control-group">
 <label for="shutter">Shutter speed (1/n)</label>
 <input id="shutternumber" name="shutter" type="number" min="10" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">

@@ -285,12 +285,15 @@ def takePicture(obj):
     camera.capture(obj, format="jpeg", quality=90)
     obj.seek(0)
 
-@app.route('/grab/exposure/<time>')
 def grabExposure(time):
     if time in ['day', 'night']:
         setLive('off')
-        if time == 'day': takePicture(daystill)
-        else: takePicture(nightstill)
+        if time == 'day':
+            takePicture(daystill)
+        else:
+            camera.color_effects = (128, 128)
+            takePicture(nightstill)
+            camera.color_effects = None
         setLive('on')
         return redirect(url_for('exposure', time=time))
     else:
@@ -340,30 +343,17 @@ def experiment():
 @app.route('/setexposure/<time>')
 def exposureMode(time):
     if time == 'day':
-        camera.iso = cfg.get('dayiso')
         camera.shutter_speed = 1000000 // cfg.get('dayshutter')
         hw.LEDControl(False)
         return redirect(url_for('exposure', time='day'))
     elif time == 'night':
-        camera.iso = cfg.get('nightiso')
         camera.shutter_speed = 1000000 // cfg.get('nightshutter')
         hw.LEDControl(True)
         return redirect(url_for('exposure', time='night'))
     elif time == 'auto':
-        camera.iso = 0
         camera.shutter_speed = 0
         return redirect(url_for('index'))
     abort(404)
-
-@not_while_running
-@app.route('/iso/<time>/<int:value>')
-def iso(time, value):
-    if time in ['day', 'night', 'live']:
-        value = max(0, min(value, 1600))
-        camera.iso = value
-        return redirect(url_for('index'))
-    else:
-        abort(404)
 
 @not_while_running
 @app.route('/shutter/<time>/<int:value>')
@@ -381,13 +371,7 @@ def exposure(time):
     if not time in ['day', 'night']: abort(404)
 
     if request.method == 'POST':
-        iso = request.form.get('iso')
         shutter = request.form.get('shutter')
-        if iso:
-            iso = int(iso)
-            iso = max(0, min(iso, 1600))
-            print("setting new iso", iso)
-            cfg.set(time + 'iso', iso)
         if shutter:
             shutter = int(shutter)
             shutter = max(10, min(shutter, 1000))
@@ -399,14 +383,7 @@ def exposure(time):
         exposureMode(time)
         setLive('on')
         camera.exposure_mode = "off"
-    return render_template('exposure.html', shutter=cfg.get(time+'shutter'), iso=cfg.get(time+'iso'),
-                           time=time)
-
-def set_exposure():
-    if time in ['day', 'night']:
-        pass
-    if request.method == 'POST':
-        pass
+    return render_template('exposure.html', shutter=cfg.get(time+'shutter'), time=time)
 
 livestream = False
 liveoutput = StreamingOutput()
@@ -419,7 +396,6 @@ camera = None
 hw = None
 experimenter = None
 
-#if __name__ == '__main__':
 def start(cam, myhw):
     global camera, hw, experimenter
     camera = cam
@@ -432,7 +408,6 @@ def start(cam, myhw):
     app.secret_key = cfg.get('secret')
     try:
         camera.meter_mode = 'spot'
-        camera.iso = 0
         camera.rotation = 90
         app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)
     finally:
