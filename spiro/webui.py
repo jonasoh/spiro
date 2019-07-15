@@ -128,7 +128,7 @@ def index():
         init = False
         return redirect(url_for('experiment'))
     else:
-        return render_template('index.html', live=livestream)
+        return render_template('index.html', live=livestream, focus=cfg.get('focus'))
 
 @app.route('/index.html')
 def redir_index():
@@ -290,18 +290,13 @@ def grab():
     return redirect(url_for('index'))
 
 @not_while_running
-@app.route('/focus/<value>')
+@app.route('/focus/<int:value>')
 def focus(value):
     value = int(value)
-    focus = cfg.get('focus')
-    newfocus = 0
-    if value < 0:
-        newfocus = max(10, focus + value)
-    else:
-        newfocus = min(1000, focus + value)
-    print("new focus:", newfocus)
-    hw.focusCam(newfocus)
-    cfg.set('focus', newfocus)
+    value = min(1000, max(10, value))
+    print("new focus:", value)
+    hw.focusCam(value)
+    cfg.set('focus', value)
     return redirect(url_for('index'))
 
 

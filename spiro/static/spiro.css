@@ -1,6 +1,7 @@
 #layout {
-    padding-left: 25px;
-    padding-right: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width:1280px;
 }
 #topmenu {
     height: 50px;
@@ -10,12 +11,30 @@
     border-top: 25px;
 }
 #main {
-    padding-top: 20px;
+    padding-top: 0px;
 }
-div.center {
+div#menu {
     margin-left: auto;
+    max-width: 256px;
+}
+div.vcenter {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+div.logo {
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+img.logo {
+    width:224px;
+}
+#focusnumber {
+    width:65px;
+}
+div#center {
     margin-right: auto;
-    max-width: 768px;
+    max-width: 1024px;
 }
 div.padtop {
     padding-top: 50px;
@@ -37,12 +56,12 @@ ul.flashes li {
     font-size: 16px;
 }
 img.icon {
-    width: 50px;
+    width: 25px;
     height: auto;
 }
 div.pan {
-    height: 50px;
-    width: 50px;
+    height: 30px;
+    width: 30px;
     position: relative;
 }
 input.zoom {
@@ -51,7 +70,7 @@ input.zoom {
 div.pan-left {
     position: absolute;
     left: 0px;
-    top: 20px;
+    top: 10px;
     height: 10px;
     width: 10px;
 }
@@ -62,7 +81,7 @@ img.pan-left {
 div.pan-right {
     position: absolute;
     right: 0px;
-    top: 20px;
+    top: 10px;
     height: 10px;
     width: 10px;
 }
@@ -72,7 +91,7 @@ img.pan-right {
 }
 div.pan-up {
     position: absolute;
-    left: 20px;
+    left: 10px;
     top: 0px;
     height: 10px;
     width: 10px;
@@ -82,7 +101,7 @@ img.pan-up {
 }
 div.pan-down {
     position: absolute;
-    left: 20px;
+    left: 10px;
     bottom: 0px;
     height: 10px;
     width: 10px;
@@ -115,12 +134,12 @@ img.pan-down {
     box-sizing: border-box;
 }
 .onoffswitch-inner:before {
-    content: "ON";
+    content: "LED";
     padding-left: 10px;
     background-color: #53E012; color: #FFFFFF;
 }
 .onoffswitch-inner:after {
-    content: "OFF";
+    content: "LED";
     padding-right: 10px;
     background-color: #EEEEEE; color: #999999;
     text-align: right;

@@ -9,12 +9,41 @@ function toggleLED(value) {
         bgGet('/led/off');
     }
 }
+
+function updateFocusNumber(value) {
+    focusnumber = document.getElementById('focusnumber');
+    focusnumber.value = value;
+    bgGet('/focus/' + value);
+}
+
+function updateFocusSlider(value) {
+    focusslider = document.getElementById('focusslider');
+    focusslider.value = value;
+    bgGet('/focus/' + value);
+}
 </script>
 <div id="layout">
 <div class="pure-g">
-<div class="pure-u-1-5" id="leftbar">
-<h1>SPIRO control</h1>
-<p><h2>LED</h2>
+<div id="menu" class="pure-u-1-5">
+<div class="logo">
+<img src="{{ url_for('static', filename='spiro.svg') }}" class="pure-img">
+</div>
+<div class="pure-menu">
+<ul class="pure-menu-list">
+{% if live %}
+<li class="pure-menu-item pure-menu-selected"><a href="/live/on" class="pure-menu-link">Live view</a></li>
+<li class="pure-menu-item"><a href="/live/off" class="pure-menu-link">Still image view</a></li>
+{% else %}
+<li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
+<li class="pure-menu-item pure-menu-selected"><a href="/live/off" class="pure-menu-link">Still image view</a></li>
+{% endif %}
+<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
+</ul>
+</div>
+</div>
+<div id="center" class="pure-u-4-5">
+<div class="pure-g" id="topmenu">
+<div class="pure-u-3-24 vcenter" id="led">
 <div class="onoffswitch">
 <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onclick="toggleLED(this.checked)">
 <label class="onoffswitch-label" for="myonoffswitch">
@@ -22,10 +51,13 @@ function toggleLED(value) {
 <span class="onoffswitch-switch"></span>
 </label>
 </div>
+</div>
 {% if live %}
-<p><h2>Zoom</h2>
-<input type="range" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
-<p><h2>Pan</h2>
+<div class="pure-u-7-24 vcenter" id="zoom">
+<label for="zoom">Zoom</label>
+<input name="zoom" type="range" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
+</div>
+<div class="pure-u-2-24 vcenter" id="pan">
 <div class="pan">
 <div class="pan-left">
 <a href="#" onclick="bgGet('/pan/x/-0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-left"></a>
@@ -40,39 +72,32 @@ function toggleLED(value) {
 <a href="#" onclick="bgGet('/pan/y/0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-down"></a>
 </div>
 </div>
-<p><h2>Focus</h2>
-<a href="#" onclick="bgGet('/focus/-100')" class="pure-button">---</a>
-<a href="#" onclick="bgGet('/focus/-15')" class="pure-button">--</a>
-<a href="#" onclick="bgGet('/focus/-5')" class="pure-button">-</a>
-<a href="#" onclick="bgGet('/focus/5')" class="pure-button">+</a>
-<a href="#" onclick="bgGet('/focus/15')" class="pure-button">++</a>
-<a href="#" onclick="bgGet('/focus/100')" class="pure-button">+++</a></p>
-<p><h2>Rotate</h2>
+</div>
+<div class="pure-u-9-24 vcenter" id="focus">
+<form class="pure-form">
+<label for="focusslider">Focus</label>
+<input id="focusslider" type="range" min="10" max="1000" step="10" value="{{ focus }}" oninput="updateFocusNumber(this.value);">
+<input id="focusnumber" type="number" min="10" max="1000" step="1" value="{{ focus }}" oninput="updateFocusSlider(this.value);">
+</form>
+</div>
+<div class="pure-u-3-24 vcenter" id="rotate">
 <a href="#" onclick="bgGet('/rotate/100')" class="pure-button"><img src="{{ url_for('static', filename='rotate90.svg') }}" class="icon"></a>
-<a href="#" onclick="bgGet('/findstart')" class="pure-button"><img src="{{ url_for('static', filename='home.svg') }}" class="icon"></a></p>
+<a href="#" onclick="bgGet('/findstart')" class="pure-button"><img src="{{ url_for('static', filename='home.svg') }}" class="icon"></a>
+</div>
 {% else %}
-<p><a href="#" onclick="bgGet('/grab')" class="pure-button pure-button-primary" id="grab">Take a new picture</a></p>
+<div class="pure-u-6-24 vcenter" id="grab">
+<a href="#" onclick="bgGet('/grab')" class="pure-button pure-button-primary" id="grab">Take a new picture</a>
+</div>
 {% endif %}
 </div>
-<div class="pure-u-4-5" id="main">
-<div class="pure-menu pure-menu-horizontal" id="topmenu">
-<ul class="pure-menu-list">
-{% if live %}
-<li class="pure-menu-item pure-menu-selected"><a href="/live/on" class="pure-menu-link">Live view</a></li>
-<li class="pure-menu-item"><a href="/live/off" class="pure-menu-link">Still image view</a></li>
-{% else %}
-<li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
-<li class="pure-menu-item pure-menu-selected"><a href="/live/off" class="pure-menu-link">Still image view</a></li>
-{% endif %}
-<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
-</ul>
-</div>
+<div id="main">
 <div>
 {% if live %}
 <img src="stream.mjpg" class="pure-img">
 {% else %}
 <img src="capture.jpg" class="pure-img">
 {% endif %}
+</div>
 </div>
 </div>
 </div>
