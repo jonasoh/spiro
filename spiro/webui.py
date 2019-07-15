@@ -17,8 +17,6 @@ from threading import Thread, Lock, Condition
 
 logging.basicConfig(format='%(asctime)s %(message)s')
 app = Flask(__name__)
-# used for determining whether this is the first access to the ui since boot
-init = True
 
 class Rotator(Thread):
     def __init__(self, value):
@@ -123,12 +121,7 @@ def check_route_access():
 
 @app.route('/')
 def index():
-    global init
-    if experimenter.running or init:
-        init = False
-        return redirect(url_for('experiment'))
-    else:
-        return render_template('index.html', live=livestream, focus=cfg.get('focus'))
+    return render_template('index.html', live=livestream, focus=cfg.get('focus'))
 
 @app.route('/index.html')
 def redir_index():
@@ -312,8 +305,6 @@ def focus(value):
 
 @app.route('/experiment', methods=['GET', 'POST'])
 def experiment():
-    global init
-    if init: init = False
     if request.method == 'POST':
         if request.form['action'] == 'start':
             if experimenter.running:
