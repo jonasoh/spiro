@@ -64,15 +64,19 @@ sudo apt upgrade
 sudo apt install python3-pip git i2c-tools
 ```
 
-Finally, install the SPIRO software and its dependencies:
+Then, install the SPIRO software and its dependencies:
 
 ```
 sudo pip3 install git+https://github.com/jonasoh/spiro#egg=spiro
 ```
 
-You may now run the spiro software using the command
+Finally, instruct the system to automatically run the SPIRO control software on boot:
+
 ```
-spiro
+spiro --install
+systemctl enable --user spiro
+sudo loginctl enable-linger pi
+systemctl --user start spiro
 ```
 
 ## Usage
