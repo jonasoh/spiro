@@ -108,6 +108,7 @@ def not_while_running(decorated_function):
 
 @app.before_request
 def check_route_access():
+    if not request.endpoint: abort(404)
     if cfg.get('password') == '' and not request.endpoint == 'newpass':
         return redirect(url_for('newpass'))
     if any([request.endpoint.__eq__('static'),
@@ -198,6 +199,9 @@ def switch_live(value):
     if setLive(value):
         print("change live mode")
         zoomer.set(0.5, 0.5, 1)
+    if value == 'on':
+        camera.shutter_speed = 0
+        camera.exposure_mode = "auto"
     return redirect(url_for('index'))
 
 def setLive(val):
@@ -351,14 +355,17 @@ def experiment():
 def exposureMode(time):
     if time == 'day':
         camera.shutter_speed = 1000000 // cfg.get('dayshutter')
+        camera.exposure_mode = "off"
         hw.LEDControl(False)
         return redirect(url_for('exposure', time='day'))
     elif time == 'night':
         camera.shutter_speed = 1000000 // cfg.get('nightshutter')
+        camera.exposure_mode = "off"
         hw.LEDControl(True)
         return redirect(url_for('exposure', time='night'))
     elif time == 'auto':
         camera.shutter_speed = 0
+        camera.exposure_mode = "auto"
         return redirect(url_for('index'))
     abort(404)
 
@@ -440,6 +447,7 @@ def start(cam, myhw):
     try:
         camera.meter_mode = 'spot'
         camera.rotation = 90
+        setLive('on')
         app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)
     finally:
         experimenter.stop()

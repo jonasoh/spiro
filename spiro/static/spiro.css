@@ -27,13 +27,13 @@ div.logo {
     margin-bottom: 10px;
 }
 img.logo {
-    width:224px;
+    width: 224px;
 }
 #focusnumber {
-    width:65px;
+    width: 65px;
 }
 #shutternumber {
-    width:75px;
+    width: 75px;
 }
 div#center {
     margin-right: auto;
@@ -58,6 +58,7 @@ div.topleft-caption {
     z-index: 1;
     color: white;
     font-weight: bold;
+    background: rgba(0, 0, 0, 0.5);
 }
 div.login {
     margin-top: 50px;
