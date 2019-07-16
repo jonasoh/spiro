@@ -13,6 +13,19 @@ from spiro.hwcontrol import HWControl
 from spiro.spiroconfig import Config
 import spiro.webui as webui
 import logging, logging.handlers
+import argparse
+import textwrap
+import sys
+
+parser = argparse.ArgumentParser(description=textwrap.dedent("""\
+                                                                SPIRO control software.
+                                                                Running this command without any flags starts the web interface.
+                                                                Specifying flags will perform those actions, then exit."""))
+parser.add_argument('--reset-config', action="store_true", dest="reset",
+                    help="resets all configuration values to defaults")
+parser.add_argument('--install-service', action="store_true", dest="install",
+                    help="install systemd user service file")
+options = parser.parse_args()
 
 def initCam():
     cam = PiCamera()
@@ -24,6 +37,27 @@ def initCam():
     hw.focusCam(cfg.get('focus'))
     return cam
 
+
+def installService():
+    try:
+        os.makedirs(os.path.expanduser('~/.config/systemd/user'), exist_ok=True)
+    except OSError as e:
+        print("Could not make directory (~/.config/systemd/user):", e)
+    try:
+        with open(os.path.expanduser('~/.config/systemd/user/spiro.service'), 'w') as f:
+            f.write(textwrap.dedent("""\
+                [Unit]
+                Description=SPIRO control software
+                [Service]
+                ExecStart=/home/pi/.local/bin/spiro
+                [Install]
+                WantedBy=default.target
+                """))
+    except OSError as e:
+        print("Could not write file (~/.config/systemd/user/spiro.service):", e)
+    print("Systemd service file installed.")
+
+
 cfg = Config()
 daytime = "TBD"
 hw = HWControl(cfg)
@@ -34,9 +68,21 @@ logger.addHandler(handler)
 
 # start here.
 def main():
-    hw.GPIOInit()
+    if options.reset:
+        try:
+            os.remove(os.path.expanduser('~/.config/spiro/spiro.conf'))
+        except OSError as e:
+            print("Could not remove file (~/.config/spiro/spiro.conf):", e)
+            raise
+        print("Configuration values were reset.")
+    if options.install:
+        installService()
+    if any([options.reset, options.install]):
+        sys.exit()
 
+    # no options given, go ahead and start web ui
     try:
+        hw.GPIOInit()
         cam = initCam()
         logger.debug('Starting web UI.')
         webui.start(cam, hw)
