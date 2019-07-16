@@ -6,7 +6,6 @@
 
 from flask import Flask, render_template, Response, request, redirect, url_for, session, flash, abort
 import io
-import logging
 import time
 import os
 import hashlib
@@ -15,7 +14,6 @@ from spiro.spiroconfig import Config
 from spiro.experimenter import Experimenter
 from threading import Thread, Lock, Condition
 
-logging.basicConfig(format='%(asctime)s %(message)s')
 app = Flask(__name__)
 
 class Rotator(Thread):

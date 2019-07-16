@@ -12,7 +12,6 @@ from picamera import PiCamera
 from spiro.hwcontrol import HWControl
 from spiro.spiroconfig import Config
 import spiro.webui as webui
-import logging, logging.handlers
 import argparse
 import textwrap
 import sys
@@ -61,10 +60,6 @@ def installService():
 cfg = Config()
 daytime = "TBD"
 hw = HWControl(cfg)
-logging.basicConfig(format='%(asctime)s %(message)s')
-logger = logging.getLogger()
-handler = logging.handlers.RotatingFileHandler(os.path.expanduser('~/spiro.log'), maxBytes=10*1024**2, backupCount=4)
-logger.addHandler(handler)
 
 # start here.
 def main():
@@ -84,7 +79,7 @@ def main():
     try:
         hw.GPIOInit()
         cam = initCam()
-        logger.debug('Starting web UI.')
+        print('Starting web UI.')
         webui.start(cam, hw)
 
     except KeyboardInterrupt:
