@@ -282,7 +282,8 @@ def lastCapture():
         try:
             with open(experimenter.last_captured, 'rb') as f:
                 return Response(f.read(), mimetype="image/jpeg")
-        except:
+        except Exception as e:
+            print("Could not read last captured image:", e)
             return redirect(url_for('static', filename='empty.jpg'))
 
 def takePicture(obj):
@@ -330,7 +331,7 @@ def experiment():
                 else: experimenter.duration = 7
                 if request.form.get('delay'): experimenter.delay = int(request.form['delay'])
                 else: experimenter.delay = 60
-                if request.form.get('directory'): experimenter.dir = os.path.expanduser(os.path.join('~', request.form['directory']))
+                if request.form.get('directory'): experimenter.dir = os.path.expanduser(os.path.join('~', request.form['directory'].replace('/', '-')))
                 else: experimenter.dir = os.path.expanduser('~')
                 setLive('off')
                 experimenter.next_status = 'run'
