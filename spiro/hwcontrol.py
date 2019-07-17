@@ -4,6 +4,7 @@ import os
 
 class HWControl:
     def __init__(self, cfg):
+        gpio.setmode(gpio.BCM)
         self.pins = {
             'LED' : cfg.get('LED'),
             'sensor' : cfg.get('sensor'),
@@ -20,7 +21,6 @@ class HWControl:
 
 
     def GPIOInit(self):
-        gpio.setmode(gpio.BCM)
         gpio.setwarnings(False)
         gpio.setup(self.pins['LED'], gpio.OUT)
         gpio.setup(self.pins['sensor'], gpio.IN, pull_up_down=gpio.PUD_DOWN)

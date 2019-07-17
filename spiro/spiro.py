@@ -28,7 +28,8 @@ options = parser.parse_args()
 
 def initCam():
     cam = PiCamera()
-    cam.framerate = 10
+    # cam.framerate dictates longest exposure (1/cam.framerate)
+    cam.framerate = 5
     cam.iso = 100
     cam.resolution = cam.MAX_RESOLUTION
     cam.rotation = 90
@@ -83,9 +84,10 @@ def main():
         webui.start(cam, hw)
 
     except KeyboardInterrupt:
-        print("\nProgram ended by keyboard interrupt. Turning off motor and cleaning up GPIO.")
+        print("\nProgram ended by keyboard interrupt.")
 
     finally:
+        print("Turning off motor and cleaning up GPIO.")
         hw.motorOn(False)
         cam.close()
         hw.cleanup()
