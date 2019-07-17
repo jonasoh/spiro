@@ -44,17 +44,20 @@ A few ImageJ macros that take advantage of the capabilities of SPIRO can be foun
 First, prepare the SD card with a fresh release of Raspbian Lite (follow the official [instructions](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)). 
 
 Connect the Raspberry Pi to a screen and keyboard. Log in using the default credentials (username `pi`, password `raspberry`). Start the system configuration:
+
 ```
 sudo raspi-config
 ```
 
 In the raspi-config interface, make the following changes:
-* Change the password
+* **Change the password**. The system will allow network access, and a weak password **will** compromise your network security **and** your experimental data.
+* After changing the password, connect the network cable (if you are using wired networking).
 * Under *Interfacing*, enable *Camera*, *I2C*, and *SSH*. 
 * In the *Advanced Options*, set *Memory Split* to 256.
 * Under *Localisation Options*, make sure to set the *Timezone*. Please note that a working network connection is required to maintain the correct date.
 * If needed, configure *Network* and *Localization* options here as well. Set a *Hostname* under Network if you plan on running several SPIROs.
 * Finally, select *Finish*, and choose to reboot the system when asked. 
+* After reboot, the system shows a message on the screen showing its IP address ("My IP address is: *a.b.c.d*"). Make a note of this address as you will need it to access the system over the network. Make sure that your network allows access to ports 8080 on this IP address.
 
 Next, make sure the system is up to date, and install the required tools (answer yes to any questions):
 
@@ -67,7 +70,7 @@ sudo apt install python3-pip git i2c-tools
 Then, install the SPIRO software and its dependencies:
 
 ```
-sudo pip3 install git+https://github.com/jonasoh/spiro#egg=spiro
+pip3 install git+https://github.com/jonasoh/spiro#egg=spiro
 ```
 
 Finally, instruct the system to automatically run the SPIRO control software on boot:
@@ -79,11 +82,13 @@ sudo loginctl enable-linger pi
 systemctl --user start spiro
 ```
 
+You may now place the system in the setting in which you will be using it for your experiments.
+
 ## Usage
 
 ### Working with SPIRO
 
-To manage your images (and possibly diagnose problems), you need an SSH/SFTP client. Depending on your operating system and how comfortable you are with a computer, there are several choices. A few of them are listed below.
+To manage your images you need an SFTP client. For managing SPIRO (e.g., for updating the software and diagnosing problems), an SSH client is very useful. Depending on your operating system and how comfortable you are with a computer, there are several choices. A few of them are listed below.
 
 **Windows**
 * [MobaXterm](https://mobaxterm.mobatek.net/) is a popular SSH client that also supports file transfer. Recommended for beginners. 
@@ -96,3 +101,50 @@ To manage your images (and possibly diagnose problems), you need an SSH/SFTP cli
 * [Transmit](https://panic.com/transmit/) is the best graphical SFTP client for Mac.
 * [Cyberduck](https://cyberduck.io/) may be another alternative.
 * [FileZilla](https://filezilla-project.org/) also has a Mac version.
+
+### Connecting to the web interface
+
+SPIRO is controlled via its web interface. To access the system, point your web browser to the address *http://**a.b.c.d**/*, where *a.b.c.d* is the IP address you noted previously. At the first access, you are asked to set a password for the system. **Do not use the same password as you set previously!** This password is for the web interface and should be regarded as a low-privilege password.
+
+### Setting up imaging
+
+After logging in to the system, you are presented with the *Live view*. Here, you can adjust the image in real time, allowing you to make sure that the camera is at a proper distance from the plate, that the focus is set correctly, and that the LED illuminator is working and placed in a position where reflections are not an issue.
+
+Under *Day image settings* and *Night image settings*, you can adjust the exposure time for day and night images in real time. For night images, make sure that representative conditions are used (i.e., turn off the lights in the growth chamber). When the image is captured according to your liking, choose *Update and save*.
+
+For locating the initial imaging position, the system turns the cube until a positional switch is activated. It then turns the cube a predefined amount of steps (*calibration value*). The check that the calibration value is correct, go to the *Start position calibration* view. Here, you may try out the current value, as well as change it. Make sure to click *Save value* if you change it.
+
+### Starting an experiment
+
+When imaging parameters are set up to your liking, you are ready to start your experiments. In the *Experiment control* view, choose a name for your experiment, as well as the duration and imaging frequency. After you choose *Start experiment*, the system will disable most of the functionality of the web interface, displaying a simple status window containing experiment parameters, as well as the last image captured.
+
+### Downloading images
+
+The images should be downloaded using the SFTP client you installed previously. Log in to the system using its IP address, username *pi*, and the password you set during the initial set up steps. Images are contained within directories in the home folder. After downloading, you should remove them from the system to make sure that it doesn't run out of disk space.
+
+## Maintaining the system
+
+### Keeping software up to date
+
+You should regularly update the underlying operating system to make sure that it has the latest security patches. To do so, log in using your SSH client (or connect a screen and keyboard), and issue the following commands, answering *Y* to any queries:
+
+```
+sudo apt update
+sudo apt upgrade
+```
+
+To update the SPIRO control software, issue the commands:
+
+```
+pip3 install git+https://github.com/jonasoh/spiro#egg=spiro
+```
+
+After updating the SPIRO software, or if you for any other reason need to restart the software, use the following command:
+
+```
+systemctl --user restart spiro
+```
+
+### Troubleshooting
+
+To view the last 50 entries in the SPIRO log, use the command `journalctl --user-init -n 50`. This may give an indication of whatever is causing problems.
