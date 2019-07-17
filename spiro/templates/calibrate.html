@@ -1,12 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}Main view{% endblock %}
 {% block content %}
-<script>
-function tryCalibration(){
-    calib = document.getElementById('calibration');
-    bgGet('/findstart/' + calib.value);
-}
-</script>
+<script src="{{ url_for('static', filename='spiro.js') }}"></script>
 <div id="layout">
 <div class="pure-g">
 <div id="menu" class="pure-u-1-5">

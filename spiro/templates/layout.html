@@ -4,12 +4,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='grids-responsive-min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='spiro.css') }}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>
-function bgGet(url) {
-    var x=new XMLHttpRequest;
-    x.open('GET', url);
-    x.send();}
-</script>
+<script src="{{ url_for('static', filename='spiro.js') }}"></script>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 <ul class="flashes">

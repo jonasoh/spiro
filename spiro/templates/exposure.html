@@ -1,15 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}Exposure controls{% endblock %}
 {% block content %}
-<script>
-function updateShutter(value) {
-    shutterrange = document.getElementById('shutterrange');
-    shutternumber = document.getElementById('shutternumber');
-    bgGet('/shutter/live/' + value);
-    shutterrange.value = value;
-    shutternumber.value = value;
-}
-</script>
+<script src="{{ url_for('static', filename='spiro.js') }}"></script>
 <div class="pure-g">
 <div class="pure-u-1-5">
 <div class="logo">

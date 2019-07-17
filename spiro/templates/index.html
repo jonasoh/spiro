@@ -1,27 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}Main view{% endblock %}
 {% block content %}
-<script>
-function toggleLED(value) {
-    if(value){
-        bgGet('/led/on');
-    }else{
-        bgGet('/led/off');
-    }
-}
-
-function updateFocusNumber(value) {
-    focusnumber = document.getElementById('focusnumber');
-    focusnumber.value = value;
-    bgGet('/focus/' + value);
-}
-
-function updateFocusSlider(value) {
-    focusslider = document.getElementById('focusslider');
-    focusslider.value = value;
-    bgGet('/focus/' + value);
-}
-</script>
+<script src="{{ url_for('static', filename='spiro.js') }}"></script>
 <div id="layout">
 <div class="pure-g">
 <div id="menu" class="pure-u-1-5">

@@ -10,17 +10,7 @@
 {% elif status == "Imaging" %}
 <meta http-equiv="refresh" content="10">
 {% endif %}
-<script>
-function calcDiskSpace(){
-    disk = document.getElementById('disk');
-    delay = document.getElementById('delay');
-    delay = parseFloat(delay.value);
-    duration = document.getElementById('duration');
-    duration = parseFloat(duration.value);
-    req = 4 * 4 * duration * 24 * 60 / delay / 1024;
-    disk.innerHTML = req.toFixed(1) + " GB";
-}
-</script>
+<script src="{{ url_for('static', filename='spiro.js') }}"></script>
 <div class="pure-g">
 <div class="pure-u-1-5">
 <div class="logo">
