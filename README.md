@@ -97,10 +97,11 @@ To manage your images you need an SFTP client. For managing SPIRO (e.g., for upd
 * [WinSCP](https://winscp.net/eng/index.php) can be used to transfer files from SPIRO using the SFTP protocol.
 
 **Mac**
-* On Mac, an SSH client is built in to the system. Using the *Terminal*, connect to SPIRO using the command `ssh pi@1.2.3.4` (where `1.2.3.4` is the IP address of your system). Images can be transferred using the builtin commands `scp` and `sftp`, although this requires some knowledge about using the command line.
+* On Mac, an SSH client is built in to the system. Using the *Terminal*, connect to SPIRO using the command `ssh pi@1.2.3.4` (where `1.2.3.4` is the IP address of your system).
 * [Transmit](https://panic.com/transmit/) is the best graphical SFTP client for Mac.
 * [Cyberduck](https://cyberduck.io/) may be another alternative.
 * [FileZilla](https://filezilla-project.org/) also has a Mac version.
+* Images can be transferred using the builtin commands `scp` and `sftp`, although this requires some knowledge of the command line.
 
 ### Connecting to the web interface
 
