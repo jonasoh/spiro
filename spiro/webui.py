@@ -110,7 +110,7 @@ def check_route_access():
     if cfg.get('password') == '' and not request.endpoint == 'newpass':
         return redirect(url_for('newpass'))
     if any([request.endpoint.__eq__('static'),
-            session.get('password').__eq__(cfg.get('password')),
+            session.get('password') == cfg.get('password'),
             getattr(app.view_functions[request.endpoint], 'is_public', False)]):
         if experimenter.running and getattr(app.view_functions[request.endpoint], 'not_while_running', False):
             return redirect(url_for('empty'))
