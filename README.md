@@ -137,7 +137,7 @@ sudo apt upgrade
 To update the SPIRO control software, issue the commands:
 
 ```
-pip3 install git+https://github.com/jonasoh/spiro#egg=spiro
+pip3 install -U git+https://github.com/jonasoh/spiro#egg=spiro
 ```
 
 After updating the SPIRO software, or if you for any other reason need to restart the software, use the following command:
