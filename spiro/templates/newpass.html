@@ -5,9 +5,13 @@
 <form method="post" class="pure-form pure-form-aligned">
 <fieldset>
 <legend class="label">Set new password</legend>
+{% if nopass %}
+<input type="hidden" name="currpass" value="">
+{% else %}
 <div class="pure-control-group">
 <label for="currpass">Current password</label><input type="password" name="currpass">
 </div>
+{% endif %}
 <div class="pure-control-group">
 <label for="pwd1">Password</label><input type="password" name="pwd1">
 </div>

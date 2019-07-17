@@ -171,7 +171,7 @@ def newpass():
             flash("Passwords do not match.")
             return redirect(url_for('newpass'))
     else:
-        return render_template('newpass.html')
+        return render_template('newpass.html', nopass=cfg.get('password') == '')
 
 @not_while_running
 @app.route('/zoom/<int:value>')
