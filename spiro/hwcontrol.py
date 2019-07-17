@@ -43,6 +43,11 @@ class HWControl:
 
     def findStart(self, calibration=0):
         """rotates the imaging stage until the positional switch is activated"""
+        # make sure that switch is not depressed when starting
+        if gpio.input(self.pins['sensor']):
+            while gpio.input(self.pins['sensor'])
+                self.halfstep(1, 0.03)
+
         while not gpio.input(self.pins['sensor']):
             self.halfStep(1, 0.03)
         self.halfStep(calibration, 0.03)
