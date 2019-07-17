@@ -2,9 +2,8 @@
 {% block title %}Main view{% endblock %}
 {% block content %}
 <script src="{{ url_for('static', filename='spiro.js') }}"></script>
-<div id="layout">
 <div class="pure-g">
-<div id="menu" class="pure-u-1-5">
+<div class="pure-u-1-5">
 <div class="logo">
 <img src="{{ url_for('static', filename='spiro.svg') }}" class="pure-img">
 </div>
@@ -18,7 +17,7 @@
 </ul>
 </div>
 </div>
-<div id="center" class="pure-u-4-5">
+<div class="pure-u-4-5">
 <div class="pure-g" id="topmenu">
 <div class="pure-u-3-24 vcenter" id="led">
 <div class="onoffswitch">
