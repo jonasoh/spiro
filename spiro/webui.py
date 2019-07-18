@@ -81,16 +81,13 @@ class ZoomObject(object):
         limits = (self.roi / 2.0, 1 - self.roi / 2.0)
         self.x = max(min(self.x, limits[1]), limits[0])
         self.y = max(min(self.y, limits[1]), limits[0])
-        print("applying zoom (x,y,roi):", self.x, self.y, self.roi)
         camera.zoom = (self.y - self.roi/2.0, self.x - self.roi/2.0, self.roi, self.roi)
 
     def zoom(self, amt):
         self.roi = round(amt, 1)
-        print("new roi", self.roi)
         self.apply()
     
     def pan(self, panx = 0, pany = 0):
-        print("pan x, y:", panx, pany)
         self.x = self.x + round(panx, 1)
         self.y = self.y + round(pany, 1)
         self.apply()
@@ -120,6 +117,8 @@ def check_route_access():
 
 @app.route('/')
 def index():
+    if experimenter.running:
+        return redirect(url_for('experiment'))
     return render_template('index.html', live=livestream, focus=cfg.get('focus'), led=hw.led)
 
 @app.route('/index.html')
@@ -195,7 +194,6 @@ def pany(value):
 @app.route('/live/<value>')
 def switch_live(value):
     if setLive(value):
-        print("change live mode")
         zoomer.set(0.5, 0.5, 1)
     if value == 'on':
         camera.shutter_speed = 0
@@ -206,12 +204,10 @@ def setLive(val):
     global livestream
     prev = livestream
     if val == 'on' and livestream != True:
-        print("enable live stream")
         livestream = True
         camera.resolution = "2592x1944"
         camera.start_recording(liveoutput, format='mjpeg', resize='1024x768')
     elif val == 'off' and livestream == True:
-        print("disable live stream")
         livestream = False
         camera.stop_recording()
         camera.resolution = camera.MAX_RESOLUTION
@@ -314,7 +310,6 @@ def grabExposure(time):
 def focus(value):
     value = int(value)
     value = min(1000, max(10, value))
-    print("new focus:", value)
     hw.focusCam(value)
     cfg.set('focus', value)
     return redirect(url_for('index'))
@@ -390,8 +385,8 @@ def exposure(time):
         if shutter:
             shutter = int(shutter)
             shutter = max(10, min(shutter, 1000))
-            print("setting new shutter", shutter)
             cfg.set(time + 'shutter', shutter)
+            flash("New shutter speed for " + time + " images: 1/" + shutter)
         exposureMode(time)
         grabExposure(time)
     else:
@@ -413,7 +408,6 @@ def calibrate():
         if value:
             value = int(value)
             value = max(0, min(value, 399))
-            print("writing new value", value)
             cfg.set('calibration', value)
             flash("New value for start position: " + str(value))
     setLive('on')
