@@ -104,9 +104,9 @@ def not_while_running(decorated_function):
 @app.before_request
 def check_route_access():
     if not request.endpoint: abort(404)
-    if cfg.get('password') == '' and not request.endpoint == 'newpass':
+    if cfg.get('password') == '' and not any([request.endpoint == 'newpass', request.endpoint == 'static']):
         return redirect(url_for('newpass'))
-    if any([request.endpoint.__eq__('static'),
+    if any([request.endpoint == 'static',
             session.get('password') == cfg.get('password'),
             getattr(app.view_functions[request.endpoint], 'is_public', False)]):
         if experimenter.running and getattr(app.view_functions[request.endpoint], 'not_while_running', False):
