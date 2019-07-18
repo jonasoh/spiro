@@ -3,7 +3,7 @@ import os
 import time
 from statistics import mean
 from collections import deque
-from spiro.spiroconfig import Config
+from spiro.config import Config
 from spiro.logger import log
 
 class Experimenter(threading.Thread):

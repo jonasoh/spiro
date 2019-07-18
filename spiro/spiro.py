@@ -10,7 +10,7 @@
 import os
 from picamera import PiCamera
 from spiro.hwcontrol import HWControl
-from spiro.spiroconfig import Config
+from spiro.config import Config
 from spiro.logger import log
 import spiro.webui as webui
 import argparse

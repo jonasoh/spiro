@@ -10,7 +10,7 @@ import time
 import os
 import hashlib
 import shutil
-from spiro.spiroconfig import Config
+from spiro.config import Config
 from spiro.experimenter import Experimenter
 from spiro.logger import log
 from threading import Thread, Lock, Condition
