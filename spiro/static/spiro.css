@@ -26,15 +26,22 @@ div.vcenter {
     margin-bottom: auto;
 }
 div.logo {
-    margin-right: 10px;
+    margin-right: auto;
+    margin-left: auto;
     margin-top: 10px;
     margin-bottom: 10px;
 }
-img.logo {
-    width: 224px;
+div.logo img {
+    max-width: 250px;
 }
-#focusnumber, #calibration {
+#focusnumber, #calibration, #delay, #duration {
     width: 65px;
+}
+#disk, #diskavail {
+    padding-left: 15px;
+}
+div.explabel {
+    margin-top: 15px;
 }
 #shutternumber {
     width: 75px;
