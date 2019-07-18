@@ -125,6 +125,30 @@ The images should be downloaded using the SFTP client you installed previously. 
 
 ## Maintaining the system
 
+### Restarting the software
+
+If for some reason the software ends up in an unusable state, you can restart it by issuing the following command:
+
+```
+systemctl --user restart spiro
+```
+
+It has happened that the camera has become unresponsive, due to bugs in the underlying library. In this case, rebooting the system is the only way of getting it back into a usable state:
+
+```
+sudo shutdown -r now
+```
+
+### Shutting down the system
+
+If you want to power down the system, always perform a clean shutdown to ensure that no damage is caused to the filsesystem:
+
+```
+sudo shutdown -h now
+```
+
+After a few seconds, when only the red LED on the Raspberry Pi is lit, you may pull the power.
+
 ### Keeping software up to date
 
 You should regularly update the underlying operating system to make sure that it has the latest security patches. To do so, log in using your SSH client (or connect a screen and keyboard), and issue the following commands, answering *Y* to any queries:
