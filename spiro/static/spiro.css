@@ -1,3 +1,7 @@
+ul.pure-menu-list {
+    font-family: 'Agency FB', sans-serif;
+    font-size: 24pt;
+}
 #layout {
     margin-left: auto;
     margin-right: auto;
@@ -67,7 +71,8 @@ div.login {
     max-width: 500px;
 }
 legend.label {
-    font-size: 24px;
+    font-family: 'Agency FB', sans-serif;
+    font-size: 24pt;
     font-weight: bold;
 }
 ul.flashes {
