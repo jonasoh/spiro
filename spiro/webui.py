@@ -109,13 +109,20 @@ def check_route_access():
     if cfg.get('password') == '' and not any([request.endpoint == 'newpass', request.endpoint == 'static']):
         return redirect(url_for('newpass'))
     if any([request.endpoint == 'static',
-            session.get('password') == cfg.get('password'),
+            checkPass(session.get('password')),
             getattr(app.view_functions[request.endpoint], 'is_public', False)]):
         if experimenter.running and getattr(app.view_functions[request.endpoint], 'not_while_running', False):
             return redirect(url_for('empty'))
         return  # Access granted
     else:
         return redirect(url_for('login'))
+
+def checkPass(pwd):
+    if pwd:
+        hash = hashlib.sha1(pwd.encode('utf-8'))
+        if hash.hexdigest() == cfg.get('password'):
+            return True
+    return False
 
 @app.route('/')
 def index():
@@ -136,7 +143,7 @@ def empty():
 def login():
     if request.method == 'POST':
         pwd = request.form['password']
-        if pwd == cfg.get('password'):
+        if checkPass(pwd):
             session['password'] = pwd
             return redirect(url_for('index'))
         else:
@@ -164,7 +171,8 @@ def newpass():
             return render_template('newpass.html')
 
         if pwd1 == pwd2:
-            cfg.set('password', pwd1)
+            hash = hashlib.sha1(pwd1.encode('utf-8'))
+            cfg.set('password', hash.hexdigest())
             session['password'] = pwd1
             flash("Password was changed.")
             return redirect(url_for('index'))
