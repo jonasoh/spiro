@@ -13,6 +13,7 @@ import shutil
 from spiro.spiroconfig import Config
 from spiro.experimenter import Experimenter
 from threading import Thread, Lock, Condition
+from waitress import serve
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
@@ -450,7 +451,7 @@ def start(cam, myhw):
         camera.meter_mode = 'spot'
         camera.rotation = 90
         setLive('on')
-        app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)
+        serve(app, listen='*:8080')
     finally:
         experimenter.stop()
         experimenter.quit = True
