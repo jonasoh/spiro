@@ -33,9 +33,10 @@
 </div>
 <div class="pure-u-7-24 vcenter" id="zoom">
 <label for="zoom">Zoom</label>
-<input name="zoom" type="range" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
+<input name="zoom" type="range" id="zoom" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
 </div>
 <div class="pure-u-2-24 vcenter" id="pan">
+Pan
 <div class="pan">
 <div class="pan-left">
 <a href="#" onclick="bgGet('/pan/x/-0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-left"></a>
@@ -54,7 +55,7 @@
 <div class="pure-u-9-24 vcenter" id="focus">
 <form class="pure-form">
 <label for="focusslider">Focus</label>
-<input id="focusslider" type="range" min="10" max="1000" step="10" value="{{ focus }}" oninput="updateFocusNumber(this.value);">
+<input id="focusslider" type="range" id="focus" min="10" max="1000" step="10" value="{{ focus }}" oninput="updateFocusNumber(this.value);">
 <input id="focusnumber" type="number" min="10" max="1000" step="1" value="{{ focus }}" oninput="updateFocusSlider(this.value);">
 </form>
 </div>
