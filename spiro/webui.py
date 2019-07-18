@@ -15,6 +15,8 @@ from spiro.experimenter import Experimenter
 from threading import Thread, Lock, Condition
 
 app = Flask(__name__)
+app.jinja_env.trim_blocks = True
+app.jinja_env.lstrip_blocks = True
 
 class Rotator(Thread):
     def __init__(self, value):
