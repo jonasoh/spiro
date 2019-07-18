@@ -73,6 +73,7 @@ legend.label {
 ul.flashes {
     margin-left: 0px;
     margin-right: 0px;
+    margin-top: 0px;
     padding: 10px;
     background-color: rgb(181, 240, 136);
 }

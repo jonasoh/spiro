@@ -73,39 +73,35 @@ class ZoomObject(object):
         self.x = 0.5
         self.y = 0.5
     
-    def set(self, x, y, roi):
-        self.x = x
-        self.y = y
-        self.roi = roi
+    def set(self, x=None, y=None, roi=None):
+        '''convenience function for setting zoom/pan'''
+        if x: self.x = x
+        if y: self.y = y
+        if roi: self.roi = roi
         self.apply()
 
     def apply(self):
+        '''checks and applies zoom/pan values on camera object'''
         self.roi = max(min(self.roi, 1.0), 0.2)
         limits = (self.roi / 2.0, 1 - self.roi / 2.0)
         self.x = max(min(self.x, limits[1]), limits[0])
         self.y = max(min(self.y, limits[1]), limits[0])
         camera.zoom = (self.y - self.roi/2.0, self.x - self.roi/2.0, self.roi, self.roi)
 
-    def zoom(self, amt):
-        self.roi = round(amt, 1)
-        self.apply()
-    
-    def pan(self, panx = 0, pany = 0):
-        self.x = self.x + round(panx, 1)
-        self.y = self.y + round(pany, 1)
-        self.apply()
-
 
 def public_route(decorated_function):
+    '''decorator for routes that should be accessible without being logged in'''
     decorated_function.is_public = True
     return decorated_function
 
 def not_while_running(decorated_function):
+    '''decorator for routes that should be inaccessible while an experiment is running'''
     decorated_function.not_while_running = True
     return decorated_function
 
 @app.before_request
 def check_route_access():
+    '''checks if access to a certain route is granted. allows anything going to /static/ or that is marked public.'''
     if not request.endpoint: abort(404)
     if cfg.get('password') == '' and not any([request.endpoint == 'newpass', request.endpoint == 'static']):
         return redirect(url_for('newpass'))
@@ -125,15 +121,12 @@ def checkPass(pwd):
             return True
     return False
 
+@app.route('/index.html')
 @app.route('/')
 def index():
     if experimenter.running:
         return redirect(url_for('experiment'))
     return render_template('index.html', live=livestream, focus=cfg.get('focus'), led=hw.led)
-
-@app.route('/index.html')
-def redir_index():
-    return redirect(url_for('index'))
 
 @app.route('/empty')
 def empty():
@@ -186,19 +179,16 @@ def newpass():
 @not_while_running
 @app.route('/zoom/<int:value>')
 def zoom(value):
-    zoomer.zoom(float(value / 100))
+    zoomer.set(roi=float(value / 100))
     return redirect(url_for('index'))
 
 @not_while_running
-@app.route('/pan/x/<value>')
-def panx(value):
-    zoomer.pan(panx = float(value))
-    return redirect(url_for('index'))
-
-@not_while_running
-@app.route('/pan/y/<value>')
-def pany(value):
-    zoomer.pan(pany = float(value))
+@app.route('/pan/<dir>/<value>')
+def pan(dir, value):
+    if dir == 'x':
+        zoomer.set(x = zoomer.x + float(value))
+    elif dir == 'y':
+        zoomer.set(y = zoomer.y + float(value))
     return redirect(url_for('index'))
 
 @not_while_running
@@ -234,9 +224,8 @@ def led(value):
     return redirect(url_for('index'))
 
 @not_while_running
-@app.route('/rotate/<value>')
+@app.route('/rotate/<int:value>')
 def rotate(value):
-    value = int(value)
     if value > 0 and value <= 400:
         rotator = Rotator(value)
         rotator.start()
@@ -319,12 +308,10 @@ def grabExposure(time):
 @not_while_running
 @app.route('/focus/<int:value>')
 def focus(value):
-    value = int(value)
     value = min(1000, max(10, value))
     hw.focusCam(value)
     cfg.set('focus', value)
     return redirect(url_for('index'))
-
 
 @app.route('/experiment', methods=['GET', 'POST'])
 def experiment():
@@ -356,7 +343,6 @@ def experiment():
                            status=experimenter.status, nshots=experimenter.nshots, diskreq=diskreq)
 
 @not_while_running
-@app.route('/setexposure/<time>')
 def exposureMode(time):
     if time == 'day':
         camera.shutter_speed = 1000000 // cfg.get('dayshutter')
@@ -397,7 +383,7 @@ def exposure(time):
             shutter = int(shutter)
             shutter = max(10, min(shutter, 1000))
             cfg.set(time + 'shutter', shutter)
-            flash("New shutter speed for " + time + " images: 1/" + shutter)
+            flash("New shutter speed for " + time + " images: 1/" + str(shutter))
         exposureMode(time)
         grabExposure(time)
     else:
@@ -421,6 +407,7 @@ def calibrate():
             value = max(0, min(value, 399))
             cfg.set('calibration', value)
             flash("New value for start position: " + str(value))
+    exposureMode('auto')
     setLive('on')
     return render_template('calibrate.html', calibration=cfg.get('calibration'))
 
