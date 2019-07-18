@@ -74,7 +74,7 @@ def terminate(sig, frame):
 
 cfg = Config()
 cam = None
-hw = HWControl(cfg)
+hw = HWControl()
 for sig in [signal.SIGTERM, signal.SIGINT, signal.SIGQUIT, signal.SIGHUP]:
     signal.signal(sig, terminate)
 

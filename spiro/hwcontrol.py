@@ -1,20 +1,22 @@
 import RPi.GPIO as gpio
 import time
 import os
+from spiro.config import Config
 
 class HWControl:
-    def __init__(self, cfg):
+    def __init__(self):
         gpio.setmode(gpio.BCM)
+        self.cfg = Config()
         self.pins = {
-            'LED' : cfg.get('LED'),
-            'sensor' : cfg.get('sensor'),
-            'PWMa' : cfg.get('PWMa'),
-            'PWMb' : cfg.get('PWMb'),
-            'coilpin_M11' : cfg.get('coilpin_M11'),
-            'coilpin_M12' : cfg.get('coilpin_M12'),
-            'coilpin_M21' : cfg.get('coilpin_M21'),
-            'coilpin_M22' : cfg.get('coilpin_M22'),
-            'stdby' : cfg.get('stdby')
+            'LED' : self.cfg.get('LED'),
+            'sensor' : self.cfg.get('sensor'),
+            'PWMa' : self.cfg.get('PWMa'),
+            'PWMb' : self.cfg.get('PWMb'),
+            'coilpin_M11' : self.cfg.get('coilpin_M11'),
+            'coilpin_M12' : self.cfg.get('coilpin_M12'),
+            'coilpin_M21' : self.cfg.get('coilpin_M21'),
+            'coilpin_M22' : self.cfg.get('coilpin_M22'),
+            'stdby' : self.cfg.get('stdby')
         }
         self.led = False
         self.GPIOInit()
