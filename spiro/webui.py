@@ -410,7 +410,6 @@ def exposure(time):
 def calibrate():
     if request.method == 'POST':
         value = request.form.get('calibration')
-        print("raw value", value)
         if value:
             value = int(value)
             value = max(0, min(value, 399))
