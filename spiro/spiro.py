@@ -64,6 +64,7 @@ def installService():
 
 def terminate(sig, frame):
     print("Shutting down.")
+    webui.stop()
     hw.motorOn(False)
     cam.close()
     hw.cleanup()
