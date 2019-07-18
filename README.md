@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/6480370/61455165-0d35d900-a963-11e9-9ae2-285a02f36257.png">
+  <img src="https://user-images.githubusercontent.com/6480370/61460733-a965dd00-a96f-11e9-820a-352e4eebd1e5.png">
 </p>
 
 SPIRO is a Raspberry Pi based imaging platform designed for highly reproducible, high temporal resolution timelapse imaging of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies etc. SPIRO supports imaging of up to four plates at the same time. It is designed it to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates.
