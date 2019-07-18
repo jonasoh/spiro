@@ -31,6 +31,7 @@ class Experimenter(threading.Thread):
         self.status = "Stopping"
         self.next_status = ''
         self.stop_experiment = True
+        log("Stopping running experiment...")
 
     def isDaytime(self):
         # determine if it's day or not.
@@ -193,6 +194,7 @@ class Experimenter(threading.Thread):
                         self.hw.motorOn(False)
 
         finally:
+            log("Experiment stopped.")
             self.cam.color_effects = None
             self.status = "Stopped"
             self.stop_experiment = False

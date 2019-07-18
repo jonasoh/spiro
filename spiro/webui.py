@@ -140,9 +140,11 @@ def login():
         pwd = request.form['password']
         if checkPass(pwd):
             session['password'] = pwd
+            log("Web user successfully logged in.")
             return redirect(url_for('index'))
         else:
             flash("Incorrect password.")
+            log("Incorrect password in web login.")
             return redirect(url_for('login'))
     else:
         return render_template('login.html')
@@ -170,6 +172,7 @@ def newpass():
             cfg.set('password', hash.hexdigest())
             session['password'] = pwd1
             flash("Password was changed.")
+            log("Password was changed.")
             return redirect(url_for('index'))
         else:
             flash("Passwords do not match.")
@@ -328,6 +331,7 @@ def experiment():
                 if request.form.get('directory'): experimenter.dir = os.path.expanduser(os.path.join('~', request.form['directory'].replace('/', '-')))
                 else: experimenter.dir = os.path.expanduser('~')
                 setLive('off')
+                log("Starting new experiment.")
                 experimenter.next_status = 'run'
                 experimenter.status_change.set()
                 # give thread time to start before presenting template
@@ -350,7 +354,7 @@ def exposureMode(time):
         camera.exposure_mode = "off"
         hw.LEDControl(False)
         return redirect(url_for('exposure', time='day'))
-    elif time == 'night':
+    elif time == 'night':7
         camera.shutter_speed = 1000000 // cfg.get('nightshutter')
         camera.exposure_mode = "off"
         hw.LEDControl(True)
