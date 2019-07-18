@@ -241,9 +241,9 @@ def rotate(value):
 def findstart(value=None):
     hw.motorOn(True)
     if not value:
-        hw.findStart(calibration=cfg.get('calibration'))
+        hw.findStart()
     elif value > 0 and value < 400:
-        hw.findStart(calibration=cfg.get('calibration'))
+        hw.findStart(calibration=value)
     time.sleep(0.5)
     hw.motorOn(False)
     return redirect(url_for('index'))
