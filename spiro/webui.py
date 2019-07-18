@@ -453,8 +453,9 @@ def start(cam, myhw):
         setLive('on')
         serve(app, listen='*:8080')
     finally:
-        experimenter.stop()
-        experimenter.quit = True
-        experimenter.status_change.set()
-        if livestream:
-            camera.stop_recording()
+        stop()
+
+def stop():
+    experimenter.stop()
+    experimenter.quit = True
+    experimenter.status_change.set()

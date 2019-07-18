@@ -15,6 +15,8 @@ import spiro.webui as webui
 import argparse
 import textwrap
 import sys
+import signal
+import RPi.GPIO as gpio
 
 parser = argparse.ArgumentParser(description=textwrap.dedent("""\
                                                                 SPIRO control software.
@@ -60,9 +62,19 @@ def installService():
     print("Systemd service file installed.")
 
 
+def terminate(sig, frame):
+    print("Shutting down.")
+    hw.motorOn(False)
+    cam.close()
+    hw.cleanup()
+    sys.exit()
+
+
 cfg = Config()
-daytime = "TBD"
+cam = None
 hw = HWControl(cfg)
+for sig in [signal.SIGTERM, signal.SIGINT, signal.SIGQUIT]:
+    signal.signal(sig, terminate)
 
 # start here.
 def main():
@@ -83,17 +95,9 @@ def main():
         sys.exit()
 
     # no options given, go ahead and start web ui
-    try:
-        hw.GPIOInit()
-        cam = initCam()
-        print('Starting web UI.')
-        webui.start(cam, hw)
-
-    except KeyboardInterrupt:
-        print("\nProgram ended by keyboard interrupt.")
-
-    finally:
-        print("Turning off motor and cleaning up GPIO.")
-        hw.motorOn(False)
-        cam.close()
-        hw.cleanup()
+    global cam
+    gpio.setmode(gpio.BCM)
+    hw.GPIOInit()
+    cam = initCam()
+    print('Starting web UI.')
+    webui.start(cam, hw)
