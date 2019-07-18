@@ -4,6 +4,7 @@ import time
 from statistics import mean
 from collections import deque
 from spiro.spiroconfig import Config
+from spiro.logger import log
 
 class Experimenter(threading.Thread):
     def __init__(self, hw=None, cam=None):
@@ -67,7 +68,7 @@ class Experimenter(threading.Thread):
 
 
     def setWB(self):
-        print("Determining white balance.")
+        log("Determining white balance.")
         self.cam.awb_mode = "auto"
         time.sleep(2)
         g = self.cam.awb_gains
@@ -99,7 +100,7 @@ class Experimenter(threading.Thread):
             # thus, white balance will only be fixed for the first occurence of daylight.
             self.setWB()
 
-        print("Capturing %s." % filename)
+        log("Capturing %s." % filename)
         self.cam.exposure_mode = "off"
         self.cam.capture(filename)
         self.last_captured = filename
@@ -157,13 +158,13 @@ class Experimenter(threading.Thread):
                     if(i == 0):
                         self.hw.motorOn(True)
                         self.status = "Finding start position"
-                        print("Finding initial position.")
+                        log("Finding initial position.")
                         self.hw.findStart(calibration=self.cfg.get('calibration'))
-                        print("Found initial position.")
+                        log("Found initial position.")
                     else:
                         self.status = "Imaging"
                         # rotate cube 90 degrees
-                        print("Rotating stage.")
+                        log("Rotating stage.")
                         self.hw.halfStep(100, 0.03)
 
                     # wait for the cube to stabilize

@@ -11,6 +11,7 @@ import os
 from picamera import PiCamera
 from spiro.hwcontrol import HWControl
 from spiro.spiroconfig import Config
+from spiro.logger import log
 import spiro.webui as webui
 import argparse
 import textwrap
@@ -63,7 +64,7 @@ def installService():
 
 
 def terminate(sig, frame):
-    print("Shutting down.")
+    log("Signal caught -- shutting down.")
     webui.stop()
     hw.motorOn(False)
     cam.close()
@@ -100,5 +101,5 @@ def main():
     gpio.setmode(gpio.BCM)
     hw.GPIOInit()
     cam = initCam()
-    print('Starting web UI.')
+    log('Starting web UI.')
     webui.start(cam, hw)
