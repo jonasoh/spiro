@@ -21,7 +21,9 @@ parser = argparse.ArgumentParser(description=textwrap.dedent("""\
                                                                 Running this command without any flags starts the web interface.
                                                                 Specifying flags will perform those actions, then exit."""))
 parser.add_argument('--reset-config', action="store_true", dest="reset",
-                    help="resets all configuration values to defaults")
+                    help="reset all configuration values to defaults")
+parser.add_argument('--reset-password', action="store_true", dest="resetpw",
+                    help="reset web UI password")
 parser.add_argument('--install-service', action="store_true", dest="install",
                     help="install systemd user service file")
 options = parser.parse_args()
@@ -65,15 +67,19 @@ hw = HWControl(cfg)
 # start here.
 def main():
     if options.reset:
+        print("Clearing all configuration values.")
         try:
             os.remove(os.path.expanduser('~/.config/spiro/spiro.conf'))
         except OSError as e:
             print("Could not remove file (~/.config/spiro/spiro.conf):", e)
             raise
-        print("Configuration values were reset.")
     if options.install:
+        print("Installing systemd service file.")
         installService()
-    if any([options.reset, options.install]):
+    if options.resetpw:
+        print("Resetting web UI password.")
+        cfg.set('password', '')
+    if any([options.reset, options.resetpw, options.install]):
         sys.exit()
 
     # no options given, go ahead and start web ui
