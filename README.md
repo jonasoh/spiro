@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/6480370/61460733-a965dd00-a96f-11e9-820a-352e4eebd1e5.png">
+  <img src="https://user-images.githubusercontent.com/6480370/61460733-a965dd00-a96f-11e9-820a-352e4eebd1e5.png" alt="SPIRO logo">
 </p>
 
 SPIRO is a Raspberry Pi based imaging platform designed for highly reproducible, high temporal resolution timelapse imaging of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies etc. SPIRO supports imaging of up to four plates at the same time. It is designed it to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates.
@@ -24,7 +24,9 @@ It is relatively cheap and easy to assemble multiple systems for running larger 
 
 Below is a timelapse sequence of *Arabidopsis* seedlings growing on agar. The image has been heavily downscaled due to size constraints.
 
-![Timelapse example](https://user-images.githubusercontent.com/6480370/60673063-350f4200-9e77-11e9-9fad-f9ec3140b05c.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/6480370/60673063-350f4200-9e77-11e9-9fad-f9ec3140b05c.gif" alt="Timelapse example">
+</p>
 
 Below are examples of the image quality for day and night images. Click for full resolution.
 
@@ -65,7 +67,7 @@ Next, make sure the system is up to date, and install the required tools (answer
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install python3-pip git i2c-tools
+sudo apt install python3-pip git i2c-tools wiringpi
 ```
 
 Then, install the SPIRO software and its dependencies:
@@ -171,6 +173,45 @@ After updating the SPIRO software, or if you for any other reason need to restar
 systemctl --user restart spiro
 ```
 
-### Troubleshooting
+## Troubleshooting
 
-To view the last 50 entries in the SPIRO log, use the command `journalctl --user-init -n 50`. This may give an indication of whatever is causing problems.
+### Viewing the software log
+
+To view the last 50 entries in the SPIRO log:
+
+```
+journalctl --user-unit=spiro -n 50
+```
+
+Or, to view the entire log:
+
+```
+journalctl --user-unit=spiro
+```
+
+### Testing the LED and motor
+
+To check whether the Raspberry Pi can control the LED illuminator, first set the LED control pin to output mode:
+
+```
+gpio -g mode 17 out
+```
+
+You may then toggle it on and off using the command
+
+```
+gpio -g toggle 17
+```
+
+If it doesn't respond to this command, this may indicate either miswiring, or that either the LED strip or the MOSFET is non-functional.
+
+Similarly, you can turn on and off the motor:
+
+```
+gpio -g mode 23 out
+gpio -g toggle 23
+```
+
+When GPIO pin 23 is toggled on, the cube should be locked in position. If it is not, check that your wiring looks good, that the power supply is connected, and that the shaft coupler is firmly attached to both the cube and the motor. 
+
+If the motor is moving jerkily during normal operation, there is likely a problem with the wiring of the coil pins (Ain1&2 and Bin1&2).
