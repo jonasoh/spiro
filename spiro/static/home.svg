@@ -1,26 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.0" id="Group_1_1_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 300 300" enable-background="new 0 0 300 300" xml:space="preserve">
-<g id="Rectangle_1">
-	<g>
-		<rect x="77.6" y="141.4" fill-rule="evenodd" clip-rule="evenodd" width="149.6" height="137"/>
-	</g>
-	<g>
-		<path d="M213.6,155v109.7H91.2V155H213.6 M240.8,127.8H64V292h176.9V127.8L240.8,127.8z"/>
-	</g>
-</g>
-<g id="Rectangle_1_copy">
-	<g>
-		<rect x="123.3" y="230.1" fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" width="53.1" height="61.9"/>
-	</g>
-</g>
-<g id="Polygon_1">
-	<g>
-		<polygon fill-rule="evenodd" clip-rule="evenodd" points="48.3,168 151,31.7 252.8,168.4 		"/>
-	</g>
-	<g>
-		<path d="M151,54.5l74.7,100.2l-150-0.3L151,54.5 M151.1,9L21,181.6l259,0.5L151.1,9L151.1,9z"/>
-	</g>
-</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1147 1004" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="Page-1" serif:id="Page 1" transform="matrix(4.16667,0,0,4.16667,0,0)">
+        <rect x="0" y="0" width="240.945" height="240.945" style="fill:none;"/>
+        <g id="Group-1" serif:id="Group 1">
+            <g transform="matrix(-1,0,0,1,290.444,-5.385)">
+                <rect x="88.529" y="66.472" width="113.386" height="113.386" style="fill:rgb(37,34,35);"/>
+            </g>
+            <g transform="matrix(-0.474314,0.880356,0.880356,0.474314,73.3062,147.774)">
+                <path d="M-5.586,41.355L66.392,41.355L-58.382,-25.87L-96.672,-3.335L-5.586,41.355Z" style="fill:rgb(3,4,5);"/>
+            </g>
+            <g transform="matrix(-0.449216,0.893423,0.893423,0.449216,155.496,141.07)">
+                <path d="M8.991,56.477L66.484,56.477L-60.143,-7.191L-92.311,5.543L8.991,56.477Z" style="fill:rgb(144,194,62);"/>
+            </g>
+            <g transform="matrix(1,0,0,1,110.654,35.961)">
+                <path d="M0,11.491L5.782,0L30.22,11.491L0,11.491Z" style="fill:rgb(35,31,32);"/>
+            </g>
+            <g transform="matrix(1,0,0,1,110.223,61.0865)">
+                <path d="M0,-43.114L-21.694,0L91.692,0L0,-43.114Z" style="fill:rgb(35,31,32);fill-rule:nonzero;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,110.223,84.1066)">
+                <path d="M0,-66.134L65.866,0L91.693,-23.02L0,-66.134Z" style="fill:rgb(165,206,57);"/>
+            </g>
+            <g transform="matrix(1,0,0,1,34.3563,17.9724)">
+                <path d="M0,66.134L54.173,43.114L75.867,0L0,66.134Z" style="fill:rgb(100,101,103);"/>
+            </g>
+            <g transform="matrix(1,0,0,1,110.223,84.1066)">
+                <path d="M0,-66.134L-75.867,0L65.866,0L0,-66.134Z" style="fill:rgb(36,58,27);"/>
+            </g>
+            <g transform="matrix(1,0,0,1,34.3563,225.838)">
+                <path d="M0,-141.732L0,0L43.866,0L43.866,-51.366L91.366,-51.366L91.366,0L141.732,0L141.732,-141.732L0,-141.732Z" style="fill:rgb(118,151,66);"/>
+            </g>
+        </g>
+    </g>
+    <g id="Page-2" serif:id="Page 2" transform="matrix(4.16667,0,0,4.16667,1129.43,0)">
+        <rect x="0" y="0" width="4" height="4" style="fill:none;"/>
+    </g>
 </svg>
