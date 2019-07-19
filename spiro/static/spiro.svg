@@ -1,53 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.0" id="Background_xA0_Image_1_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-	 x="0px" y="0px" viewBox="0 0 212.6 282.3" enable-background="new 0 0 212.6 282.3" xml:space="preserve">
-<line fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" x1="105.9" y1="88.8" x2="113.1" y2="204.5"/>
-<image display="none" overflow="visible" width="211" height="265" id="Background_xA0_Image" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEASABIAAD/7AARRHVja3kAAQAEAAAAHgAA/+4AIUFkb2JlAGTAAAAAAQMA
-EAMCAwYAAAIbAAACJwAAAkn/2wCEABALCwsMCxAMDBAXDw0PFxsUEBAUGx8XFxcXFx8eFxoaGhoX
-Hh4jJSclIx4vLzMzLy9AQEBAQEBAQEBAQEBAQEABEQ8PERMRFRISFRQRFBEUGhQWFhQaJhoaHBoa
-JjAjHh4eHiMwKy4nJycuKzU1MDA1NUBAP0BAQEBAQEBAQEBAQP/CABEIAQkA0wMBIgACEQEDEQH/
-xABeAAEBAAAAAAAAAAAAAAAAAAAABwEBAAAAAAAAAAAAAAAAAAAAABABAQAAAAAAAAAAAAAAAAAA
-cJARAQAAAAAAAAAAAAAAAAAAAJASAQAAAAAAAAAAAAAAAAAAAHD/2gAMAwEAAhEDEQAAAKAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAD//aAAgBAgABBQBu/9oACAEDAAEFAG7/2gAIAQEAAQUAst//2gAIAQICBj8Abv/aAAgBAwIG
-PwBu/9oACAEBAQY/AGW//9k=" transform="matrix(1 0 0 1 -2.2008 26)">
-</image>
-<line fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" x1="110.3" y1="235.9" x2="155.2" y2="252.5"/>
-<line fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" x1="72" y1="221.8" x2="108" y2="235.1"/>
-<line fill="none" stroke="#FDFDFE" stroke-width="7" stroke-miterlimit="10" x1="100.1" y1="131.1" x2="115.7" y2="134.5"/>
-<line fill="none" stroke="#FFFFFF" stroke-width="7" stroke-miterlimit="10" x1="108.3" y1="225.8" x2="110.3" y2="243.7"/>
-<line fill="none" stroke="#FDFDFE" stroke-width="7" stroke-miterlimit="10" x1="98.9" y1="103.1" x2="114.5" y2="106.5"/>
-<polyline fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" points="195.1,234.1 182.7,120.3 62.6,96 72,221.8 
-	"/>
-<line fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" x1="113.1" y1="204.5" x2="195.1" y2="234.1"/>
-<line fill="none" stroke="#FDFDFE" stroke-width="7" stroke-miterlimit="10" x1="58.8" y1="148.1" x2="74.3" y2="151.5"/>
-<line fill="none" stroke="#FDFDFE" stroke-width="7" stroke-miterlimit="10" x1="56.4" y1="121.1" x2="72" y2="124.5"/>
-<line fill="none" stroke="#FFFFFF" stroke-width="6" stroke-miterlimit="10" x1="149.7" y1="207.8" x2="151.7" y2="225.7"/>
-<line fill="none" stroke="#FFFFFF" stroke-width="6" stroke-miterlimit="10" x1="150.9" y1="209.8" x2="152.9" y2="227.7"/>
-<polyline fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" points="34.5,143.4 100.5,156.2 113.6,272.5 
-	30.7,241.9 21.8,113.5 142.2,140.1 155.2,252.5 "/>
-<polyline fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" points="153.8,240.1 155.2,252.5 143.1,248 "/>
-<polyline fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" points="193.7,221.9 195.1,234.3 183,229.8 "/>
-<polyline fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" points="82.2,225.6 71.9,221.8 70.9,207.2 "/>
-<path fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" d="M218.8,307.5"/>
-<path fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" d="M139.7,178.4"/>
-<polyline fill="none" stroke="#020202" stroke-width="4" stroke-miterlimit="10" points="123.5,208.3 113.2,204.5 112.1,189.9 "/>
-<g>
-	<path fill="#020202" d="M47,84.3c0.1,1.6-0.3,2.8-1.3,3.6c-1,0.8-2.3,1-4,0.7l-20.3-4.1c-1.7-0.3-3.1-1.1-4.3-2.3
-		c-1.2-1.2-1.8-2.6-1.9-4.2l-1.5-19.3l7.1,1.4l1.4,18.7l17.4,3.5l-1.4-18.2L14.3,34.3c-1.7-2.1-2.6-4.2-2.8-6.3l-1.2-15.4
-		C10.3,11,10.7,9.8,11.7,9c1-0.8,2.3-1,4-0.7L36,12.4c1.7,0.3,3.1,1.1,4.2,2.3c1.1,1.2,1.7,2.6,1.9,4.2l1.3,17.7l-7.1-1.4l-1.3-17.1
-		l-17.4-3.5l1.2,16.1L43,60.6c1.6,2,2.5,4,2.6,6.1L47,84.3z"/>
-	<path fill="#020202" d="M89.2,63c0.1,1.6-0.3,2.8-1.3,3.6s-2.3,1-4,0.7l-19-3.8l2.3,30.2L60,92.3l-5.8-76.2l26.1,5.3
-		c1.7,0.3,3.1,1.1,4.3,2.3c1.2,1.2,1.8,2.6,1.9,4.2L89.2,63z M82,61l-2.6-33.9l-17.6-3.5l2.6,33.9L82,61z"/>
-	<path fill="#020202" d="M110.8,102.5l-7.1-1.4l-5.8-76.2l7.1,1.4L110.8,102.5z"/>
-	<path fill="#020202" d="M158.4,112.2l-7.5-1.5l-18-43.8l0.9-1.2l12.7,2.6l-2.1-28L126,36.5l5.3,70.2l-7.1-1.4L118.4,29l26.9,5.4
-		c1.7,0.3,3.1,1.1,4.2,2.3c1.1,1.2,1.8,2.6,1.9,4.2l2.2,28.9c0.3,3.7-2.2,5-7.4,3.9c-0.5-0.1-1.3-0.3-2.3-0.5
-		c-1-0.2-1.7-0.4-2.2-0.5C147.4,85.9,152.9,99,158.4,112.2z"/>
-	<path fill="#020202" d="M202.7,115.8c0.1,1.6-0.3,2.8-1.3,3.6c-1,0.8-2.3,1-4,0.7l-22.5-4.5c-1.7-0.3-3.1-1.1-4.2-2.3
-		c-1.1-1.2-1.8-2.6-1.9-4.2l-4.9-65.4c-0.1-1.6,0.3-2.8,1.3-3.6c1-0.8,2.3-1,4-0.7l22.5,4.5c1.7,0.3,3.1,1.1,4.3,2.3
-		c1.2,1.2,1.8,2.6,1.9,4.2L202.7,115.8z M195.5,113.7l-4.9-64.2l-19.7-4l4.9,64.2L195.5,113.7z"/>
+<svg version="1.1" id="Spiral" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 553 212.3" style="enable-background:new 0 0 553 212.3;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#6FBE44;}
+	.st1{fill:#070808;}
+	.st2{fill:#050606;}
+	.st3{fill:#020202;}
+	.st4{fill:#81C341;}
+</style>
+<g id="SPIRO">
+	<g>
+		<path d="M288.6,163.4c0,2.5-0.8,4.5-2.3,6.1c-1.5,1.6-3.5,2.3-6,2.3h-29.8c-2.5,0-4.5-0.8-6.1-2.3c-1.6-1.6-2.4-3.6-2.4-6.1v-30
+			h10.5v29.1h25.6v-28.2l-32.7-39.5c-2.3-2.7-3.4-5.7-3.4-9v-24c0-2.5,0.8-4.5,2.4-6.1c1.6-1.6,3.6-2.3,6.1-2.3h29.8
+			c2.5,0,4.5,0.8,6,2.3c1.5,1.6,2.3,3.6,2.3,6.1v27.5h-10.5V62.7h-25.6v25l32.8,39.5c2.2,2.6,3.3,5.6,3.3,8.9V163.4z"/>
+		<path d="M354.2,116.3c0,2.5-0.8,4.5-2.4,6.1c-1.6,1.6-3.6,2.4-6.1,2.4h-27.9v47h-10.5V53.4h38.4c2.5,0,4.5,0.8,6.1,2.3
+			c1.6,1.6,2.4,3.6,2.4,6.1V116.3z M343.6,115.4V62.7h-25.9v52.8H343.6z"/>
+		<path d="M381.9,171.8h-10.5V53.4h10.5V171.8z"/>
+		<path d="M452.1,171.8h-11l-22-63.4l1.4-2.1h18.8V62.7h-27v109.1h-10.5V53.4h39.7c2.5,0,4.5,0.8,6.1,2.3c1.6,1.6,2.3,3.6,2.3,6.1
+			v45c0,5.7-3.8,8.6-11.5,8.6c-0.8,0-1.9,0-3.3-0.1c-1.5-0.1-2.5-0.1-3.2-0.1C438.6,133.9,445.3,152.8,452.1,171.8z"/>
+		<path d="M517.9,163.4c0,2.5-0.8,4.5-2.4,6.1c-1.6,1.6-3.6,2.3-6.1,2.3h-33.1c-2.5,0-4.5-0.8-6.1-2.3c-1.6-1.6-2.3-3.6-2.3-6.1
+			V61.8c0-2.5,0.8-4.5,2.3-6.1c1.6-1.6,3.6-2.3,6.1-2.3h33.1c2.5,0,4.5,0.8,6.1,2.3c1.6,1.6,2.4,3.6,2.4,6.1V163.4z M507.4,162.5
+			V62.7h-29v99.8H507.4z"/>
+	</g>
+	<g>
+		<path class="st0" d="M281.6,162.4c0,2.5-0.8,4.5-2.3,6.1c-1.5,1.6-3.5,2.3-6,2.3h-29.8c-2.5,0-4.5-0.8-6.1-2.3
+			c-1.6-1.6-2.4-3.6-2.4-6.1v-30h10.5v29.1h25.6v-28.2l-32.7-39.5c-2.3-2.7-3.4-5.7-3.4-9v-24c0-2.5,0.8-4.5,2.4-6.1
+			c1.6-1.6,3.6-2.3,6.1-2.3h29.8c2.5,0,4.5,0.8,6,2.3c1.5,1.6,2.3,3.6,2.3,6.1v27.5h-10.5V61.7h-25.6v25l32.8,39.5
+			c2.2,2.6,3.3,5.6,3.3,8.9V162.4z"/>
+		<path class="st0" d="M347.2,115.3c0,2.5-0.8,4.5-2.4,6.1c-1.6,1.6-3.6,2.4-6.1,2.4h-27.9v47h-10.5V52.4h38.4
+			c2.5,0,4.5,0.8,6.1,2.3c1.6,1.6,2.4,3.6,2.4,6.1V115.3z M336.6,114.4V61.7h-25.9v52.8H336.6z"/>
+		<path class="st0" d="M374.9,170.8h-10.5V52.4h10.5V170.8z"/>
+		<path class="st0" d="M445.1,170.8h-11l-22-63.4l1.4-2.1h18.8V61.7h-27v109.1h-10.5V52.4h39.7c2.5,0,4.5,0.8,6.1,2.3
+			c1.6,1.6,2.3,3.6,2.3,6.1v45c0,5.7-3.8,8.6-11.5,8.6c-0.8,0-1.9,0-3.3-0.1c-1.5-0.1-2.5-0.1-3.2-0.1
+			C431.6,132.9,438.3,151.8,445.1,170.8z"/>
+		<path class="st0" d="M510.9,162.4c0,2.5-0.8,4.5-2.4,6.1c-1.6,1.6-3.6,2.3-6.1,2.3h-33.1c-2.5,0-4.5-0.8-6.1-2.3
+			c-1.6-1.6-2.3-3.6-2.3-6.1V60.8c0-2.5,0.8-4.5,2.3-6.1c1.6-1.6,3.6-2.3,6.1-2.3h33.1c2.5,0,4.5,0.8,6.1,2.3
+			c1.6,1.6,2.4,3.6,2.4,6.1V162.4z M500.4,161.5V61.7h-29v99.8H500.4z"/>
+	</g>
+</g>
+<g id="spiral_black">
+	<polygon class="st1" points="116.4,160.1 85.4,147.1 83.6,80.4 79.5,79.3 81.4,149.7 116.7,164.6 	"/>
+	<polygon class="st2" points="159.2,144.9 127.3,131.7 126.3,65.5 122.3,64.4 123.4,134.3 159.4,149.4 	"/>
+	<polygon class="st2" points="83.4,73 82.8,53.4 78.8,52.3 79.3,72 	"/>
+	<polygon class="st2" points="126.2,58.2 125.8,37.3 121.8,36.2 122.2,57.1 	"/>
+	<polygon class="st3" points="125.7,30 125.5,17.1 121.5,17.1 121.7,29 	"/>
+	<polygon class="st3" points="200.7,50.5 77.9,19.7 78.6,45 82.7,46.1 82.1,24.9 196.9,53.7 203.6,163.4 166.3,147.9 166.6,152.4 
+		208,169.7 	"/>
+	<polygon class="st3" points="50.1,66.3 49.1,70.2 113.1,85.8 120.4,197.9 43.3,165.1 40.5,40.5 155.5,71.6 162.9,179.8 
+		123.6,163.2 123.9,167.7 167.4,186 159.3,68.5 36.3,35.3 39.3,167.8 124.8,204.1 116.9,82.6 	"/>
+</g>
+<g id="spiral_black_1_">
+	<polygon class="st4" points="114.9,159.4 83.9,146.3 82,79.6 78,78.5 79.9,148.9 115.2,163.8 	"/>
+	<polygon class="st4" points="157.6,144.2 125.8,130.9 124.7,64.7 120.7,63.7 121.9,133.5 157.9,148.6 	"/>
+	<polygon class="st4" points="81.9,72.3 81.3,52.6 77.2,51.6 77.8,71.2 	"/>
+	<polygon class="st4" points="124.6,57.5 124.3,36.5 120.3,35.5 120.6,56.4 	"/>
+	<polygon class="st4" points="124.2,29.3 124,16.3 120,16.4 120.2,28.2 	"/>
+	<polygon class="st4" points="199.1,49.8 76.4,18.9 77.1,44.3 81.1,45.3 80.5,24.1 195.3,52.9 202.1,162.6 164.8,147.1 165.1,151.6 
+		206.5,168.9 	"/>
+	<polygon class="st4" points="48.5,65.6 47.6,69.4 111.5,85 118.9,197.1 41.7,164.4 38.9,39.7 154,70.8 161.4,179.1 122.1,162.4 
+		122.4,166.9 165.8,185.3 157.8,67.7 34.8,34.5 37.8,167 123.3,203.3 115.3,81.8 	"/>
 </g>
 </svg>
