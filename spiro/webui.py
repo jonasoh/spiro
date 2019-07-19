@@ -163,9 +163,10 @@ def newpass():
         pwd1 = request.form['pwd1']
         pwd2 = request.form['pwd2']
 
-        if currpass != cfg.get('password'):
-            flash("Current password incorrect.")
-            return render_template('newpass.html')
+        if cfg.get('password') != '':
+            if not checkPass(currpass):
+                flash("Current password incorrect.")
+                return render_template('newpass.html')
 
         if pwd1 == pwd2:
             hash = hashlib.sha1(pwd1.encode('utf-8'))
@@ -415,6 +416,13 @@ def calibrate():
     exposureMode('auto')
     setLive('on')
     return render_template('calibrate.html', calibration=cfg.get('calibration'))
+
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    if request.method == 'POST':
+        if request.form.get('name'):
+            cfg.set('name', request.form.get('name'))
+    return render_template('settings.html', name=cfg.get('name'))
 
 livestream = False
 liveoutput = StreamingOutput()

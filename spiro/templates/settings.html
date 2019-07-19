@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Main view{% endblock %}
+{% block title %}Experiment view{% endblock %}
 {% block content %}
 <div class="pure-g">
 <div class="pure-u-1-5">
@@ -11,23 +11,29 @@
 <li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
 <li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Day image settings</a></li>
 <li class="pure-menu-item"><a href="/exposure/night" class="pure-menu-link">Night image settings</a></li>
-<li class="pure-menu-item pure-menu-selected"><a href="/calibrate" class="pure-menu-link">Start position calibration</a></li>
-<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
+<li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Start position calibration</a></li>
+<li class="pure-menu-item pure-menu-selected"><a href="/experiment" class="pure-menu-link">Start/view experiment</a></li>
 <li class="pure-menu-item"><a href="/logout" class="pure-menu-link">Log out</a></li>
 <li class="pure-menu-item"><a href="/settings" class="pure-menu-link">System settings</a></li>
 </ul>
 </div>
 </div>
 <div class="pure-u-4-5">
-<form class="pure-form" method="post">
+<div class="padtop padleft">
+<form method="post" class="pure-form pure-g">
 <fieldset>
-<legend class="label">Set up start position</legend>
-<input type="number" step="1" value="{{ calibration }}" id="calibration" name="calibration">
-<a href="#" onclick="tryCalibration();" class="pure-button">Try value</a>
-<button type="submit" class="pure-button pure-button-primary">Save value</button>
+<legend class="label">Settings</legend>
+<div class="pure-u-3-4">
+<label for="name">System name</label>
+<input type="text" name="name" value="{{ name }}">
+</div>
+<div class="pure-u-1-4">
+<button type="submit" class="pure-button pure-button-primary">Save values</button>
+<a href="/newpass" class="pure-button pure-button-primary passchange">Change password</a>
+</div>
 </fieldset>
 </form>
-<div>
-<img src="/stream.mjpg" class="pure-img">
+</div>
+</div>
 </div>
 {% endblock %}

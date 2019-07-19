@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block title %}Main view{% endblock %}
 {% block content %}
-<div class="pure-g">
-<div class="pure-u-1-5">
+<div class="layout">
+<div class="menu">
 <div class="logo">
 <img src="{{ url_for('static', filename='spiro.svg') }}" class="pure-img">
 </div>
@@ -14,13 +14,20 @@
 <li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Start position calibration</a></li>
 <li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Start/view experiment</a></li>
 <li class="pure-menu-item"><a href="/logout" class="pure-menu-link">Log out</a></li>
-<li class="pure-menu-item"><a href="/newpass" class="pure-menu-link">Change password</a></li>
+<li class="pure-menu-item"><a href="/settings" class="pure-menu-link">System settings</a></li>
 </ul>
 </div>
 </div>
-<div class="pure-u-4-5">
-<div class="pure-g" id="topmenu">
-<div class="pure-u-3-24 vcenter" id="led">
+<div class="main">
+<div class="pure-g">
+<div class="pure-u-18-24">
+<div class="liveview">
+<img src="stream.mjpg" class="pure-img fullheight">
+</div>
+</div>
+<div class="pure-u-6-24">
+<div class="toolbar">
+<div class="tool">
 <div class="onoffswitch">
 {% if led %}
 <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onclick="toggleLED(this.checked)" checked>
@@ -33,11 +40,11 @@
 </label>
 </div>
 </div>
-<div class="pure-u-7-24 vcenter" id="zoom">
+<div class="tool">
 <label for="zoom">Zoom</label>
 <input name="zoom" type="range" id="zoom" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
 </div>
-<div class="pure-u-2-24 vcenter" id="pan">
+<div class="tool">
 Pan
 <div class="pan">
 <div class="pan-left">
@@ -54,21 +61,16 @@ Pan
 </div>
 </div>
 </div>
-<div class="pure-u-9-24 vcenter" id="focus">
+<div class="tool">
 <form class="pure-form">
 <label for="focusslider">Focus</label>
 <input id="focusslider" type="range" id="focus" min="10" max="1000" step="10" value="{{ focus }}" oninput="updateFocusNumber(this.value);">
 <input id="focusnumber" type="number" min="10" max="1000" step="1" value="{{ focus }}" oninput="updateFocusSlider(this.value);">
 </form>
 </div>
-<div class="pure-u-3-24 vcenter" id="rotate">
+<div class="tool">
 <a href="#" onclick="bgGet('/rotate/100')" class="pure-button"><img src="{{ url_for('static', filename='rotate90.svg') }}" class="icon"></a>
 <a href="#" onclick="bgGet('/findstart')" class="pure-button"><img src="{{ url_for('static', filename='home.svg') }}" class="icon"></a>
-</div>
-</div>
-<div id="main">
-<div>
-<img src="stream.mjpg" class="pure-img">
 </div>
 </div>
 </div>
