@@ -14,8 +14,8 @@
 <li class="pure-menu-item selected"><a href="/live/on" class="pure-menu-link">Live view</a></li>
 <li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Day image settings</a></li>
 <li class="pure-menu-item"><a href="/exposure/night" class="pure-menu-link">Night image settings</a></li>
-<li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Start position calibration</a></li>
-<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Start/view experiment</a></li>
+<li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Calibrate motor</a></li>
+<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
 <li class="pure-menu-item"><a href="/logout" class="pure-menu-link">Log out</a></li>
 <li class="pure-menu-item"><a href="/settings" class="pure-menu-link">System settings</a></li>
 </ul>
@@ -23,12 +23,13 @@
 </div>
 <div class="main">
 <div class="pure-g">
-<div class="pure-u-18-24">
+<div class="pure-u-24-24">
 <div class="liveview">
 <img src="stream.mjpg" class="pure-img fullheight liveview">
 </div>
 </div>
-<div class="pure-u-6-24">
+</div>
+</div>
 <div class="toolbar">
 <div class="tool">
 <div class="onoffswitch">
@@ -42,13 +43,7 @@
 <span class="onoffswitch-switch"></span>
 </label>
 </div>
-</div>
 <div class="tool">
-<label for="zoom">Zoom</label>
-<input name="zoom" type="range" id="zoom" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
-</div>
-<div class="tool">
-Pan
 <div class="pan">
 <div class="pan-left">
 <a href="#" onclick="bgGet('/pan/x/-0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-left"></a>
@@ -65,15 +60,21 @@ Pan
 </div>
 </div>
 <div class="tool">
-<form class="pure-form">
-<label for="focusslider">Focus</label>
-<input id="focusslider" type="range" id="focus" min="10" max="1000" step="10" value="{{ focus }}" oninput="updateFocusNumber(this.value);">
-<input id="focusnumber" type="number" min="10" max="1000" step="1" value="{{ focus }}" oninput="updateFocusSlider(this.value);">
-</form>
+<a href="#" onclick="bgGet('/rotate/100')" class="pure-button green toolbutton"><img src="{{ url_for('static', filename='rotate90.svg') }}" class="icon"></a>
 </div>
 <div class="tool">
-<a href="#" onclick="bgGet('/rotate/100')" class="pure-button green"><img src="{{ url_for('static', filename='rotate90.svg') }}" class="icon"></a>
-<a href="#" onclick="bgGet('/findstart')" class="pure-button green"><img src="{{ url_for('static', filename='home.svg') }}" class="icon"></a>
+<a href="#" onclick="bgGet('/findstart')" class="pure-button green toolbutton"><img src="{{ url_for('static', filename='home.svg') }}" class="icon"></a>
+</div>
+<div class="tool zoom">
+<label for="zoom">Zoom</label>
+<input name="zoom" type="range" id="zoom" class="zoom" min="20" max="100" value="100" oninput="bgGet('/zoom/' + this.value);">
+</div>
+<div class="tool focus">
+<form class="pure-form">
+<label for="focusslider">Focus</label>
+<input id="focusnumber" type="number" min="10" max="1000" step="1" value="{{ focus }}" oninput="updateFocusSlider(this.value);">
+<input class="focusslider" id="focusslider" type="range" id="focus" min="10" max="1000" step="10" value="{{ focus }}" oninput="updateFocusNumber(this.value);">
+</form>
 </div>
 </div>
 </div>
