@@ -127,7 +127,7 @@ def checkPass(pwd):
 def index():
     if experimenter.running:
         return redirect(url_for('experiment'))
-    return render_template('index.html', live=livestream, focus=cfg.get('focus'), led=hw.led)
+    return render_template('index.html', live=livestream, focus=cfg.get('focus'), led=hw.led, name=cfg.get('name'))
 
 @app.route('/empty')
 def empty():
@@ -166,7 +166,7 @@ def newpass():
         if cfg.get('password') != '':
             if not checkPass(currpass):
                 flash("Current password incorrect.")
-                return render_template('newpass.html')
+                return render_template('newpass.html', name=cfg.get('name'))
 
         if pwd1 == pwd2:
             hash = hashlib.sha1(pwd1.encode('utf-8'))
@@ -179,7 +179,7 @@ def newpass():
             flash("Passwords do not match.")
             return redirect(url_for('newpass'))
     else:
-        return render_template('newpass.html', nopass=cfg.get('password') == '')
+        return render_template('newpass.html', nopass=cfg.get('password') == '', name=cfg.get('name'))
 
 @not_while_running
 @app.route('/zoom/<int:value>')
@@ -346,7 +346,7 @@ def experiment():
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
                            starttime=time.ctime(experimenter.starttime), delay=experimenter.delay,
                            endtime=time.ctime(experimenter.endtime), diskspace=diskspace, duration=experimenter.duration,
-                           status=experimenter.status, nshots=experimenter.nshots, diskreq=diskreq)
+                           status=experimenter.status, nshots=experimenter.nshots, diskreq=diskreq, name=cfg.get('name'))
 
 @not_while_running
 def exposureMode(time):
@@ -401,7 +401,7 @@ def exposure(time):
     if dayshutter:
         ds = 1000000 // dayshutter
     return render_template('exposure.html', shutter=cfg.get(time+'shutter'), time=time, 
-                           nightshutter=ns, dayshutter=ds)
+                           nightshutter=ns, dayshutter=ds, name=cfg.get('name'))
 
 @not_while_running
 @app.route('/calibrate', methods=['GET', 'POST'])
@@ -415,7 +415,7 @@ def calibrate():
             flash("New value for start position: " + str(value))
     exposureMode('auto')
     setLive('on')
-    return render_template('calibrate.html', calibration=cfg.get('calibration'))
+    return render_template('calibrate.html', calibration=cfg.get('calibration'), name=cfg.get('name'))
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():

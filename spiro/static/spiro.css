@@ -1,6 +1,6 @@
 ul.pure-menu-list {
     font-family: 'Agency FB', sans-serif;
-    font-size: 24pt;
+    font-size: 20pt;
 }
 #layout {
     margin-left: auto;
@@ -14,16 +14,41 @@ ul.pure-menu-list {
     padding-left: 25px;
     border-top: 25px;
 }
+div.layout {
+    position: relative;
+}
+div.toolbar {
+    padding: 15px;
+}
+div.tool {
+    margin-top: 20px;
+}
+div.main, div.menu {
+    display: inline-block;
+}
+div.name {
+    padding-left: 27px;
+    font-family: 'Agency FB', sans-serif;
+    font-size: 24pt;
+    font-style: italic;
+    color: grey;
+}
 #main {
     padding-top: 0px;
 }
-div#menu {
-    margin-left: auto;
-    max-width: 256px;
+div.menu {
+    width: 275px;
+    position: fixed;
+}
+div.main {
+    margin-left: 275px;
 }
 div.vcenter {
     margin-top: auto;
     margin-bottom: auto;
+}
+.fullheight {
+    max-height:100vh;
 }
 div.logo {
     margin-right: auto;
@@ -81,6 +106,10 @@ legend.label {
     font-family: 'Agency FB', sans-serif;
     font-size: 24pt;
     font-weight: bold;
+    letter-spacing: 0;
+}
+a.passchange {
+    margin-top: 20px;
 }
 ul.flashes {
     margin-left: 0px;
@@ -106,8 +135,8 @@ div.pan {
 input.zoom {
     transform:rotate(180deg);
 }
-#focus, #zoom {
-    width: 200px;
+#zoom, #focusslider {
+    width: 95%
 }
 div.pan-left {
     position: absolute;
@@ -201,14 +230,12 @@ img.pan-down {
 }
 input[type=range] {
     -webkit-appearance: none;
-    width: 100%;
     margin: 3.3px 0;
 }
 input[type=range]:focus {
     outline: none;
 }
 input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
     height: 11.4px;
     cursor: pointer;
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
@@ -231,7 +258,6 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     background: rgba(13, 13, 13, 0.44);
 }
 input[type=range]::-moz-range-track {
-    width: 100%;
     height: 11.4px;
     cursor: pointer;
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
@@ -249,7 +275,6 @@ input[type=range]::-moz-range-thumb {
     cursor: pointer;
 }
 input[type=range]::-ms-track {
-    width: 100%;
     height: 11.4px;
     cursor: pointer;
     background: transparent;
