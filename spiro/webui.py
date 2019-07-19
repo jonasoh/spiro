@@ -451,7 +451,7 @@ def start(cam, myhw):
         camera.meter_mode = 'spot'
         camera.rotation = 90
         setLive('on')
-        serve(app, listen='*:8080')
+        serve(app, listen='*:8080', threads=16)
     finally:
         stop()
 
