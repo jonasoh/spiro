@@ -1,3 +1,12 @@
+body {
+    background-color: hsl(0, 0%, 22%);
+}
+label {
+    color: grey;
+}
+legend {
+    color: grey;
+}
 ul.pure-menu-list {
     font-family: 'Agency FB', sans-serif;
     font-size: 20pt;
@@ -25,6 +34,9 @@ div.tool {
 }
 div.main, div.menu {
     display: inline-block;
+}
+.green {
+    background-color: #6FBE44;
 }
 div.name {
     padding-left: 27px;
@@ -64,6 +76,7 @@ div.logo img {
 }
 #disk, #diskavail {
     padding-left: 15px;
+    color: grey;
 }
 div.explabel {
     margin-top: 15px;
@@ -107,6 +120,7 @@ legend.label {
     font-size: 24pt;
     font-weight: bold;
     letter-spacing: 0;
+    color: grey;
 }
 a.passchange {
     margin-top: 20px;

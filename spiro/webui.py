@@ -147,7 +147,7 @@ def login():
             log("Incorrect password in web login.")
             return redirect(url_for('login'))
     else:
-        return render_template('login.html')
+        return render_template('login.html', name=cfg.get('name'))
 
 @public_route
 @app.route('/logout')
