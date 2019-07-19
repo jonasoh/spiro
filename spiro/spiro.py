@@ -64,6 +64,7 @@ def installService():
 
 
 def terminate(sig, frame):
+    global shutdown
     if sig == signal.SIGALRM:
         # force shutdown
         log("Shut down time-out, force-quitting.")
@@ -75,7 +76,7 @@ def terminate(sig, frame):
         shutdown = True
         signal.alarm(10)
 
-    log("Signal", sig, "caught -- shutting down.")
+    log("Signal " + str(sig) + " caught -- shutting down.")
     webui.stop()
     hw.motorOn(False)
     cam.close()
