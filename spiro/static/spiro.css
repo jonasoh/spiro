@@ -80,6 +80,9 @@ div.vcenter {
 .fullheight {
     max-height: 95vh;
 }
+img.calibrate {
+    max-height: 80vh;
+}
 div.logo {
     margin-right: auto;
     margin-left: auto;

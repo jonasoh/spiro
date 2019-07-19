@@ -8,8 +8,8 @@
 <meta http-equiv="refresh" content="5">
 {% endif %}
 {% endif %}
-<div class="pure-g">
-<div class="pure-u-1-5">
+<div class="layout">
+<div class="menu">
 <div class="logo">
 <img src="{{ url_for('static', filename='spiro.svg') }}" class="pure-img">
 </div>
@@ -22,21 +22,23 @@
 <li class="pure-menu-item pure-menu-disabled">Live view</li>
 <li class="pure-menu-item pure-menu-disabled">Set up day image</li>
 <li class="pure-menu-item pure-menu-disabled">Set up night image</li>
-<li class="pure-menu-item pure-menu-disabled">Start position calibration</li>
+<li class="pure-menu-item pure-menu-disabled">Calibrate motor</li>
 {% else %}
 <li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
 <li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Day image settings</a></li>
 <li class="pure-menu-item"><a href="/exposure/night" class="pure-menu-link">Night image settings</a></li>
-<li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Start position calibration</a></li>
+<li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Calibrate motor</a></li>
 {% endif %}
-<li class="pure-menu-item selected"><a href="/experiment" class="pure-menu-link">Start/view experiment</a></li>
+<li class="pure-menu-item selected"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
 <li class="pure-menu-item"><a href="/logout" class="pure-menu-link">Log out</a></li>
 <li class="pure-menu-item"><a href="/settings" class="pure-menu-link">System settings</a></li>
 </ul>
 </div>
 </div>
+<div class="main">
+<div class="pure-g">
 {% if running %}
-<div class="pure-u-2-5">
+<div class="pure-u-12-24">
 <div>
 <h2>Experiment info</h2>
 <p><b>Status:</b> {{ status }}</p>
@@ -56,7 +58,7 @@
 </form>
 </div>
 {% else %}
-<div class="pure-u-3-5">
+<div class="pure-u-24-24">
 <div class="padtop padleft padright">
 <form method="post" class="pure-form pure-form-aligned">
 <fieldset>
@@ -92,7 +94,7 @@
 {% endif %}
 </div>
 {% if running %}
-<div class="pure-u-2-5">
+<div class="pure-u-12-24">
 <div>
 <img src="lastcapture.jpg" class="pure-img">
 </div>

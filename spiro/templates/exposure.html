@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block title %}Exposure controls{% endblock %}
 {% block content %}
-<div class="pure-g">
-<div class="pure-u-1-5">
+<div class="layout">
+<div class="menu">
 <div class="logo">
 <img src="{{ url_for('static', filename='spiro.svg') }}" class="pure-img">
 </div>
@@ -19,14 +19,16 @@
 <li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Day image settings</a></li>
 <li class="pure-menu-item selected"><a href="/exposure/night" class="pure-menu-link">Night image settings</a></li>
 {% endif %}
-<li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Start position calibration</a></li>
-<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Start/view experiment</a></li>
+<li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Calibrate motor</a></li>
+<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
 <li class="pure-menu-item"><a href="/logout" class="pure-menu-link">Log out</a></li>
 <li class="pure-menu-item"><a href="/settings" class="pure-menu-link">System settings</a></li>
 </ul>
 </div>
 </div>
-<div class="pure-u-2-5">
+<div class="main">
+<div class="pure-g">
+<div class="pure-u-12-24">
 <div class="imgview">
 <img class="pure-img" src="/stream.mjpg">
 <div class="topleft-caption">Live view</div>
@@ -45,7 +47,7 @@
 </fieldset>
 </form>
 </div>
-<div class="pure-u-2-5">
+<div class="pure-u-12-24">
 <div class="imgview">
 {% if time == 'day' %}
 <a href="/daystill.jpg" target="_blank">
