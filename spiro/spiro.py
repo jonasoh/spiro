@@ -64,7 +64,18 @@ def installService():
 
 
 def terminate(sig, frame):
-    log("Signal caught -- shutting down.")
+    if sig == signal.SIGALRM:
+        # force shutdown
+        log("Shut down time-out, force-quitting.")
+        cam.close()
+        sys.exit()
+
+    if not shutdown:
+        # give the app 10 seconds to shut down, then force it
+        shutdown = True
+        signal.alarm(10)
+
+    log("Signal", sig, "caught -- shutting down.")
     webui.stop()
     hw.motorOn(False)
     cam.close()
@@ -72,10 +83,11 @@ def terminate(sig, frame):
     sys.exit()
 
 
+shutdown = False
 cfg = Config()
 cam = None
 hw = HWControl()
-for sig in [signal.SIGTERM, signal.SIGINT, signal.SIGQUIT, signal.SIGHUP]:
+for sig in [signal.SIGTERM, signal.SIGINT, signal.SIGQUIT, signal.SIGHUP, signal.SIGALRM]:
     signal.signal(sig, terminate)
 
 # start here.
