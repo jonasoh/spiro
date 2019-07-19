@@ -166,7 +166,7 @@ div.pan-left {
 }
 img.pan-left {
     transform: rotate(-90deg);
-    height: 10px;
+    height: 20px;
 }
 div.pan-right {
     position: absolute;
@@ -177,7 +177,7 @@ div.pan-right {
 }
 img.pan-right {
     transform: rotate(90deg);
-    height: 10px;
+    height: 20px;
 }
 div.pan-up {
     position: absolute;
@@ -187,7 +187,7 @@ div.pan-up {
     width: 10px;
 }
 img.pan-up {
-    height: 10px;
+    height: 20px;
 }
 div.pan-down {
     position: absolute;
@@ -198,7 +198,7 @@ div.pan-down {
 }
 img.pan-down {
     transform: rotate(180deg);
-    height: 10px;
+    height: 20px;
 }
 /* on/off switch courtesy of proto.io */
 
