@@ -163,7 +163,7 @@ ul.flashes li {
     font-size: 16px;
 }
 img.icon {
-    width: 25px;
+    width: 45px;
     height: auto;
 }
 div.pan {
@@ -172,8 +172,11 @@ div.pan {
     width: 30px;
     position: relative;
 }
-a.toolbutton {
-    margin-left: 6px;
+a.rotate {
+    margin-left: 16px;
+}
+a.rotate {
+    margin-left: 13px;
 }
 input.zoom {
     transform:rotate(270deg);
@@ -334,7 +337,7 @@ input[type=range]::-moz-range-track {
     cursor: pointer;
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
     background: rgba(0, 0, 0, 0.44);
-    border-radius: 1.3px;
+    border-radius: 0px;
     border: 0.2px solid #010101;
 }
 input[type=range]::-moz-range-thumb {
