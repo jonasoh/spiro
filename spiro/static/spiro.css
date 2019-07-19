@@ -200,6 +200,10 @@ img.pan-down {
     transform: rotate(180deg);
     height: 20px;
 }
+li.selected > a {
+    color: hsl(99, 75%, 64%);
+}
+
 /* on/off switch courtesy of proto.io */
 
 .onoffswitch {
