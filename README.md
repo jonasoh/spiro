@@ -73,7 +73,7 @@ sudo apt install python3-pip git i2c-tools wiringpi
 Then, install the SPIRO software and its dependencies:
 
 ```
-pip3 install git+https://github.com/jonasoh/spiro#egg=spiro
+sudo pip3 install git+https://github.com/jonasoh/spiro#egg=spiro
 ```
 
 Finally, instruct the system to automatically run the SPIRO control software on boot:
