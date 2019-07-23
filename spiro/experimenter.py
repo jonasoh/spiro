@@ -37,6 +37,7 @@ class Experimenter(threading.Thread):
         # determine if it's day or not.
         self.cam.exposure_mode = "auto"
         self.cam.shutter_speed = 0
+        self.cam.meter_mode = 'matrix'
 
         # to determine day/night we use a rotating list of the last 5 exposure readings
         # exposure may take a very long time to settle, so we use some heuristics to determine whether it is day or night
@@ -200,3 +201,4 @@ class Experimenter(threading.Thread):
             self.stop_experiment = False
             self.running = False
             self.cam.exposure_mode = "auto"
+            self.cam.meter_mode = 'spot'
