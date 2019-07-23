@@ -1,2 +1,2 @@
-recursive-include spiro/static *
-recursive-include spiro/templates *.html
+include spiro/static/*
+include spiro/templates/*.html

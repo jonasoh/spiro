@@ -8,5 +8,6 @@ setup(name = 'spiro',
       author_email = 'jonas.ohlsson@slu.se',
       description = 'Control software for the SPIRO biological imaging system',
       url = 'https://github.com/jonasoh/spiro',
+      include_package_data = True,
       zip_safe = False,
       )
