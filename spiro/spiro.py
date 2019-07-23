@@ -50,14 +50,16 @@ def installService():
         print("Could not make directory (~/.config/systemd/user):", e)
     try:
         with open(os.path.expanduser('~/.config/systemd/user/spiro.service'), 'w') as f:
+            if (os.path.exists('/home/pi/.local/bin/spiro')): exe = '/home/pi/.local/bin/spiro'
+            else: exe = '/usr/local/bin/spiro'
             f.write(textwrap.dedent("""\
                 [Unit]
                 Description=SPIRO control software
                 [Service]
-                ExecStart=/home/pi/.local/bin/spiro
+                ExecStart={}
                 [Install]
                 WantedBy=default.target
-                """))
+                """).format(exe))
     except OSError as e:
         print("Could not write file (~/.config/systemd/user/spiro.service):", e)
     print("Systemd service file installed.")
