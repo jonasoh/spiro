@@ -30,6 +30,11 @@ class Config(object):
         self.cfgdir = os.path.expanduser("~/.config/spiro")
         self.cfgfile = os.path.join(self.cfgdir, "spiro.conf")
         self.read()
+        if os.path.exists(self.cfgfile):
+            st = os.stat(self.cfgfile)
+            self.mtime = st.st_mtime
+        else:
+            self.mtime = 0
 
 
     def read(self):
@@ -45,6 +50,13 @@ class Config(object):
 
 
     def get(self, key):
+        if os.path.exists(self.cfgfile):
+            st = os.stat(self.cfgfile)
+            mt = st.st_mtime
+            if mt > self.mtime:
+                # config file was changed on disk -- reload it
+                self.read()
+
         return self.config.get(key, self.defaults.get(key))
 
 
