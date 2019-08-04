@@ -144,6 +144,7 @@ class Experimenter(threading.Thread):
             self.nshots = self.duration * 24 * 60 // self.delay
             self.cam.exposure_mode = "auto"
             self.cam.shutter_speed = 0
+            self.hw.LEDControl(False)
 
             for i in range(4):
                 platedir = "plate" + str(i + 1)
