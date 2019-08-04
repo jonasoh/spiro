@@ -340,7 +340,12 @@ def experiment():
         elif request.form['action'] == 'stop':
             experimenter.stop()
             time.sleep(1)
-    df = shutil.disk_usage(experimenter.dir)
+
+    if os.path.exists(experimenter.dir):
+        df = shutil.disk_usage(experimenter.dir)
+    else:
+        df = shutil.disk_usage(os.path.expanduser('~'))
+
     diskspace = round(df.free / 1024 ** 3, 1)
     diskreq = round(experimenter.nshots * 4 * 4 / 1024, 1)
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
