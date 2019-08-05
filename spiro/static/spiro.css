@@ -3,10 +3,10 @@ body {
     background-color: hsl(0, 0%, 22%);
 }
 label, legend {
-    color: grey;
+    color: white;
 }
 ul.pure-menu-list {
-    font-family: 'Agency FB', sans-serif;
+    font-family: 'Saira Condensed', sans-serif;
     font-size: 1.7em;
 }
 #topmenu {
@@ -27,10 +27,13 @@ div.toolbar {
 }
 div.tool {
     margin-top: 20px;
-    font-family: 'agency fb', sans-serif;
+    font-family: 'Saira Condensed', sans-serif;
+    font-weight: bold;
     color: grey;
 }
-
+div.expinfo {
+    color: grey;
+}
 .toolbar .tool, .focus .pure-form {
     display: flex;
     flex-direction: column;
@@ -42,10 +45,10 @@ div.tool {
 }
 div.name {
     padding-left: 27px;
-    font-family: 'Agency FB', sans-serif;
+    font-family: 'Aldrich', sans-serif;
     font-size: 24pt;
-    font-style: italic;
-    color: grey;
+    color: white;
+    text-shadow: 0px 0px 4px black;
 }
 #main {
     padding-top: 0px;
@@ -125,11 +128,11 @@ div.login {
     max-width: 500px;
 }
 legend.label {
-    font-family: 'Agency FB', sans-serif;
+    font-family: 'Saira Condensed', sans-serif;
     font-size: 24pt;
     font-weight: bold;
     letter-spacing: 0;
-    color: grey;
+    color: white;
 }
 a.passchange {
     margin-top: 20px;
@@ -221,6 +224,7 @@ img.pan-down {
 }
 li.selected > a {
     color: hsl(99, 75%, 64%);
+    text-shadow: 0px 0px 4px black;
 }
 
 /* on/off switch courtesy of proto.io */
@@ -243,7 +247,7 @@ li.selected > a {
 }
 .onoffswitch-inner:before, .onoffswitch-inner:after {
     display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-    font-size: 16px; color: white; font-family: 'agency fb', sans-serif; font-weight: bold;
+    font-size: 16px; color: white; font-family: 'Saira Condensed', sans-serif; font-weight: bold;
     box-sizing: border-box;
 }
 .onoffswitch-inner:before {
