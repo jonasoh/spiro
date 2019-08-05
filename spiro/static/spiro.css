@@ -1,10 +1,7 @@
 body {
     background-color: hsl(0, 0%, 22%);
 }
-label {
-    color: grey;
-}
-legend {
+label, legend {
     color: grey;
 }
 ul.pure-menu-list {
@@ -12,8 +9,6 @@ ul.pure-menu-list {
     font-size: 20pt;
 }
 #layout {
-    margin-left: auto;
-    margin-right: auto;
     max-width:1280px;
 }
 #topmenu {
@@ -24,7 +19,8 @@ ul.pure-menu-list {
     border-top: 25px;
 }
 div.layout {
-    position: relative;
+    display: flex;
+    padding-top: 8px;
 }
 div.toolbar {
     padding: 15px;
@@ -35,7 +31,6 @@ div.tool {
     color: grey;
 }
 div.main, div.menu, div.toolbar {
-    display: inline-block;
 }
 .green {
     background-color: #6FBE44;
@@ -55,37 +50,27 @@ div.liveview {
 }
 img.liveview {
     border-radius: 20px;
-    margin: 5px;
     box-shadow: 0px 0px 2px black;
 }
 div.menu {
-    width: 250px;
-    position: fixed;
 }
 div.toolbar {
-    position: fixed;
-    right: 15px;
-    top: 15px;
     width: 70px;
     border-radius: 20px;
     background-color: rgba(0,0,0,0.6);
 }
 div.main {
-    margin-left: 250px;
 }
 div.vcenter {
     margin-top: auto;
     margin-bottom: auto;
 }
 .fullheight {
-    max-height: 95vh;
 }
 img.calibrate {
     max-height: 80vh;
 }
 div.logo {
-    margin-right: auto;
-    margin-left: auto;
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -167,7 +152,6 @@ img.icon {
     height: auto;
 }
 div.pan {
-    margin-left: 20px;
     height: 30px;
     width: 30px;
     position: relative;
@@ -190,20 +174,17 @@ div.zoom {
     position: relative;
 }
 div.zoom > label {
-    margin-left: 20px;
 }
 div.focus {
-    height: 150px;
     position: relative;
 }
 div.focus > form > label {
-    margin-left: 20px;
 }
 input.focusslider {
     width: 80px;
     position: absolute;
     left: -1px;
-    top: 100px;
+    top: 110px;
     transform: rotate(90deg);
 }
 div.pan-left {
