@@ -296,7 +296,6 @@ def takePicture(obj):
 def grabExposure(time):
     global dayshutter, nightshutter
     if time in ['day', 'night']:
-        setLive('off')
         if time == 'day':
             takePicture(daystill)
             dayshutter = camera.shutter_speed
@@ -305,7 +304,6 @@ def grabExposure(time):
             takePicture(nightstill)
             camera.color_effects = None
             nightshutter = camera.shutter_speed
-        setLive('on')
         return redirect(url_for('exposure', time=time))
     else:
         abort(404)
