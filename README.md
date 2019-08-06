@@ -108,7 +108,7 @@ To manage your images you need an SFTP client. For managing SPIRO (e.g., for upd
 
 ### Connecting to the web interface
 
-SPIRO is controlled via its web interface. To access the system, point your web browser to the address *http://**a.b.c.d**/*, where *a.b.c.d* is the IP address you noted previously. At the first access, you are asked to set a password for the system. **Do not use the same password as you set previously!** This password is for the web interface and should be regarded as a low-privilege password.
+SPIRO is controlled via its web interface. To access the system, point your web browser to the address *http://**a.b.c.d:8080**/*, where *a.b.c.d* is the IP address you noted previously (the server always runs on port 8080). At the first access, you are asked to set a password for the system. **Do not use the same password as you set previously!** This password is for the web interface and should be regarded as a low-privilege password.
 
 ### Setting up imaging
 
