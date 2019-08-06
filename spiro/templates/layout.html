@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='pure-min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='grids-responsive-min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='spiro.css') }}">
-<link href="https://fonts.googleapis.com/css?family=Saira+Condensed&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Aldrich&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
@@ -15,6 +14,15 @@
 <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
 <link rel="apple-touch-icon" href="{{ url_for('static', filename='apple-touch-icon-152x152.png') }}">
 <script src="{{ url_for('static', filename='spiro.js') }}" type="text/javascript"></script>
+<style>
+@font-face {
+    font-family: 'Saira Condensed';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Saira Condensed Regular'), local('SairaCondensed-Regular'), url({{ url_for('static', filename='SairaCondensed-Regular.woff2') }}) format('woff2');
+}
+</style>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 <ul class="flashes">
