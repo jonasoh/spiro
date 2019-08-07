@@ -2,7 +2,7 @@
   <img src="https://user-images.githubusercontent.com/6480370/61460733-a965dd00-a96f-11e9-820a-352e4eebd1e5.png" alt="SPIRO logo">
 </p>
 
-SPIRO is a Raspberry Pi based imaging platform designed for highly reproducible, high temporal resolution timelapse imaging of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies etc. SPIRO supports imaging of up to four plates at the same time. It is designed it to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates.
+SPIRO is an imaging platform designed for making highly reproducible, high temporal resolution timelapse sequences of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies, etc. SPIRO supports imaging of up to four plates at the same time. It is designed it to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates.
 
 The image below is a link to a YouTube video showing some of its design and features.
 
@@ -28,7 +28,7 @@ Below is a timelapse sequence of *Arabidopsis* seedlings growing on agar. The im
   <img src="https://user-images.githubusercontent.com/6480370/60673063-350f4200-9e77-11e9-9fad-f9ec3140b05c.gif" alt="Timelapse example">
 </p>
 
-Below are examples of the image quality for day and night images. Click for full resolution.
+Here are a couple of examples of the image quality for day and night images. Click for full resolution.
 
 ![Day example picture](https://user-images.githubusercontent.com/6480370/60673390-e2825580-9e77-11e9-853c-9be434a332e5.jpg)
 
