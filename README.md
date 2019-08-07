@@ -215,3 +215,7 @@ gpio -g toggle 23
 When GPIO pin 23 is toggled on, the cube should be locked in position. If it is not, check that your wiring looks good, that the power supply is connected, and that the shaft coupler is firmly attached to both the cube and the motor. 
 
 If the motor is moving jerkily during normal operation, there is likely a problem with the wiring of the coil pins (Ain1&2 and Bin1&2).
+
+## Licensing
+
+The code for SPIRO is licensed under a 2-clause BSD license, allowing redistribution and modification of the source code as long as the original license and copyright notice are retained. SPIRO includes the fonts Aldrich and Saira Condensed, for which the licenses can be found under the `doc/licenses` directory.
