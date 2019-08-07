@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='pure-min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='grids-responsive-min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='spiro.css') }}">
-<link href="https://fonts.googleapis.com/css?family=Aldrich&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
 <!--[if IE]><link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}" /><![endif]-->
@@ -21,6 +20,13 @@
     font-weight: 400;
     font-display: swap;
     src: local('Saira Condensed Regular'), local('SairaCondensed-Regular'), url({{ url_for('static', filename='SairaCondensed-Regular.woff2') }}) format('woff2');
+}
+@font-face {
+    font-family: 'Aldrich Regular';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Aldrich Regular'), local('Aldrich-Regular'), url({{ url_for('static', filename='Aldrich-Regular.woff2') }}) format('woff2');
 }
 </style>
 {% with messages = get_flashed_messages() %}
