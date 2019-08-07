@@ -45,10 +45,9 @@ class HWControl:
 
     def findStart(self, calibration=None):
         """rotates the imaging stage until the positional switch is activated"""
-        # make sure that switch is not depressed when starting
-        if not calibration:
-            calibration = self.cfg.get('calibration')
+        calibration = calibration or self.cfg.get('calibration')
 
+        # make sure that switch is not depressed when starting
         if gpio.input(self.pins['sensor']):
             while gpio.input(self.pins['sensor']):
                 self.halfStep(1, 0.03)
@@ -83,10 +82,12 @@ class HWControl:
     def motorOn(self, value):
         gpio.output(self.pins['stdby'], value)
 
+
     # turns on and off led
     def LEDControl(self, value):
         gpio.output(self.pins['LED'], value)
         self.led = value
+
 
     # focuses the ArduCam motorized focus camera
     # code is from ArduCam GitHub repo
@@ -95,6 +96,7 @@ class HWControl:
         data1 = (value >> 8) & 0x3f
         data2 = value & 0xf0
         os.system("i2cset -y 1 0x0c %d %d" % (data1,data2))
+
 
     # my copy of the pinout
     pins = {}

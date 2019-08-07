@@ -91,7 +91,6 @@ class Experimenter(threading.Thread):
             # turn on led
             self.hw.LEDControl(True)
             time.sleep(0.5)
-
             self.cam.color_effects = (128, 128)
             self.cam.shutter_speed = 1000000 // self.cfg.get('nightshutter')
             filename = os.path.join(self.dir, name + "-night.jpg")
@@ -140,7 +139,7 @@ class Experimenter(threading.Thread):
             self.starttime = time.time()
             self.endtime = time.time() + 60 * 60 * 24 * self.duration
             self.last_captured = None
-            if self.delay == 0: self.delay = 0.001
+            self.delay = self.delay or 0.001
             self.nshots = self.duration * 24 * 60 // self.delay
             self.cam.exposure_mode = "auto"
             self.cam.shutter_speed = 0
@@ -158,7 +157,7 @@ class Experimenter(threading.Thread):
                 
                 for i in range(4):
                     # rotate stage to starting position
-                    if(i == 0):
+                    if i == 0:
                         self.hw.motorOn(True)
                         self.status = "Finding start position"
                         log("Finding initial position.")
