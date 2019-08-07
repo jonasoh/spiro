@@ -4,7 +4,6 @@ import os
 class Config(object):
     defaults = {
         'calibration' : 8,   # number of steps taken after positional sensor is lit
-        'threshold' : 20000, # threshold for day/night determination
         'sensor': 4,         # pin for mini microswitch positional sensor
         'LED': 17,           # pin for turning on/off led
         'PWMa': 8,           # first pwm pin
@@ -17,8 +16,6 @@ class Config(object):
         'focus': 250,	     # default focus distance
         'password': '',      # an empty password will trigger password initialization for web ui
         'secret': '',        # secret key for flask sessions
-        'dayiso': 100,       # iso value for daytime images
-        'nightiso': 100,     # iso value for night images
         'dayshutter': 100,   # day exposure time in fractions of a second, e.g. 100 means 1/100
         'nightshutter': 10,  # night exposure time
         'name': 'spiro',     # the name of this spiro instance
