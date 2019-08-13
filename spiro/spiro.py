@@ -29,13 +29,15 @@ parser.add_argument('--reset-password', action="store_true", dest="resetpw",
                     help="reset web UI password")
 parser.add_argument('--install-service', action="store_true", dest="install",
                     help="install systemd user service file")
+parser.add_argument('--toggle-debug', action="store_true", dest="toggle_debug",
+                    help="toggles additional debug logging on or off")
 options = parser.parse_args()
 
 def initCam():
     cam = PiCamera()
     # cam.framerate dictates longest exposure (1/cam.framerate)
     cam.framerate = 5
-    cam.iso = 100
+    cam.iso = 50
     cam.resolution = cam.MAX_RESOLUTION
     cam.rotation = 90
     cam.image_denoise = False
@@ -108,7 +110,13 @@ def main():
     if options.resetpw:
         print("Resetting web UI password.")
         cfg.set('password', '')
-    if any([options.reset, options.resetpw, options.install]):
+    if options.toggle_debug:
+        cfg.set('debug', not cfg.get('debug'))
+        if cfg.get('debug'):
+            print("Debug mode on.")
+        else:
+            print("Debug mode off")
+    if any([options.reset, options.resetpw, options.install, options.toggle_debug]):
         sys.exit()
 
     # no options given, go ahead and start web ui

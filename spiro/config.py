@@ -19,6 +19,7 @@ class Config(object):
         'dayshutter': 100,   # day exposure time in fractions of a second, e.g. 100 means 1/100
         'nightshutter': 10,  # night exposure time
         'name': 'spiro',     # the name of this spiro instance
+        'debug': False,      # debug logging
     }
 
     config = {}

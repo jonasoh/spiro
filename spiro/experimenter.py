@@ -37,6 +37,7 @@ class Experimenter(threading.Thread):
         # determine if it's day or not.
         self.cam.exposure_mode = "auto"
         self.cam.shutter_speed = 0
+        self.cam.iso = 100
         self.cam.meter_mode = 'matrix'
 
         # to determine day/night we use a rotating list of the last 5 exposure readings
@@ -84,11 +85,14 @@ class Experimenter(threading.Thread):
         self.daytime = self.isDaytime()
         
         if self.daytime:
+            self.cam.iso = 50
+            time.sleep(0.5)
             self.cam.shutter_speed = 1000000 // self.cfg.get('dayshutter')
             self.cam.color_effects = None
             filename = os.path.join(self.dir, name + "-day.jpg")
         else:
             # turn on led
+            self.cam.iso = 100
             self.hw.LEDControl(True)
             time.sleep(0.5)
             self.cam.color_effects = (128, 128)
