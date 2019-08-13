@@ -67,11 +67,13 @@ class Experimenter(threading.Thread):
                     # stable exposure, value above 33999
                     itsday = False
 
+        debug("[isDaytime] Daytime: " + str(itsday) + ". Exposure values: " + str(exps))
+
         return itsday
 
 
     def setWB(self):
-        log("Determining white balance.")
+        debug("Determining white balance.")
         self.cam.awb_mode = "auto"
         time.sleep(2)
         g = self.cam.awb_gains
@@ -105,7 +107,7 @@ class Experimenter(threading.Thread):
             # thus, white balance will only be fixed for the first occurence of daylight.
             self.setWB()
 
-        log("Capturing %s." % filename)
+        debug("Capturing %s." % filename)
         self.cam.exposure_mode = "off"
         self.cam.capture(filename)
         self.last_captured = filename
@@ -138,6 +140,7 @@ class Experimenter(threading.Thread):
             raise RuntimeError('An experiment is already running.')
 
         try:
+            debug("Starting experiment.")
             self.running = True
             self.status = "Initiating"
             self.starttime = time.time()
@@ -164,13 +167,13 @@ class Experimenter(threading.Thread):
                     if i == 0:
                         self.hw.motorOn(True)
                         self.status = "Finding start position"
-                        log("Finding initial position.")
+                        debug("Finding initial position.")
                         self.hw.findStart(calibration=self.cfg.get('calibration'))
-                        log("Found initial position.")
+                        debug("Found initial position.")
                     else:
                         self.status = "Imaging"
                         # rotate cube 90 degrees
-                        log("Rotating stage.")
+                        debug("Rotating stage.")
                         self.hw.halfStep(100, 0.03)
 
                     # wait for the cube to stabilize

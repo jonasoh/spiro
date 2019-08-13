@@ -71,7 +71,9 @@ def terminate(sig, frame):
     global shutdown
     if sig == signal.SIGALRM:
         # force shutdown
-        log("Shut down time-out, force-quitting.")
+        debug("Shut down time-out, force-quitting.")
+        debug("If the software locks up at this point, a reboot is needed.")
+        debug("This is due to a bug in the underlying camera code.")
         cam.close()
         sys.exit()
 
