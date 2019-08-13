@@ -4,7 +4,7 @@ import time
 from statistics import mean
 from collections import deque
 from spiro.config import Config
-from spiro.logger import log
+from spiro.logger import log, debug
 
 class Experimenter(threading.Thread):
     def __init__(self, hw=None, cam=None):

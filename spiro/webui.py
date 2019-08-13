@@ -12,7 +12,7 @@ import hashlib
 import shutil
 from spiro.config import Config
 from spiro.experimenter import Experimenter
-from spiro.logger import log
+from spiro.logger import log, debug
 from threading import Thread, Lock, Condition
 from waitress import serve
 

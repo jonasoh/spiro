@@ -11,7 +11,7 @@ import os
 from picamera import PiCamera
 from spiro.hwcontrol import HWControl
 from spiro.config import Config
-from spiro.logger import log
+from spiro.logger import log, debug
 import spiro.webui as webui
 import argparse
 import textwrap
