@@ -19,10 +19,11 @@ import sys
 import signal
 import RPi.GPIO as gpio
 
-parser = argparse.ArgumentParser(description=textwrap.dedent("""\
-                                                                SPIRO control software.
-                                                                Running this command without any flags starts the web interface.
-                                                                Specifying flags will perform those actions, then exit."""))
+parser = argparse.ArgumentParser(
+             description=textwrap.dedent("""\
+                                         SPIRO control software.
+                                         Running this command without any flags starts the web interface.
+                                         Specifying flags will perform those actions, then exit."""))
 parser.add_argument('--reset-config', action="store_true", dest="reset",
                     help="reset all configuration values to defaults")
 parser.add_argument('--reset-password', action="store_true", dest="resetpw",

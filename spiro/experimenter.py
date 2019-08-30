@@ -68,9 +68,7 @@ class Experimenter(threading.Thread):
                     itsday = False
 
         debug("[isDaytime] Daytime: " + str(itsday) + ". Exposure values: " + str(exps))
-
         return itsday
-
 
     def setWB(self):
         debug("Determining white balance.")
@@ -79,7 +77,6 @@ class Experimenter(threading.Thread):
         g = self.cam.awb_gains
         self.cam.awb_mode = "off"
         self.cam.awb_gains = g
-
 
     def takePicture(self, name):
         filename = ""
@@ -120,7 +117,6 @@ class Experimenter(threading.Thread):
             # turn off led
             self.hw.LEDControl(False)
 
-
     def run(self):
         while not self.quit:
             self.status_change.wait()
@@ -129,11 +125,9 @@ class Experimenter(threading.Thread):
                 self.status_change.clear()
                 self.runExperiment()
 
-
     def go(self):
         self.next_status = 'run'
         self.status_change.set()                
-
 
     def runExperiment(self):
         if self.running:
