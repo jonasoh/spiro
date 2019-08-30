@@ -14,7 +14,7 @@ from spiro.config import Config
 from spiro.experimenter import Experimenter
 from spiro.logger import log, debug
 from threading import Thread, Lock, Condition
-from waitress import serve
+from gevent import pywsgi
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
@@ -454,7 +454,8 @@ def start(cam, myhw):
         camera.meter_mode = 'spot'
         camera.rotation = 90
         setLive('on')
-        serve(app, listen='*:8080', threads=16)
+        server = pywsgi.WSGIServer(('', 8080), app)
+        server.serve_forever()
     finally:
         stop()
 
