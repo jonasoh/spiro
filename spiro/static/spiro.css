@@ -31,6 +31,18 @@ div.tool {
     font-weight: bold;
     color: grey;
 }
+.pure-button {
+    font-family: 'Saira Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 14pt;
+}
+.pure-form label {
+    font-family: 'Saira Condensed', sans-serif;
+    font-size: 14pt;
+}
+.left {
+    text-align: left;
+}
 div.expinfo {
     color: grey;
 }
