@@ -36,7 +36,7 @@ Here are a couple of examples of the image quality for day and night images. Cli
 
 ## 3D printer models
 
-Models for the 3D printed hardware components can be found at [AlyonaMinina/SPIRO](https://github.com/AlyonaMinina/SPIRO).
+Models for the 3D printed hardware components can be found at [AlyonaMinina/SPIRO.Hardware](https://github.com/AlyonaMinina/SPIRO.Hardware).
 
 ## ImageJ macros
 
