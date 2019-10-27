@@ -84,18 +84,18 @@ class Experimenter(threading.Thread):
         self.daytime = self.isDaytime()
         
         if self.daytime:
-            self.cam.iso = 50
             time.sleep(0.5)
             self.cam.shutter_speed = 1000000 // self.cfg.get('dayshutter')
+            self.cam.iso = self.cfg.get('dayiso')
             self.cam.color_effects = None
             filename = os.path.join(self.dir, name + "-day.jpg")
         else:
             # turn on led
-            self.cam.iso = 100
             self.hw.LEDControl(True)
             time.sleep(0.5)
-            self.cam.color_effects = (128, 128)
             self.cam.shutter_speed = 1000000 // self.cfg.get('nightshutter')
+            self.cam.iso = self.cfg.get('nightiso')
+            self.cam.color_effects = (128, 128)
             filename = os.path.join(self.dir, name + "-night.jpg")
         
         if prev_daytime != self.daytime and self.daytime and self.cam.awb_mode != "off":

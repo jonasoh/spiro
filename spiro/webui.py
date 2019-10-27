@@ -354,17 +354,20 @@ def experiment():
 @not_while_running
 def exposureMode(time):
     if time == 'day':
+        camera.iso = cfg.get('dayiso')
         camera.shutter_speed = 1000000 // cfg.get('dayshutter')
         camera.exposure_mode = "off"
         hw.LEDControl(False)
         return redirect(url_for('exposure', time='day'))
     elif time == 'night':
+        camera.iso = cfg.get('nightiso')
         camera.shutter_speed = 1000000 // cfg.get('nightshutter')
         camera.exposure_mode = "off"
         hw.LEDControl(True)
         return redirect(url_for('exposure', time='night'))
     elif time == 'auto':
         camera.shutter_speed = 0
+        camera.iso = 0
         camera.exposure_mode = "auto"
         return redirect(url_for('index'))
     abort(404)
@@ -393,6 +396,13 @@ def exposure(time):
             shutter = max(10, min(shutter, 1000))
             cfg.set(time + 'shutter', shutter)
             flash("New shutter speed for " + time + " images: 1/" + str(shutter))
+        iso = request.form.get('iso')
+        if iso:
+            iso = int(iso)
+            iso = max(50, min(iso, 800))
+            cfg.set(time + 'iso', iso)
+            flash("New ISO for " + time + " images: " + str(shutter))
+
         exposureMode(time)
         grabExposure(time)
     else:
@@ -454,8 +464,9 @@ def start(cam, myhw):
         camera.meter_mode = 'spot'
         camera.rotation = 90
         setLive('on')
-        server = pywsgi.WSGIServer(('', 8080), app)
-        server.serve_forever()
+        #server = pywsgi.WSGIServer(('', 8080), app)
+        #server.serve_forever()
+        app.run(host="0.0.0.0", port=8080, debug=False)
     finally:
         stop()
 

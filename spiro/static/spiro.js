@@ -2,10 +2,11 @@ function bgGet(url) {
     var x=new XMLHttpRequest;
     x.open('GET', url);
     x.send();
+    return(x.responseText);
 }
 
 function toggleLED(value) {
-    if(value){
+    if(value) {
         bgGet('/led/on');
     } else {
         bgGet('/led/off');
@@ -32,7 +33,7 @@ function updateShutter(value) {
     shutternumber.value = value;
 }
 
-function calcDiskSpace(){
+function calcDiskSpace() {
     disk = document.getElementById('disk');
     delay = document.getElementById('delay');
     delay = parseFloat(delay.value);
@@ -42,7 +43,7 @@ function calcDiskSpace(){
     disk.innerHTML = req.toFixed(1) + " GB";
 }
 
-function tryCalibration(){
+function tryCalibration() {
     calib = document.getElementById('calibration');
     bgGet('/findstart/' + calib.value);
 }
