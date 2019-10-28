@@ -8,6 +8,28 @@ The image below is a link to a YouTube video showing some of its design and feat
 
 [![SPIRO intro](https://user-images.githubusercontent.com/6480370/60589568-1e46ed80-9d9a-11e9-96ae-08fe85d8b415.png)](http://www.youtube.com/watch?v=fh5NMvDNjNc "SPIRO intro")
 
+## Table of Contents
+
+* [Hardware](#hardware)
+* [Examples](#examples)
+* [3D printer models](#3d-printer-models)
+* [ImageJ macros](#imagej-macros)
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Working with SPIRO](#working-with-spiro)
+  * [Connecting to the web interface](#connecting-to-the-web-interface)
+  * [Setting up imaging](#setting-up-imaging)
+  * [Starting an experiment](#starting-an-experiment)
+  * [Downloading images](#downloading-images)
+* [Maintaining the system](#maintaining-the-system)
+  * [Restarting the software](#restarting-the-software)
+  * [Shutting down the system](#shutting-down-the-system)
+  * [Keeping software up to date](#keeping-software-up-to-date)
+* [Troubleshooting](#troubleshooting)
+  * [Viewing the software log](#viewing-the-software-log)
+  * [Testing the LED and motor](#testing-the-led-and-motor)
+* [Licensing](#licensing)
+
 ## Hardware
 
 SPIRO is based around [Raspberry Pi 3 B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/), using 3D printed parts to hold everything together. It works with both the [official camera module](https://www.raspberrypi.org/products/camera-module-v2/) as well as with third-party cameras. We use the [Arducam Motorized Focus camera](http://www.arducam.com/programmable-motorized-focus-camera-raspberry-pi/), which allows focusing the images via the built-in live view web server.
