@@ -41,7 +41,11 @@
 <input id="shutterrange" type="range" min="5" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">
 <input id="shutternumber" name="shutter" type="number" min="5" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">
 <label for="iso">ISO</label>
-<input id="iso" name="iso" type="number" min="50" max="800">
+{{ if time == 'day' }}
+<input id="iso" name="iso" type="number" min="50" max="800", value="{{ dayiso }}">
+{% else %}
+<input id="iso" name="iso" type="number" min="50" max="800", value="{{ nightiso }}">
+{% endif %}
 </div>
 <div class="pure-controls">
 <button type="submit" class="pure-button green">Update and save</button>
@@ -57,7 +61,7 @@
 </a>
 {% if dayshutter %}
 <div class="topleft-caption">
-Day image captured at 1/{{ dayshutter }} s
+Day image captured at 1/{{ dayshutter }} s, ISO {{ dayiso }}
 </div>
 {% endif %}
 {% else %}
@@ -66,7 +70,7 @@ Day image captured at 1/{{ dayshutter }} s
 </a>
 {% if nightshutter %}
 <div class="topleft-caption">
-Night image captured at 1/{{ nightshutter }} s
+Night image captured at 1/{{ nightshutter }} s, ISO {{ nightiso }}
 </div>
 {% endif %}
 {% endif %}

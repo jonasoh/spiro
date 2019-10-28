@@ -409,12 +409,15 @@ def exposure(time):
         exposureMode(time)
         setLive('on')
         camera.exposure_mode = "off"
+
     if nightshutter:
         ns = 1000000 // nightshutter
     if dayshutter:
         ds = 1000000 // dayshutter
+
     return render_template('exposure.html', shutter=cfg.get(time+'shutter'), time=time, 
-                           nightshutter=ns, dayshutter=ds, name=cfg.get('name'))
+                           nightshutter=ns, dayshutter=ds, name=cfg.get('name'), iso=camera.iso,
+                           dayiso=cfg.get('dayiso'), nightiso=cfg.get('nightiso'))
 
 @not_while_running
 @app.route('/calibrate', methods=['GET', 'POST'])
