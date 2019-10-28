@@ -41,7 +41,7 @@
 <input id="shutterrange" type="range" min="5" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">
 <input id="shutternumber" name="shutter" type="number" min="5" max="1000" step="1" value="{{ shutter }}" oninput="updateShutter(this.value);">
 <label for="iso">ISO</label>
-{{ if time == 'day' }}
+{% if time == 'day' %}
 <input id="iso" name="iso" type="number" min="50" max="800", value="{{ dayiso }}">
 {% else %}
 <input id="iso" name="iso" type="number" min="50" max="800", value="{{ nightiso }}">
