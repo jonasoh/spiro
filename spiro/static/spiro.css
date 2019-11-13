@@ -185,7 +185,7 @@ input.focusslider {
     width: 80px;
     position: absolute;
     left: -1px;
-    top: 110px;
+    top: 120px;
     transform: rotate(90deg);
 }
 div.pan-left {

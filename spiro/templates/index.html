@@ -45,6 +45,12 @@
 </div>
 </div>
 <div class="tool">
+<a href="#" onclick="bgGet('/findstart')" class="toolbutton home"><img src="{{ url_for('static', filename='home.svg') }}" class="icon"></a>
+</div>
+<div class="tool">
+<a href="#" onclick="bgGet('/rotate/100')" class="toolbutton rotate"><img src="{{ url_for('static', filename='rotate90.svg') }}" class="icon"></a>
+</div>
+<div class="tool">
 <div class="pan">
 <div class="pan-left">
 <a href="#" onclick="bgGet('/pan/x/-0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-left"></a>
@@ -59,10 +65,6 @@
 <a href="#" onclick="bgGet('/pan/y/0.1')"><img src="{{ url_for('static', filename='triangle.svg') }}" class="pan-down"></a>
 </div>
 </div>
-</div>
-<div class="tool">
-<a href="#" onclick="bgGet('/rotate/100')" class="toolbutton rotate"><img src="{{ url_for('static', filename='rotate90.svg') }}" class="icon"></a>
-<a href="#" onclick="bgGet('/findstart')" class="toolbutton home"><img src="{{ url_for('static', filename='home.svg') }}" class="icon"></a>
 </div>
 <div class="tool zoom">
 <label for="zoom">Zoom</label>
