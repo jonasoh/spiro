@@ -49,6 +49,7 @@ class Experimenter(threading.Thread):
         # exposure may take a very long time to settle, so we use some heuristics to determine whether it is day or night
         itsday = 'TBD'
         exps = deque([-1,100,-1,100,-1])
+        stuck = 0
 
         while itsday == 'TBD':
             time.sleep(1)
@@ -71,6 +72,13 @@ class Experimenter(threading.Thread):
                 elif mean(exps) > 33:
                     # stable exposure, value above 33999
                     itsday = False
+                else:
+                    # we are stuck at around 1/30 for some reason
+                    stuck = stuck + 1
+
+            if stuck > 20:
+                # we have been stuck for over 20 seconds, just call it day so we can move on
+                itsday = True
 
         debug("[isDaytime] Daytime: " + str(itsday) + ". Exposure values: " + str(exps))
         return itsday
