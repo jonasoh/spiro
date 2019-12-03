@@ -35,6 +35,11 @@ class Experimenter(threading.Thread):
 
     def isDaytime(self):
         # determine if it's day or not.
+
+        # we need to set a bogus shutter speed before switching to auto exposure mode
+        # otherwise the camera can get stuck for some reason
+        self.cam.shutter_speed = 10000
+
         self.cam.exposure_mode = "auto"
         self.cam.shutter_speed = 0
         self.cam.iso = 100
