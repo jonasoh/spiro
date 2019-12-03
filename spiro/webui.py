@@ -14,7 +14,6 @@ from spiro.config import Config
 from spiro.experimenter import Experimenter
 from spiro.logger import log, debug
 from threading import Thread, Lock, Condition
-from gevent import pywsgi
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
