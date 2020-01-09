@@ -1,5 +1,11 @@
 import json
 import os
+import sys
+
+def log(msg):
+    sys.stderr.write(msg + '\n')
+    sys.stderr.flush()
+
 
 class Config(object):
     defaults = {
@@ -40,14 +46,20 @@ class Config(object):
     def read(self):
         os.makedirs(self.cfgdir, exist_ok=True)
         if os.path.exists(self.cfgfile):
-            with open(self.cfgfile, 'r') as f:
-                self.config = json.load(f)
+            try:
+                with open(self.cfgfile, 'r') as f:
+                    self.config = json.load(f)
+            except Exception as e:
+                log("Failed to read or parse config file: " + str(e))
 
 
     def write(self):
-        with open(self.cfgfile, 'w') as f:
-            json.dump(self.config, f, indent=4)
-
+        try:
+            with open(self.cfgfile + ".tmp", 'w') as f:
+                json.dump(self.config, f, indent=4)
+            os.replace(self.cfgfile + ".tmp", self.cfgfile)
+        except OSError as e:
+            log("Failed to write config file: " + e.strerror)
 
     def get(self, key):
         if os.path.exists(self.cfgfile):

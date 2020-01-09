@@ -105,7 +105,7 @@ def main():
         try:
             os.remove(os.path.expanduser('~/.config/spiro/spiro.conf'))
         except OSError as e:
-            print("Could not remove file (~/.config/spiro/spiro.conf):", e)
+            print("Could not remove file (~/.config/spiro/spiro.conf):", e.strerror)
             raise
     if options.install:
         print("Installing systemd service file.")
