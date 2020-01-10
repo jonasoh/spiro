@@ -5,6 +5,7 @@
 #
 
 from flask import Flask, render_template, Response, request, redirect, url_for, session, flash, abort
+from waitress import serve
 import io
 import time
 import os
@@ -251,9 +252,12 @@ def findstart(value=None):
 def liveGen():
     while True:
         with liveoutput.condition:
-            liveoutput.condition.wait()
-            frame = liveoutput.frame
-            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            if liveoutput.condition.wait(timeout=0.1):
+                frame = liveoutput.frame
+                yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            else:
+                # failed to acquire an image; return nothing instead of waiting
+                yield b''
 
 @not_while_running
 @app.route('/stream.mjpg')
@@ -466,9 +470,9 @@ def start(cam, myhw):
         camera.meter_mode = 'spot'
         camera.rotation = 90
         setLive('on')
-        #server = pywsgi.WSGIServer(('', 8080), app)
-        #server.serve_forever()
         app.run(host="0.0.0.0", port=8080, debug=False)
+        # use a tcp timeout of 20 seconds to improve hanging behavior in live view
+        serve(app, listen="*:8080", threads=8, channel_timeout=20)
     finally:
         stop()
 
