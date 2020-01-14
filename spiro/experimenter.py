@@ -77,8 +77,8 @@ class Experimenter(threading.Thread):
                     stuck = stuck + 1
 
             if stuck > 20:
-                # we have been stuck for over 20 seconds, just call it day so we can move on
-                itsday = True
+                # we have been stuck for over 20 seconds, just call it night so we can move on
+                itsday = False
 
         debug("[isDaytime] Daytime: " + str(itsday) + ". Exposure values: " + str(exps))
         return itsday
