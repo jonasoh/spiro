@@ -252,7 +252,7 @@ def findstart(value=None):
 def liveGen():
     while True:
         with liveoutput.condition:            
-            got_frame = liveoutput.condition.wait(timeout=0.1):
+            got_frame = liveoutput.condition.wait(timeout=0.1)
         if got_frame:
             yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         else:
