@@ -78,6 +78,17 @@ class HWControl:
             time.sleep(delay)
 
 
+    # step backwards; used for idle rotation
+    def backwardsHalfStep(self, steps, delay, keep_motor_on=False):
+        time.sleep(0.005) # time for motor to activate
+        for i in range(0, steps):
+            self.setStepper(self.halfstep_seq, self.seqNumb)
+            self.seqNumb -= 1
+            if(self.seqNumb == -1):
+                self.seqNumb = 7
+            time.sleep(delay)
+
+
     # sets motor standby status
     def motorOn(self, value):
         gpio.output(self.pins['stdby'], value)
