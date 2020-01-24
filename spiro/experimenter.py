@@ -201,7 +201,7 @@ class Experimenter(threading.Thread):
                 while time.time() < nextloop and not self.stop_experiment:
                     time.sleep(1)
                     secs += 1
-                    if self.delay > 15 and secs == int(self.delay / 7.5):
+                    if self.delay > 15 and secs == int(self.delay * 60 / 7.5):
                         # don't bother if delay is very short (<= 15 min)
                         secs = 0
                         self.hw.motorOn(True)
