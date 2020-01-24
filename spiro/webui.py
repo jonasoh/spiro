@@ -254,7 +254,7 @@ def liveGen():
         with liveoutput.condition:            
             got_frame = liveoutput.condition.wait(timeout=0.1)
         if got_frame:
-            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + liveoutput.frame + b'\r\n')
         else:
             # failed to acquire an image; return nothing instead of waiting
             yield b''
