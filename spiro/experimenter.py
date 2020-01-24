@@ -205,7 +205,7 @@ class Experimenter(threading.Thread):
                         # don't bother if delay is very short (<= 15 min)
                         secs = 0
                         self.hw.motorOn(True)
-                        self.hw.backwardsHalfStep(50, 0.03)
+                        self.hw.halfStep(50, 0.03)
                         self.hw.motorOn(False)
 
         finally:
