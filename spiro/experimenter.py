@@ -1,6 +1,7 @@
 import threading
 import os
 import time
+import numpy as np
 from statistics import mean
 from collections import deque
 from spiro.config import Config
@@ -35,54 +36,15 @@ class Experimenter(threading.Thread):
         log("Stopping running experiment...")
 
     def isDaytime(self):
-        # determine if it's day or not.
-
-        # we need to set a bogus shutter speed before switching to auto exposure mode
-        # otherwise the camera can get stuck for some reason
-        self.cam.shutter_speed = 10000
-
-        self.cam.exposure_mode = "auto"
-        self.cam.shutter_speed = 0
-        self.cam.iso = 100
-        self.cam.meter_mode = 'matrix'
-
-        # to determine day/night we use a rotating list of the last 5 exposure readings
-        # exposure may take a very long time to settle, so we use some heuristics to determine whether it is day or night
-        itsday = 'TBD'
-        exps = deque([-1,100,-1,100,-1])
-        stuck = 0
-
-        while itsday == 'TBD':
-            time.sleep(1)
-            exps.popleft()
-            # round the exposure to nearest 1000
-            exps.append(self.cam.exposure_speed // 1000)
-
-            if exps[4] < exps[3] < exps[2] < exps[1] < exps[0]:
-                if mean(exps) < 33:
-                    # decreasing exposure, value below 33000
-                    itsday = True
-            elif exps[4] > exps[3] > exps[2] > exps[1] > exps[0]:
-                if mean(exps) > 33:
-                    # increasing exposure time, value above 33999
-                    itsday = False
-            elif exps[4] == exps[3] == exps[2] == exps[1] == exps[0]:
-                if mean(exps) < 33:
-                    # stable exposure, value below 33000
-                    itsday = True
-                elif mean(exps) > 33:
-                    # stable exposure, value above 33999
-                    itsday = False
-                else:
-                    # we are stuck at around 1/30 for some reason
-                    stuck = stuck + 1
-
-            if stuck > 20:
-                # we have been stuck for over 20 seconds, just call it night so we can move on
-                itsday = False
-
-        debug("[isDaytime] Daytime: " + str(itsday) + ". Exposure values: " + str(exps))
-        return itsday
+        oldres = self.cam.resolution
+        self.cam.resolution = (320, 240)
+        self.cam.iso = self.cfg.get('dayiso')
+        self.cam.shutter_speed = 1000000 // self.cfg.get('dayshutter')
+        output = np.empty((240, 320, 3), dtype=np.uint8)
+        self.cam.capture(output, 'rgb')
+        self.cam.resolution = oldres
+        debug("Daytime estimation mean value: " + str(output.mean()))
+        return output.mean() > 10
 
     def setWB(self):
         debug("Determining white balance.")
@@ -197,7 +159,7 @@ class Experimenter(threading.Thread):
                 if self.idlepos > 0:
                     # alternate between resting positions during idle, stepping 45 degrees per image
                     self.hw.motorOn(True)
-                    self.hw.halfStep(50 * self.idlepos)
+                    self.hw.halfStep(50 * self.idlepos, 0.03)
                     self.hw.motorOn(False)
 
                 self.idlepos += 1

@@ -89,7 +89,7 @@ Next, make sure the system is up to date, and install the required tools (answer
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install python3-pip git i2c-tools wiringpi
+sudo apt install python3-pip git i2c-tools wiringpi libatlas-base-dev
 ```
 
 Then, install the SPIRO software and its dependencies:
