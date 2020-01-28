@@ -471,7 +471,7 @@ def start(cam, myhw):
         camera.meter_mode = 'spot'
         camera.rotation = 90
         setLive('on')
-        app.run(host="0.0.0.0", port=8080, debug=False)
+        #app.run(host="0.0.0.0", port=8080, debug=False)
         # use a tcp timeout of 20 seconds to improve hanging behavior in live view
         serve(app, listen="*:8080", threads=8, channel_timeout=20)
     finally:
