@@ -11,6 +11,8 @@ import time
 import os
 import hashlib
 import shutil
+import signal
+import subprocess
 from spiro.config import Config
 from spiro.experimenter import Experimenter
 from spiro.logger import log, debug
@@ -436,6 +438,24 @@ def calibrate():
     exposureMode('auto')
     setLive('on')
     return render_template('calibrate.html', calibration=cfg.get('calibration'), name=cfg.get('name'))
+
+@not_while_running
+@app.route('/exit')
+def exit():
+    signal.alarm(1)
+    return redirect(url_for('index'))
+
+@not_while_running
+@app.route('/reboot')
+def reboot():
+    subprocess.run(['sudo', 'shutdown', '-r', 'now'])
+    return redirect(url_for('index'))
+
+@not_while_running
+@app.route('/shutdown')
+def shutdown():
+    subprocess.run(['sudo', 'shutdown', '-h', 'now'])
+    return redirect(url_for('index'))
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
