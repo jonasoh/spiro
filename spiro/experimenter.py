@@ -25,6 +25,7 @@ class Experimenter(threading.Thread):
         self.next_status = ''
         self.last_captured = None
         self.nshots = 0
+        self.idlepos = 0
         threading.Thread.__init__(self)
 
     def stop(self):
@@ -193,20 +194,18 @@ class Experimenter(threading.Thread):
                 self.nshots -= 1
                 self.hw.motorOn(False)
 
-                # this part is "active waiting", rotating the cube slowly over the period of options.delay
-                # this ensures consistent lighting for all plates.
-                # account for the time spent capturing images.
-                self.status = "Waiting"
-                secs = 0
+                if self.idlepos > 0:
+                    # alternate between resting positions during idle, stepping 45 degrees per image
+                    self.hw.motorOn(True)
+                    self.hw.halfStep(50 * self.idlepos)
+                    self.hw.motorOn(False)
+
+                self.idlepos += 1
+                if self.idlepos > 7:
+                    self.idlepos = 0
+
                 while time.time() < nextloop and not self.stop_experiment:
                     time.sleep(1)
-                    secs += 1
-                    if self.delay > 15 and secs == int(self.delay * 60 / 7.5):
-                        # don't bother if delay is very short (<= 15 min)
-                        secs = 0
-                        self.hw.motorOn(True)
-                        self.hw.halfStep(50, 0.03)
-                        self.hw.motorOn(False)
 
         finally:
             log("Experiment stopped.")
