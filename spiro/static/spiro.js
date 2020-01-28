@@ -35,12 +35,27 @@ function updateShutter(value) {
 
 function calcDiskSpace() {
     disk = document.getElementById('disk');
-    delay = document.getElementById('delay');
-    delay = parseFloat(delay.value);
+    delaydom = document.getElementById('delay');
+    delay = parseFloat(delaydom.value);
     duration = document.getElementById('duration');
     duration = parseFloat(duration.value);
     req = 4 * 4 * duration * 24 * 60 / delay / 1024;
     disk.innerHTML = req.toFixed(1) + " GB";
+    avail = document.getElementById('diskavail').innerHTML;
+    avail = parseFloat(avail.split(" ")[0]);
+    if (req > avail) {
+        console.log("req > avail");
+        if (!disk.classList.contains("diskfull")) {
+            console.log("add diskfull class");
+            disk.classList.add("diskfull");
+        }
+    } else {
+        console.log("req < avail");
+        if (disk.classList.contains("diskfull")) {
+            console.log("remove diskfull class");
+            disk.classList.remove("diskfull");
+        }
+    }
 }
 
 function tryCalibration() {

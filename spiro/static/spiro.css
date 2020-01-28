@@ -99,6 +99,9 @@ div.logo img {
     padding-left: 15px;
     color: grey;
 }
+.diskfull {
+    color: red !important;
+}
 div.explabel {
     margin-top: 15px;
 }
