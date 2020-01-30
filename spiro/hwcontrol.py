@@ -2,6 +2,7 @@ import RPi.GPIO as gpio
 import time
 import os
 from spiro.config import Config
+from spiro.logger import log, debug
 
 class HWControl:
     def __init__(self):
@@ -46,16 +47,21 @@ class HWControl:
     def findStart(self, calibration=None):
         """rotates the imaging stage until the positional switch is activated"""
         calibration = calibration or self.cfg.get('calibration')
+        timeout = 60
+        starttime = time.time()
 
         # make sure that switch is not depressed when starting
         if gpio.input(self.pins['sensor']):
-            while gpio.input(self.pins['sensor']):
+            while gpio.input(self.pins['sensor']) and time.time() < starttime + timeout:
                 self.halfStep(1, 0.03)
 
-        while not gpio.input(self.pins['sensor']):
+        while not gpio.input(self.pins['sensor']) and time.time() < starttime + timeout:
             self.halfStep(1, 0.03)
 
-        self.halfStep(calibration, 0.03)
+        if time.time() < starttime + timeout:
+            self.halfStep(calibration, 0.03)
+        else:
+            log("Timed out while finding start position! Images will be misaligned.")
 
 
     # sets the motor pins as element in sequence
