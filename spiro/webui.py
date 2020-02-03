@@ -355,7 +355,7 @@ def experiment():
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
                            starttime=time.ctime(experimenter.starttime), delay=experimenter.delay,
                            endtime=time.ctime(experimenter.endtime), diskspace=diskspace, duration=experimenter.duration,
-                           status=experimenter.status, nshots=experimenter.nshots, diskreq=diskreq, name=cfg.get('name'))
+                           status=experimenter.status, nshots=experimenter.nshots + 1, diskreq=diskreq, name=cfg.get('name'))
 
 @not_while_running
 def exposureMode(time):
