@@ -281,14 +281,14 @@ def dayStill():
     daystill.seek(0)
     return Response(daystill.read(), mimetype="image/jpeg")
 
-@app.route('/lastcapture.jpg')
+@app.route('/lastcapture.png')
 def lastCapture():
     if not experimenter.last_captured:
         return redirect(url_for('static', filename='empty.jpg'))
     else:
         try:
             with open(experimenter.last_captured, 'rb') as f:
-                return Response(f.read(), mimetype="image/jpeg")
+                return Response(f.read(), mimetype="image/png")
         except Exception as e:
             print("Could not read last captured image:", e)
             return redirect(url_for('static', filename='empty.jpg'))
@@ -306,7 +306,7 @@ def grabExposure(time):
             takePicture(daystill)
             dayshutter = camera.shutter_speed
         else:
-            camera.color_effects = (128, 128)
+            #camera.color_effects = (128, 128)
             takePicture(nightstill)
             camera.color_effects = None
             nightshutter = camera.shutter_speed
@@ -351,7 +351,7 @@ def experiment():
         df = shutil.disk_usage(os.path.expanduser('~'))
 
     diskspace = round(df.free / 1024 ** 3, 1)
-    diskreq = round(experimenter.nshots * 4 * 4 / 1024, 1)
+    diskreq = round(experimenter.nshots * 4 * 10 / 1024, 1)
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
                            starttime=time.ctime(experimenter.starttime), delay=experimenter.delay,
                            endtime=time.ctime(experimenter.endtime), diskspace=diskspace, duration=experimenter.duration,

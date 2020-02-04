@@ -39,7 +39,7 @@ function calcDiskSpace() {
     delay = parseFloat(delaydom.value);
     duration = document.getElementById('duration');
     duration = parseFloat(duration.value);
-    req = 4 * 4 * duration * 24 * 60 / delay / 1024;
+    req = 4 * 10 * duration * 24 * 60 / delay / 1024;
     disk.innerHTML = req.toFixed(1) + " GB";
     avail = document.getElementById('diskavail').innerHTML;
     avail = parseFloat(avail.split(" ")[0]);

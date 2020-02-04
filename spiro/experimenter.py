@@ -64,15 +64,15 @@ class Experimenter(threading.Thread):
             self.cam.shutter_speed = 1000000 // self.cfg.get('dayshutter')
             self.cam.iso = self.cfg.get('dayiso')
             self.cam.color_effects = None
-            filename = os.path.join(self.dir, name + "-day.jpg")
+            filename = os.path.join(self.dir, name + "-day.png")
         else:
             # turn on led
             self.hw.LEDControl(True)
             time.sleep(0.5)
             self.cam.shutter_speed = 1000000 // self.cfg.get('nightshutter')
             self.cam.iso = self.cfg.get('nightiso')
-            self.cam.color_effects = (128, 128)
-            filename = os.path.join(self.dir, name + "-night.jpg")
+            #self.cam.color_effects = (128, 128)
+            filename = os.path.join(self.dir, name + "-night.png")
         
         if prev_daytime != self.daytime and self.daytime and self.cam.awb_mode != "off":
             # if there is a daytime shift, AND it is daytime, AND white balance was not previously set,
