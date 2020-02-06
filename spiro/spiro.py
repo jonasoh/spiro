@@ -60,6 +60,7 @@ def installService():
                 Description=SPIRO control software
                 [Service]
                 ExecStart={}
+                Restart=always
                 [Install]
                 WantedBy=default.target
                 """).format(exe))
