@@ -78,9 +78,9 @@ class ZoomObject(object):
     
     def set(self, x=None, y=None, roi=None):
         '''convenience function for setting zoom/pan'''
-        if x: self.x = x
-        if y: self.y = y
-        if roi: self.roi = roi
+        if x is not None: self.x = x
+        if y is not None: self.y = y
+        if roi is not None: self.roi = roi
         self.apply()
 
     def apply(self):
