@@ -142,11 +142,11 @@ def login():
         pwd = request.form['password']
         if checkPass(pwd):
             session['password'] = pwd
-            log("Web user successfully logged in.")
+            log("Web user successfully logged in from IP " + request.remote_addr)
             return redirect(url_for('index'))
         else:
             flash("Incorrect password.")
-            log("Incorrect password in web login.")
+            log("Incorrect password in web login from IP " + request.remote_addr)
             return redirect(url_for('login'))
     else:
         return render_template('login.html', name=cfg.get('name'))
