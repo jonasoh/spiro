@@ -175,10 +175,11 @@ def newpass():
             cfg.set('password', hash.hexdigest())
             session['password'] = pwd1
             flash("Password was changed.")
-            log("Password was changed.")
+            log("Password was changed by user with IP " + request.remote_addr)
             return redirect(url_for('index'))
         else:
             flash("Passwords do not match.")
+            log("Password change attempt failed by user with IP " + request.remote_addr)
             return redirect(url_for('newpass'))
     else:
         return render_template('newpass.html', nopass=cfg.get('password') == '', name=cfg.get('name'))
