@@ -155,6 +155,7 @@ class Experimenter(threading.Thread):
 
                 self.nshots -= 1
                 self.hw.motorOn(False)
+                self.status = "Waiting"
 
                 if self.idlepos > 0:
                     # alternate between resting positions during idle, stepping 45 degrees per image
