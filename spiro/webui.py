@@ -472,7 +472,7 @@ def settings():
 def wait_for_restart():
     if restarting:
         return render_template('restarting.html')
-    else
+    else:
         return redirect(url_for('index'))
 
 livestream = False
