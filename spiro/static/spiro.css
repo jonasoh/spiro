@@ -2,6 +2,11 @@ body {
     font-size : 16px;
     background-color: hsl(0, 0%, 22%);
 }
+restarting {
+    color: white;
+    text-align: center;
+    font-family: 'Saira Condensed', sans-serif;
+}
 label, legend {
     color: white;
 }

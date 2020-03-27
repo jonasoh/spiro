@@ -446,7 +446,7 @@ def exit():
     global restarting
     restarting = True
     signal.alarm(1)
-    return redirect(url_for('index'))
+    return redirect(url_for('wait_for_restart'))
 
 @not_while_running
 @app.route('/reboot')
