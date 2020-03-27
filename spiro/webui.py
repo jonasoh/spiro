@@ -443,6 +443,8 @@ def calibrate():
 @not_while_running
 @app.route('/exit')
 def exit():
+    global restarting
+    restarting = True
     signal.alarm(1)
     return redirect(url_for('index'))
 
@@ -465,6 +467,14 @@ def settings():
             cfg.set('name', request.form.get('name'))
     return render_template('settings.html', name=cfg.get('name'))
 
+@not_while_running
+@app.route('/restarting')
+def wait_for_restart():
+    if restarting:
+        return render_template('restarting.html')
+    else
+        return redirect(url_for('index'))
+
 livestream = False
 liveoutput = StreamingOutput()
 daystill = io.BytesIO()
@@ -477,6 +487,7 @@ cfg = Config()
 camera = None
 hw = None
 experimenter = None
+restarting = False
 
 def start(cam, myhw):
     global camera, hw, experimenter
