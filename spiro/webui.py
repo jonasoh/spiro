@@ -451,8 +451,8 @@ def exit():
 @not_while_running
 @app.route('/reboot')
 def reboot():
-    subprocess.run(['sudo', 'shutdown', '-r', 'now'])
-    return redirect(url_for('index'))
+    subprocess.Popen(['sudo', 'shutdown', '-r', 'now'])
+    return render_template('restarting.html', refresh=120)
 
 @not_while_running
 @app.route('/shutdown')
@@ -471,7 +471,7 @@ def settings():
 @app.route('/restarting')
 def wait_for_restart():
     if restarting:
-        return render_template('restarting.html')
+        return render_template('restarting.html', refresh=5)
     else:
         return redirect(url_for('index'))
 
