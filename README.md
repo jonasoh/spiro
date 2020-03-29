@@ -13,7 +13,7 @@ The image below is a link to a YouTube video showing some of its design and feat
 * [Hardware](#hardware)
 * [Examples](#examples)
 * [3D printer models](#3d-printer-models)
-* [ImageJ macros](#imagej-macros)
+* [Automated data analysis](#automated-data-analysis)
 * [Installation](#installation)
 * [Usage](#usage)
   * [Working with SPIRO](#working-with-spiro)
@@ -50,19 +50,19 @@ Below is a timelapse sequence of *Arabidopsis* seedlings growing on agar. The im
   <img src="https://user-images.githubusercontent.com/6480370/60673063-350f4200-9e77-11e9-9fad-f9ec3140b05c.gif" alt="Timelapse example">
 </p>
 
-Here are a couple of examples of the image quality for day and night images. Click for full resolution.
+Here are a couple of examples showcasing the image quality of day and night images. Click for full resolution.
 
-![Day example picture](https://user-images.githubusercontent.com/6480370/60673390-e2825580-9e77-11e9-853c-9be434a332e5.jpg)
+![Example day image](https://user-images.githubusercontent.com/6480370/77849203-2ff2df80-71ca-11ea-9285-0ebd909cd601.png)
 
-![Night example picture](https://user-images.githubusercontent.com/6480370/60673407-eca45400-9e77-11e9-8c57-25c65ecdbf42.jpg)
+![Example night image](https://user-images.githubusercontent.com/6480370/77849217-4b5dea80-71ca-11ea-8270-8f839e69e6f8.png)
 
 ## 3D printer models
 
 Models for the 3D printed hardware components can be found at [AlyonaMinina/SPIRO.Hardware](https://github.com/AlyonaMinina/SPIRO.Hardware).
 
-## ImageJ macros
+## Automated data analysis
 
-A few ImageJ macros that take advantage of the capabilities of SPIRO can be found at [jiaxuanleong/spiro-IJmacros](https://github.com/jiaxuanleong/spiro-IJmacros).
+Image data acquired using SPIRO is highly reproducible, and well suited for automated image analysis. We have so far developed pipelines for automated assessment of germination and root growth rates, which can be found at [jiaxuanleong/spiro-IJmacros](https://github.com/jiaxuanleong/spiro-IJmacros).
 
 ## Installation
 
