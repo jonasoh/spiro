@@ -195,11 +195,11 @@ div.focus {
     position: relative;
 }
 input.focusslider {
-    width: 80px;
-    position: absolute;
+    position: relative;
     left: -1px;
-    top: 120px;
     transform: rotate(90deg);
+    height: 90px;
+    background-color: transparent;
 }
 div.pan-left {
     position: absolute;
