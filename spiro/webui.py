@@ -452,7 +452,8 @@ def exit():
 @app.route('/reboot')
 def reboot():
     subprocess.Popen(['sudo', 'shutdown', '-r', 'now'])
-    return render_template('restarting.html', refresh=120)
+    return render_template('restarting.html', refresh='60; url=/',
+                           message="Rebooting system...")
 
 @not_while_running
 @app.route('/shutdown')
@@ -471,7 +472,8 @@ def settings():
 @app.route('/restarting')
 def wait_for_restart():
     if restarting:
-        return render_template('restarting.html', refresh=5)
+        return render_template('restarting.html', refresh=5,
+                               message="Restarting Web UI...")
     else:
         return redirect(url_for('index'))
 
