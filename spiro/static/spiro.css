@@ -186,6 +186,7 @@ input.zoom {
     top: 55px;
     left: 0px;
     position: absolute;
+    background-color: transparent;
 }
 div.zoom {
     height: 90px;
@@ -195,11 +196,11 @@ div.focus {
     position: relative;
 }
 input.focusslider {
-    width: 80px;
-    position: absolute;
+    position: relative;
     left: -1px;
-    top: 120px;
     transform: rotate(90deg);
+    height: 90px;
+    background-color: transparent;
 }
 div.pan-left {
     position: absolute;
@@ -332,7 +333,7 @@ input[type=range]::-moz-range-track {
     height: 11.4px;
     cursor: pointer;
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    background: rgba(0, 0, 0, 0.44);
+    background: rgba(255, 255, 255, 0.24);
     border-radius: 0px;
     border: 0.2px solid #010101;
 }
@@ -354,13 +355,13 @@ input[type=range]::-ms-track {
     color: transparent;
 }
 input[type=range]::-ms-fill-lower {
-    background: rgba(0, 0, 0, 0.44);
+    background: rgba(255, 255, 255, 0.24);
     border: 0.2px solid #010101;
     border-radius: 2.6px;
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
 input[type=range]::-ms-fill-upper {
-    background: rgba(0, 0, 0, 0.44);
+    background: rgba(255, 255, 255, 0.24);
     border: 0.2px solid #010101;
     border-radius: 2.6px;
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
@@ -376,7 +377,7 @@ input[type=range]::-ms-thumb {
     height: 11.4px;
 }
 input[type=range]:focus::-ms-fill-lower {
-    background: rgba(0, 0, 0, 0.44);
+    background: rgba(255, 255, 255, 0.24);
 }
 input[type=range]:focus::-ms-fill-upper {
     background: rgba(13, 13, 13, 0.44);
