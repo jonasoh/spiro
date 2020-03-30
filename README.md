@@ -11,7 +11,7 @@ The image below is a link to a YouTube video showing some of its design and feat
 ## Table of Contents
 
 * [Hardware](#hardware)
-* [Examples](#examples)
+* [Examples](#example-images)
 * [3D printer models](#3d-printer-models)
 * [Automated data analysis](#automated-data-analysis)
 * [Installation](#installation)
@@ -42,19 +42,19 @@ It is relatively cheap and easy to assemble multiple systems for running larger 
 
 ![Multiple SPIROs](https://user-images.githubusercontent.com/6480370/60957494-0bd23400-a305-11e9-85d2-895cf8936120.jpeg)
 
-## Examples
-
-Below is a timelapse sequence of *Arabidopsis* seedlings growing on agar. The image has been heavily downscaled due to size constraints.
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/6480370/60673063-350f4200-9e77-11e9-9fad-f9ec3140b05c.gif" alt="Timelapse example">
-</p>
+## Example images
 
 Here are a couple of examples showcasing the image quality of day and night images. Click for full resolution.
 
 ![Example day image](https://user-images.githubusercontent.com/6480370/77849203-2ff2df80-71ca-11ea-9285-0ebd909cd601.png)
 
 ![Example night image](https://user-images.githubusercontent.com/6480370/77849217-4b5dea80-71ca-11ea-8270-8f839e69e6f8.png)
+
+Below is a timelapse sequence of *Arabidopsis* seedlings growing on agar. The image has been heavily downscaled due to size constraints.
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/6480370/60673063-350f4200-9e77-11e9-9fad-f9ec3140b05c.gif" alt="Timelapse example">
+</p>
 
 ## 3D printer models
 
