@@ -152,13 +152,13 @@ The images should be downloaded using the SFTP client you installed previously. 
 
 ### Restarting the software
 
-If for some reason the software ends up in an unusable state, you can restart it by issuing the following command:
+If for some reason the software ends up in an unusable state, you can often restart it from the web UI (System settings -> Restart web UI). The web UI can also be restarted via SSH, by issuing the following command:
 
 ```
 systemctl --user restart spiro
 ```
 
-It has happened that the camera has become unresponsive, due to bugs in the underlying library. In this case, rebooting the system is the only way of getting it back into a usable state:
+It has happened that the camera has become unresponsive, due to bugs in the underlying library. In this case, rebooting the system is the only way of getting it back into a usable state. This can be done via the web UI (System settings -> Reboot SPIRO), or by issuing the following command via SSH:
 
 ```
 sudo shutdown -r now
@@ -189,7 +189,7 @@ To update the SPIRO control software, issue the commands:
 sudo pip3 install -U git+https://github.com/jonasoh/spiro#egg=spiro
 ```
 
-After updating the SPIRO software, or if you for any other reason need to restart the software, use the following command:
+After updating the SPIRO software, or if you for any other reason need to restart the software, use the web UI (System settings -> Restart web UI), or issue the following command in an SSH prompt:
 
 ```
 systemctl --user restart spiro
