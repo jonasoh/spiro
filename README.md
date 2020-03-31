@@ -152,13 +152,13 @@ The images should be downloaded using the SFTP client you installed previously. 
 
 ### Restarting the software
 
-If for some reason the software ends up in an unusable state, you can often restart it from the web UI (System settings -> Restart web UI). The web UI can also be restarted via SSH, by issuing the following command:
+If for some reason the software ends up in an unusable state, you can often restart it from the web UI (**System settings -> Restart web UI**). The web UI can also be restarted via SSH, by issuing the following command:
 
 ```
 systemctl --user restart spiro
 ```
 
-It has happened that the camera has become unresponsive, due to bugs in the underlying library. In this case, rebooting the system is the only way of getting it back into a usable state. This can be done via the web UI (System settings -> Reboot SPIRO), or by issuing the following command via SSH:
+It has happened that the camera has become unresponsive, due to bugs in the underlying library. In this case, rebooting the system is the only way of getting it back into a usable state. This can be done via the web UI (**System settings -> Reboot SPIRO**), or by issuing the following command via SSH:
 
 ```
 sudo shutdown -r now
@@ -166,7 +166,7 @@ sudo shutdown -r now
 
 ### Shutting down the system
 
-If you want to power down the system, always perform a clean shutdown to ensure that no damage is caused to the filsesystem:
+If you want to power down the system, always perform a clean shutdown to ensure that no damage is caused to the filsesystem. This can either be done via the web UI (**System settings -> Power off system**), or by issuing the following command over SSH:
 
 ```
 sudo shutdown -h now
@@ -189,7 +189,7 @@ To update the SPIRO control software, issue the commands:
 sudo pip3 install -U git+https://github.com/jonasoh/spiro#egg=spiro
 ```
 
-After updating the SPIRO software, or if you for any other reason need to restart the software, use the web UI (System settings -> Restart web UI), or issue the following command in an SSH prompt:
+After updating the SPIRO software, either use the web UI (**System settings -> Restart web UI**), or issue the following command in an SSH prompt:
 
 ```
 systemctl --user restart spiro
