@@ -172,7 +172,7 @@ If for some reason the software ends up in an unusable state, you can often rest
 systemctl --user restart spiro
 ```
 
-It has happened that the camera has become unresponsive, due to bugs in the underlying library. In this case, rebooting the system is the only way of getting it back into a usable state. This can be done via the web UI (**System settings -> Reboot SPIRO**), or by issuing the following command via SSH:
+It has happened that the camera has become unresponsive, due to bugs in the underlying library. In this case, rebooting the system is the only way of getting it back into a usable state. This can be done via the web UI (**System settings -> Reboot system**), or by issuing the following command via SSH:
 
 ```
 sudo shutdown -r now
