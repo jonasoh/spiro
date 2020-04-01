@@ -113,7 +113,21 @@ You may now place the system in the setting in which you will be using it for yo
 
 ### Working with SPIRO
 
-To manage your images you need an SFTP client. For managing SPIRO (e.g., for updating the software and diagnosing problems), an SSH client is very useful. Depending on your operating system and how comfortable you are with a computer, there are several choices. A few of them are listed below.
+Initiating experiments and controlling imaging parameters is performed using a web-based UI which can be controlled using any web browser. The screenshot shows the main view of an idle system:
+
+![Web UI overview](https://user-images.githubusercontent.com/6480370/78147448-d0980800-7433-11ea-9bdc-13d733346f59.png)
+
+The live view allows correcting the focus of the lens as well as placement of Petri plates and distance of the illuminator for optimal image quality. The UI also allows for calibration of the motor and setting up day and night imaging parameters (shutter speed and ISO) separately.
+
+![Experiment control](https://user-images.githubusercontent.com/6480370/78147828-561bb800-7434-11ea-8f5f-105af09fa559.png)
+
+In the experiment control view, parameters such as the duration of the experiment and frequency of imaging is configured. The system dynamically estimates the required size of the images, given the configured parameters.
+
+![Running experiment](https://user-images.githubusercontent.com/6480370/78148080-b3b00480-7434-11ea-9c6c-fd01ceb1d394.png)
+
+During a running experiment, most functions of the web UI are disabled. Browsing to the UI instead displays the status of the running experiment, and provides details on time remaining and the current image quality.
+
+To manage your images you need an SFTP client. For administration of SPIRO (e.g., for updating the software and diagnosing problems), an SSH client is also very useful. Depending on your operating system and how comfortable you are with a computer, there are several choices. A few of them are listed below.
 
 **Windows**
 * [MobaXterm](https://mobaxterm.mobatek.net/) is a popular SSH client that also supports file transfer. Recommended for beginners. 
@@ -122,7 +136,7 @@ To manage your images you need an SFTP client. For managing SPIRO (e.g., for upd
 * [WinSCP](https://winscp.net/eng/index.php) can be used to transfer files from SPIRO using the SFTP protocol.
 
 **Mac**
-* On Mac, an SSH client is built in to the system. Using the *Terminal*, connect to SPIRO using the command `ssh pi@1.2.3.4` (where `1.2.3.4` is the IP address of your system).
+* On Mac, an SSH client is built into the system. Using the *Terminal*, connect to SPIRO using the command `ssh pi@1.2.3.4` (where `1.2.3.4` is the IP address of your system).
 * [Transmit](https://panic.com/transmit/) is the best graphical SFTP client for Mac.
 * [Cyberduck](https://cyberduck.io/) may be another alternative.
 * [FileZilla](https://filezilla-project.org/) also has a Mac version.
