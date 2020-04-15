@@ -72,6 +72,12 @@ def config_dnsmasq():
                                 no-poll
                                 no-hosts
                                 domain=spiro.local
+                                resolv-file=/dev/null
+                                """))
+    with open("/etc/default/dnsmasq", "w") as f:
+        f.write(textwrap.dedent("""\
+                                ENABLED=1
+                                DNSMASQ_EXCEPT=lo
                                 """))
 
 
