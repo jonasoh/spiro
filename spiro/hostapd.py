@@ -120,6 +120,9 @@ def restart_services():
 
 
 def enable_services():
+    # make sure wlan interface is not blocked
+    p = subprocess.run(['rfkill', 'unblock', 'wlan'], capture_output=True)
+
     services = ['dnsmasq', 'hostapd']
     for s in services:
         p = subprocess.run(['systemctl', 'unmask', s], capture_output=True)
