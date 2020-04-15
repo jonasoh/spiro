@@ -12,6 +12,7 @@ from picamera import PiCamera
 from spiro.hwcontrol import HWControl
 from spiro.config import Config
 from spiro.logger import log, debug
+import spiro.hostapd as hostapd
 import spiro.webui as webui
 import argparse
 import textwrap
@@ -32,6 +33,10 @@ parser.add_argument('--install-service', action="store_true", dest="install",
                     help="install systemd user service file")
 parser.add_argument('--toggle-debug', action="store_true", dest="toggle_debug",
                     help="toggles additional debug logging on or off")
+parser.add_argument('--enable-hotspot', action="store_true", dest="enable_ap",
+                    help="enables the wi-fi hotspot")
+parser.add_argument('--disable-hotspot', action="store_true", dest="disable_ap",
+                    help="disables the wi-fi hotspot")
 options = parser.parse_args()
 
 def initCam():
@@ -120,7 +125,12 @@ def main():
             print("Debug mode on.")
         else:
             print("Debug mode off")
-    if any([options.reset, options.resetpw, options.install, options.toggle_debug]):
+    if options.enable_ap:
+        hostapd.start_ap()
+    if options.disable_ap:
+        hostapd.stop_ap()
+    if any([options.reset, options.resetpw, options.install, options.toggle_debug,
+            options.enable_ap, options.disable_ap]):
         sys.exit()
 
     # no options given, go ahead and start web ui
