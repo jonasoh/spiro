@@ -19,7 +19,7 @@ def install_reqs():
     """installs hostapd and dnsmasq. returns a tuple of (installation status, output of failed command)."""
     reqs = ['dnsmasq', 'hostapd']
     for r in reqs:
-        p = subprocess.run(['dpkg', '-l', r], stdout=subprocess.PIPE)
+        p = subprocess.run(['dpkg', '-l', r], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if p.returncode != 0:
             # install requirement
             p = subprocess.run(["apt", "install", "-y", r], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
