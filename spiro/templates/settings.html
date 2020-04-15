@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block title %}Experiment view{% endblock %}
 {% block content %}
-<div class="pure-g">
-<div class="pure-u-1-5">
+<div class="layout">
+<div class="menu">
 <div class="logo">
 <img src="{{ url_for('static', filename='spiro.svg') }}" class="pure-img">
 </div>
@@ -21,7 +21,7 @@
 </ul>
 </div>
 </div>
-<div class="pure-u-4-5">
+<div class="main">
 <div class="padtop padleft">
 <form method="post" class="pure-form pure-g">
 <fieldset>
@@ -40,7 +40,6 @@
 <a href="/exit" class="pure-button">Restart web UI</a>
 <a href="/reboot" class="pure-button">Reboot system</a>
 <a href="/shutdown" class="pure-button">Power off system</a>
-
 </div>
 </div>
 </div>
