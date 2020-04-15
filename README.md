@@ -63,7 +63,7 @@ Models for the 3D printed hardware components can be found at [AlyonaMinina/SPIR
 
 ## Automated data analysis
 
-Image data acquired using SPIRO is highly reproducible, and well suited for automated image analysis. We have so far developed pipelines for automated assessment of germination and root growth rates, which can be found at [jiaxuanleong/spiro-IJmacros](https://github.com/jiaxuanleong/spiro-IJmacros).
+Image data acquired using SPIRO is highly reproducible, and well suited for automated image analysis. We have so far developed pipelines for automated assessment of germination and root growth rates, which can be found at [jiaxuanleong/SPIRO.Assays](https://github.com/jiaxuanleong/SPIRO.Assays).
 
 ## Installation
 
