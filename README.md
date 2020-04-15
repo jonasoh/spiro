@@ -15,7 +15,7 @@ The image below is a link to a YouTube video showing some of its design and feat
 * [3D printer models](#3d-printer-models)
 * [Automated data analysis](#automated-data-analysis)
 * [Installation](#installation)
-  * [Enabling the Wi-Fi hotspot](#enabling-the-wifi-hotspot)
+  * [Enabling the Wi-Fi hotspot](#enabling-the-wi-fi-hotspot)
 * [Usage](#usage)
   * [Working with SPIRO](#working-with-spiro)
   * [Connecting to the web interface](#connecting-to-the-web-interface)
