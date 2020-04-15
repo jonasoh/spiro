@@ -15,6 +15,7 @@ The image below is a link to a YouTube video showing some of its design and feat
 * [3D printer models](#3d-printer-models)
 * [Automated data analysis](#automated-data-analysis)
 * [Installation](#installation)
+  * [Enabling the Wi-Fi hotspot](#enabling-the-wifi-hotspot)
 * [Usage](#usage)
   * [Working with SPIRO](#working-with-spiro)
   * [Connecting to the web interface](#connecting-to-the-web-interface)
@@ -82,7 +83,7 @@ In the raspi-config interface, make the following changes:
 * Under *Localisation Options*, make sure to set the *Timezone*. Please note that a working network connection is required to maintain the correct date.
 * If needed, configure *Network* and *Localization* options here as well. Set a *Hostname* under Network if you plan on running several SPIROs.
 * Finally, select *Finish*, and choose to reboot the system when asked. 
-* After reboot, the system shows a message on the screen showing its IP address ("My IP address is: *a.b.c.d*"). Make a note of this address as you will need it to access the system over the network. Make sure that your network allows access to ports 8080 on this IP address.
+* After reboot, the system shows a message on the screen showing its IP address ("My IP address is: *a.b.c.d*"). Make a note of this address as you will need it to access the system over the network. Make sure that your network allows access to ports 8080 on this IP address. (Alternatively, see [Enabling the Wi-Fi hotspot](#enabling-the-wifi-hotspot))
 
 Next, make sure the system is up to date, and install the required tools (answer yes to any questions):
 
@@ -108,6 +109,35 @@ systemctl --user start spiro
 ```
 
 You may now place the system in the setting in which you will be using it for your experiments.
+
+### Enabling the Wi-Fi hotspot
+
+For situations where the web UI cannot be used via the network, e.g. if using the system is used where a network connection is not available or where firewall policies block access to the web UI or SSH, SPIRO can be configured to act as a Wi-Fi hotspot. In this mode, a Wi-Fi network with the name spiro-XXXXXX is provided, which provides access only to SPIRO.
+
+To enable the hotspot, run the following command from the terminal or via SSH (note that the system must be connected to a network when initially enabling the hotspot, as it needs to be able to download several software packages):
+
+```
+sudo spiro --enable-hotspot
+```
+
+After installing and configuring the required services, the details for connecting to the hotspot are given:
+
+```
+Access point configured and enabled. Below are the details for connecting to it:
+
+SSID:     spiro-feed13
+Password: 517824ee
+
+Connect to the web interface using the address http://spiro.local:8080
+```
+
+To reach the web UI or SSH when connected to the hotspot, use the convenience address `spiro.local` and the normal ports (22 for SSH, 8080 for web UI). Please note that the hotspot only allows access to the SPIRO system, and otherwise provides no internet connectivity.
+
+The hotspot can be disabled using the command:
+
+```
+sudo spiro --disable-hotspot
+```
 
 ## Usage
 
