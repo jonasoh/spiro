@@ -161,5 +161,8 @@ def start_ap():
 
 def stop_ap():
     log("Disabling services...")
+    init()
+    config_dhcpcd(enable=False)
+    p = subprocess.run(['systemctl', 'restart', 'dhcpcd'], capture_output=True)
     disable_services()
     log("Access point disabled.")
