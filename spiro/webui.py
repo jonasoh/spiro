@@ -459,7 +459,7 @@ def reboot():
 @app.route('/shutdown')
 def shutdown():
     subprocess.run(['sudo', 'shutdown', '-h', 'now'])
-    return redirect(url_for('index'))
+    return render_template('shutdown.html')
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
