@@ -337,6 +337,7 @@ def experiment():
                 if request.form.get('directory'): experimenter.dir = os.path.expanduser(os.path.join('~', request.form['directory'].replace('/', '-')))
                 else: experimenter.dir = os.path.expanduser('~')
                 setLive('off')
+                zoomer.set(roi=1.0)
                 log("Starting new experiment.")
                 experimenter.next_status = 'run'
                 experimenter.status_change.set()
