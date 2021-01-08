@@ -101,7 +101,10 @@ class HWControl:
         value = (val << 4) & 0x3ff0
         data1 = (value >> 8) & 0x3f
         data2 = value & 0xf0
-        os.system("i2cset -y 1 0x0c %d %d" % (data1,data2))
+        if os.path.exists('/dev/i2c-0'):
+            os.system("i2cset -y 0 0x0c %d %d" % (data1,data2))
+        if os.path.exists('/dev/i2c-1'):
+            os.system("i2cset -y 1 0x0c %d %d" % (data1,data2))
 
 
     # my copy of the pinout
