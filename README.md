@@ -67,7 +67,12 @@ Image data acquired using SPIRO is highly reproducible, and well suited for auto
 
 ## Installation
 
-First, prepare the SD card with a fresh release of Raspbian Lite (follow the official [instructions](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)). 
+First, prepare the SD card with a fresh release of Raspberry Pi OS Lite (follow the official [instructions](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)). 
+
+**Note**: If using the [ArduCam drop-in replacement camera module](https://www.arducam.com/product/arducam-imx219-auto-focus-camera-module-drop-in-replacement-for-raspberry-pi-v2-and-nvidia-jetson-nano-camera/), you need to add the following line to the file config.txt on the newly prepared SD card:
+```
+dtparam=i2c_vc=on
+```
 
 Connect the Raspberry Pi to a screen and keyboard. Log in using the default credentials (username `pi`, password `raspberry`). Start the system configuration:
 
