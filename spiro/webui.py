@@ -268,36 +268,36 @@ def liveGen():
 def liveStream():
     return Response(liveGen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/nightstill.jpg')
+@app.route('/nightstill.png')
 def nightStill():
     if nightstill.seek(0, io.SEEK_END) == 0:
-        return redirect(url_for('static', filename='empty.jpg'))
+        return redirect(url_for('static', filename='empty.png'))
     nightstill.seek(0)
-    return Response(nightstill.read(), mimetype="image/jpeg")
+    return Response(nightstill.read(), mimetype="image/png")
 
-@app.route('/daystill.jpg')
+@app.route('/daystill.png')
 def dayStill():
     if daystill.seek(0, io.SEEK_END) == 0:
-        return redirect(url_for('static', filename='empty.jpg'))
+        return redirect(url_for('static', filename='empty.png'))
     daystill.seek(0)
-    return Response(daystill.read(), mimetype="image/jpeg")
+    return Response(daystill.read(), mimetype="image/png")
 
 @app.route('/lastcapture.png')
 def lastCapture():
     if not experimenter.last_captured:
-        return redirect(url_for('static', filename='empty.jpg'))
+        return redirect(url_for('static', filename='empty.png'))
     else:
         try:
             with open(experimenter.last_captured, 'rb') as f:
                 return Response(f.read(), mimetype="image/png")
         except Exception as e:
             print("Could not read last captured image:", e)
-            return redirect(url_for('static', filename='empty.jpg'))
+            return redirect(url_for('static', filename='empty.png'))
 
 def takePicture(obj):
     obj.truncate()
     obj.seek(0)
-    camera.capture(obj, format="jpeg", quality=90)
+    camera.capture(obj, format="png")
     obj.seek(0)
 
 def grabExposure(time):
