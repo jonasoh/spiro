@@ -19,6 +19,24 @@ ul.pure-menu-list {
     font-family: 'Saira Condensed', sans-serif;
     font-size: 1.7em;
 }
+ul.filelist {
+    padding-left: 2rem;
+    list-style-type: none;
+}
+li.filelist {
+    padding-left: 2rem;
+    background-image: url(/static/favicon-32x32.png);
+    background-position: 0px 10px;
+    background-size: 1.6rem 1.6rem;
+    background-repeat: no-repeat;
+    font-family: 'Saira Condensed', sans-serif;
+    color: white;
+}
+p.diskspace {
+    color: white;
+    text-align: right;
+    font-family: 'Aldrich Regular', sans-serif;
+}
 #topmenu {
     height: 50px;
 }
@@ -58,9 +76,11 @@ div.expinfo {
     flex-direction: column;
     align-items: center;
 }
-
 .green {
     background-color: #6FBE44;
+}
+.red {
+    background-color: #DC1411;
 }
 div.name {
     padding-left: 27px;
