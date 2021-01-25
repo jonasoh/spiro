@@ -546,6 +546,9 @@ def delete_dir(exp_dir):
     if request.method == 'GET':
         return render_template('delete.html', dir=exp_dir)
     else:
+        if os.path.abspath(experimenter.dir) == del_dir and experimenter.running:
+            flash('Cannot remove active experiment directory. Please stop experiment first.')
+            return redirect(url_for('file_browser'))
         if verify_dir(del_dir):
             shutil.rmtree(del_dir)
             flash(f'Directory {exp_dir} deleted.')
