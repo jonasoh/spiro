@@ -19,6 +19,9 @@ ul.pure-menu-list {
     font-family: 'Saira Condensed', sans-serif;
     font-size: 1.7em;
 }
+ul.pure-menu-list li a {
+    padding: .3em 1em;
+}
 ul.filelist {
     padding-left: 2rem;
     list-style-type: none;
