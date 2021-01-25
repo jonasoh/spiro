@@ -25,12 +25,18 @@ ul.filelist {
 }
 li.filelist {
     padding-left: 2rem;
-    background-image: url(/static/favicon-32x32.png);
-    background-position: 0px 10px;
-    background-size: 1.6rem 1.6rem;
+    background-image: url(/static/spiro-folder.png);
+    background-position: 10px 5px;
+    background-size: 1.0rem 1.0rem;
     background-repeat: no-repeat;
     font-family: 'Saira Condensed', sans-serif;
     color: white;
+}
+a.download {
+    color: #73B72F;
+}
+a.delete {
+    color: #F77D7B;
 }
 p.diskspace {
     color: white;

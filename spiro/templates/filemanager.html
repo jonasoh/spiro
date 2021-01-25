@@ -28,7 +28,7 @@
 <legend class="label">File manager</legend>
 <ul class="filelist">
 {% for dir in dirs %}
-<li class="filelist">{{ dir }}<a class="pure-button green" href="/get/{{ dir }}.zip">Download</a> <a class="pure-button red" href="/delete/{{ dir }}">Delete</a>
+<li class="filelist">{{ dir }} [<a href="/get/{{ dir }}.zip" class="download">Download</a>] [<a href="/delete/{{ dir }}" class="delete">Delete</a>]
 {% endfor %}
 </ul>
 <hr>
