@@ -162,20 +162,14 @@ In the experiment control view, parameters such as the duration of the experimen
 
 During a running experiment, most functions of the web UI are disabled. Browsing to the UI instead displays the status of the running experiment, and provides details on time remaining and the current image quality.
 
-To manage your images you need an SFTP client. For administration of SPIRO (e.g., for updating the software and diagnosing problems), an SSH client is also very useful. Depending on your operating system and how comfortable you are with a computer, there are several choices. A few of them are listed below.
+For administration of SPIRO (e.g., for updating the software and diagnosing problems), an SSH client is very useful. Below are a few choices:
 
 **Windows**
 * [MobaXterm](https://mobaxterm.mobatek.net/) is a popular SSH client that also supports file transfer. Recommended for beginners. 
-* [FileZilla](https://filezilla-project.org/) is also a popular SFTP client, but has been known to bundle malware with its installer.
 * [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) is a lightweight and popular SSH client.
-* [WinSCP](https://winscp.net/eng/index.php) can be used to transfer files from SPIRO using the SFTP protocol.
 
-**Mac**
-* On Mac, an SSH client is built into the system. Using the *Terminal*, connect to SPIRO using the command `ssh pi@1.2.3.4` (where `1.2.3.4` is the IP address of your system).
-* [Transmit](https://panic.com/transmit/) is the best graphical SFTP client for Mac.
-* [Cyberduck](https://cyberduck.io/) may be another alternative.
-* [FileZilla](https://filezilla-project.org/) also has a Mac version.
-* Images can be transferred using the builtin commands `scp` and `sftp`, although this requires some knowledge of the command line.
+**Mac/Linux**
+* On Mac and Linux, an SSH client is built into the system. Using the *Terminal*, connect to SPIRO using the command `ssh pi@1.2.3.4` (where `1.2.3.4` is the IP address of your system).
 
 ### Connecting to the web interface
 
@@ -195,7 +189,7 @@ When imaging parameters are set up to your liking, you are ready to start your e
 
 ### Downloading images
 
-The images should be downloaded using the SFTP client you installed previously. Log in to the system using its IP address, username *pi*, and the password you set during the initial set up steps. Images are contained within directories in the home folder. After downloading, you should remove them from the system to make sure that it doesn't run out of disk space.
+Images can be downloaded from the web interface under *File manager*. The File manager also allows deleting files to free up space on the SD card.
 
 ## Maintaining the system
 
