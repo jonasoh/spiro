@@ -11,11 +11,18 @@
 </div>
 <div class="pure-menu">
 <ul class="pure-menu-list">
+{% if running %}
+<li class="pure-menu-item pure-menu-disabled">Live view</li>
+<li class="pure-menu-item pure-menu-disabled">Set up day image</li>
+<li class="pure-menu-item pure-menu-disabled">Set up night image</li>
+<li class="pure-menu-item pure-menu-disabled">Calibrate motor</li>
+{% else %}
 <li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
 <li class="pure-menu-item"><a href="/exposure/day" class="pure-menu-link">Day image settings</a></li>
 <li class="pure-menu-item"><a href="/exposure/night" class="pure-menu-link">Night image settings</a></li>
 <li class="pure-menu-item"><a href="/calibrate" class="pure-menu-link">Calibrate motor</a></li>
-<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Start/view experiment</a></li>
+{% endif %}
+<li class="pure-menu-item"><a href="/experiment" class="pure-menu-link">Experiment control</a></li>
 <li class="pure-menu-item"><a href="/logout" class="pure-menu-link">Log out</a></li>
 <li class="pure-menu-item selected"><a href="/settings" class="pure-menu-link">System settings</a></li>
 <li class="pure-menu-item"><a href="/files" class="pure-menu-link">File manager</a></li>

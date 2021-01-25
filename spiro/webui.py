@@ -500,7 +500,7 @@ def settings():
     if request.method == 'POST':
         if request.form.get('name'):
             cfg.set('name', request.form.get('name'))
-    return render_template('settings.html', name=cfg.get('name'))
+    return render_template('settings.html', name=cfg.get('name'), running=experimenter.running)
 
 
 @not_while_running
@@ -523,7 +523,7 @@ def file_browser():
     for entry in os.scandir(dir):
         if entry.is_dir() and os.path.dirname(entry.path) == dir and not entry.name.startswith('.'):
             dirs.append(entry.name)
-    return render_template('filemanager.html', dirs=dirs, diskspace=diskspace, name=cfg.get('name'))
+    return render_template('filemanager.html', dirs=dirs, diskspace=diskspace, name=cfg.get('name'), running=experimenter.running)
 
 
 @app.route('/get/<exp_dir>.zip')
