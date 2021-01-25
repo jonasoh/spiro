@@ -4,19 +4,21 @@
 # - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
 #
 
-from flask import Flask, render_template, Response, request, redirect, url_for, session, flash, abort
-from waitress import serve
 import io
-import time
 import os
-import hashlib
+import time
 import shutil
 import signal
+import hashlib
 import subprocess
-from spiro.config import Config
-from spiro.experimenter import Experimenter
-from spiro.logger import log, debug
 from threading import Thread, Lock, Condition
+
+from waitress import serve
+from flask import Flask, render_template, Response, request, redirect, url_for, session, flash, abort
+
+from spiro.config import Config
+from spiro.logger import log, debug
+from spiro.experimenter import Experimenter
 
 app = Flask(__name__)
 app.jinja_env.trim_blocks = True
@@ -97,10 +99,12 @@ def public_route(decorated_function):
     decorated_function.is_public = True
     return decorated_function
 
+
 def not_while_running(decorated_function):
     '''decorator for routes that should be inaccessible while an experiment is running'''
     decorated_function.not_while_running = True
     return decorated_function
+
 
 @app.before_request
 def check_route_access():
@@ -117,12 +121,14 @@ def check_route_access():
     else:
         return redirect(url_for('login'))
 
+
 def checkPass(pwd):
     if pwd:
         hash = hashlib.sha1(pwd.encode('utf-8'))
         if hash.hexdigest() == cfg.get('password'):
             return True
     return False
+
 
 @app.route('/index.html')
 @app.route('/')
@@ -131,9 +137,11 @@ def index():
         return redirect(url_for('experiment'))
     return render_template('index.html', live=livestream, focus=cfg.get('focus'), led=hw.led, name=cfg.get('name'))
 
+
 @app.route('/empty')
 def empty():
     return render_template('unavailable.html'), 409
+
 
 @public_route
 @app.route('/login', methods=['GET', 'POST'])
@@ -151,11 +159,13 @@ def login():
     else:
         return render_template('login.html', name=cfg.get('name'))
 
+
 @public_route
 @app.route('/logout')
 def logout():
     session['password'] = ''
     return redirect(url_for('login'))
+
 
 @public_route
 @app.route('/newpass', methods=['GET', 'POST'])
@@ -184,11 +194,13 @@ def newpass():
     else:
         return render_template('newpass.html', nopass=cfg.get('password') == '', name=cfg.get('name'))
 
+
 @not_while_running
 @app.route('/zoom/<int:value>')
 def zoom(value):
     zoomer.set(roi=float(value / 100))
     return redirect(url_for('index'))
+
 
 @not_while_running
 @app.route('/pan/<dir>/<value>')
@@ -199,6 +211,7 @@ def pan(dir, value):
         zoomer.set(y = zoomer.y + float(value))
     return redirect(url_for('index'))
 
+
 @not_while_running
 @app.route('/live/<value>')
 def switch_live(value):
@@ -208,6 +221,7 @@ def switch_live(value):
         camera.shutter_speed = 0
         camera.exposure_mode = "auto"
     return redirect(url_for('index'))
+
 
 def setLive(val):
     global livestream
@@ -222,6 +236,7 @@ def setLive(val):
         camera.resolution = camera.MAX_RESOLUTION
     return prev != livestream
 
+
 @not_while_running
 @app.route('/led/<value>')
 def led(value):
@@ -231,6 +246,7 @@ def led(value):
         hw.LEDControl(False)
     return redirect(url_for('index'))
 
+
 @not_while_running
 @app.route('/rotate/<int:value>')
 def rotate(value):
@@ -238,6 +254,7 @@ def rotate(value):
         rotator = Rotator(value)
         rotator.start()
     return redirect(url_for('index'))
+
 
 @not_while_running
 @app.route('/findstart')
@@ -251,6 +268,7 @@ def findstart(value=None):
     time.sleep(0.5)
     hw.motorOn(False)
     return redirect(url_for('index'))
+
 
 def liveGen():
     while True:
@@ -268,6 +286,7 @@ def liveGen():
 def liveStream():
     return Response(liveGen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 @app.route('/nightstill.png')
 def nightStill():
     if nightstill.seek(0, io.SEEK_END) == 0:
@@ -275,12 +294,14 @@ def nightStill():
     nightstill.seek(0)
     return Response(nightstill.read(), mimetype="image/png")
 
+
 @app.route('/daystill.png')
 def dayStill():
     if daystill.seek(0, io.SEEK_END) == 0:
         return redirect(url_for('static', filename='empty.png'))
     daystill.seek(0)
     return Response(daystill.read(), mimetype="image/png")
+
 
 @app.route('/lastcapture.png')
 def lastCapture():
@@ -294,11 +315,13 @@ def lastCapture():
             print("Could not read last captured image:", e)
             return redirect(url_for('static', filename='empty.png'))
 
+
 def takePicture(obj):
     obj.truncate()
     obj.seek(0)
     camera.capture(obj, format="png")
     obj.seek(0)
+
 
 def grabExposure(time):
     global dayshutter, nightshutter
@@ -315,6 +338,7 @@ def grabExposure(time):
     else:
         abort(404)
 
+
 @not_while_running
 @app.route('/focus/<int:value>')
 def focus(value):
@@ -322,6 +346,7 @@ def focus(value):
     hw.focusCam(value)
     cfg.set('focus', value)
     return redirect(url_for('index'))
+
 
 @app.route('/experiment', methods=['GET', 'POST'])
 def experiment():
@@ -359,6 +384,7 @@ def experiment():
                            endtime=time.ctime(experimenter.endtime), diskspace=diskspace, duration=experimenter.duration,
                            status=experimenter.status, nshots=experimenter.nshots + 1, diskreq=diskreq, name=cfg.get('name'))
 
+
 @not_while_running
 def exposureMode(time):
     if time == 'day':
@@ -380,6 +406,7 @@ def exposureMode(time):
         return redirect(url_for('index'))
     abort(404)
 
+
 @not_while_running
 @app.route('/shutter/<time>/<int:value>')
 def shutter(time, value):
@@ -389,6 +416,7 @@ def shutter(time, value):
         return redirect(url_for('index'))
     else:
         abort(404)
+
 
 @not_while_running
 @app.route('/exposure/<time>', methods=['GET', 'POST'])
@@ -427,6 +455,7 @@ def exposure(time):
                            nightshutter=ns, dayshutter=ds, name=cfg.get('name'), iso=camera.iso,
                            dayiso=cfg.get('dayiso'), nightiso=cfg.get('nightiso'))
 
+
 @not_while_running
 @app.route('/calibrate', methods=['GET', 'POST'])
 def calibrate():
@@ -441,6 +470,7 @@ def calibrate():
     setLive('on')
     return render_template('calibrate.html', calibration=cfg.get('calibration'), name=cfg.get('name'))
 
+
 @not_while_running
 @app.route('/exit')
 def exit():
@@ -449,6 +479,7 @@ def exit():
     signal.alarm(1)
     return redirect(url_for('wait_for_restart'))
 
+
 @not_while_running
 @app.route('/reboot')
 def reboot():
@@ -456,11 +487,13 @@ def reboot():
     return render_template('restarting.html', refresh='60; url=/',
                            message="Rebooting system...")
 
+
 @not_while_running
 @app.route('/shutdown')
 def shutdown():
     subprocess.run(['sudo', 'shutdown', '-h', 'now'])
     return render_template('shutdown.html')
+
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
@@ -468,6 +501,7 @@ def settings():
         if request.form.get('name'):
             cfg.set('name', request.form.get('name'))
     return render_template('settings.html', name=cfg.get('name'))
+
 
 @not_while_running
 @app.route('/restarting')
@@ -523,32 +557,34 @@ def verify_dir(check_dir):
        1. immediately contained within the appropriate parent dir
        2. does not contain initial dots, and
        3. is indeed a directory'''
-
     check_dir = os.path.abspath(check_dir)
     dir = os.path.expanduser('~')
     return os.path.dirname(check_dir) == dir and not os.path.basename(check_dir).startswith('.') and os.path.isdir(check_dir)
 
 
 def stream_popen(p):
+    '''generator for sending STDOUT to a web client'''
     data = p.stdout.read(128*1024)
     while data:
         yield data
         data = p.stdout.read(128*1024)
 
 
-livestream = False
 liveoutput = StreamingOutput()
-daystill = io.BytesIO()
 nightstill = io.BytesIO()
-dayshutter = None
-nightshutter = None
+daystill = io.BytesIO()
 zoomer = ZoomObject()
-lock = Lock()
 cfg = Config()
+lock = Lock()
+
+experimenter = None
+nightshutter = None
+dayshutter = None
 camera = None
 hw = None
-experimenter = None
+
 restarting = False
+livestream = False
 
 def start(cam, myhw):
     global camera, hw, experimenter
