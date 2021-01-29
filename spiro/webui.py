@@ -523,7 +523,7 @@ def file_browser():
     for entry in os.scandir(dir):
         if entry.is_dir() and os.path.dirname(entry.path) == dir and not entry.name.startswith('.'):
             dirs.append(entry.name)
-    return render_template('filemanager.html', dirs=dirs, diskspace=diskspace, name=cfg.get('name'), running=experimenter.running)
+    return render_template('filemanager.html', dirs=sorted(dirs), diskspace=diskspace, name=cfg.get('name'), running=experimenter.running)
 
 
 @app.route('/get/<exp_dir>.zip')
