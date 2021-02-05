@@ -38,7 +38,7 @@ class Experimenter(threading.Thread):
 
     def getDefName(self):
         today = date.today().strftime('%Y.%m.%d')
-        return(today + ' ' + self.cfg.get('name'))
+        return today + ' ' + self.cfg.get('name')
 
     def isDaytime(self):
         oldres = self.cam.resolution
