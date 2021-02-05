@@ -1,7 +1,8 @@
-import threading
 import os
 import time
+import threading
 import numpy as np
+from datetime import date
 from statistics import mean
 from collections import deque
 from spiro.config import Config
@@ -34,6 +35,10 @@ class Experimenter(threading.Thread):
         self.next_status = ''
         self.stop_experiment = True
         log("Stopping running experiment...")
+
+    def getDefName(self):
+        today = date.today().strftime('%Y.%m.%d')
+        return(today + ' ' + self.cfg.get('name'))
 
     def isDaytime(self):
         oldres = self.cam.resolution
