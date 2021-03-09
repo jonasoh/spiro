@@ -135,6 +135,8 @@ def checkPass(pwd):
 def index():
     if experimenter.running:
         return redirect(url_for('experiment'))
+    if restarting:
+        return render_template('restarting.html', refresh='60; url=/', message="Rebooting system...")
     return render_template('index.html', live=livestream, focus=cfg.get('focus'), led=hw.led, name=cfg.get('name'))
 
 
@@ -382,7 +384,8 @@ def experiment():
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
                            starttime=time.ctime(experimenter.starttime), delay=experimenter.delay,
                            endtime=time.ctime(experimenter.endtime), diskspace=diskspace, duration=experimenter.duration,
-                           status=experimenter.status, nshots=experimenter.nshots + 1, diskreq=diskreq, name=cfg.get('name'))
+                           status=experimenter.status, nshots=experimenter.nshots + 1, diskreq=diskreq, name=cfg.get('name'),
+                           defname=experimenter.getDefName())
 
 
 @not_while_running
@@ -483,9 +486,10 @@ def exit():
 @not_while_running
 @app.route('/reboot')
 def reboot():
+    global restarting
+    restarting = True
     subprocess.Popen(['sudo', 'shutdown', '-r', 'now'])
-    return render_template('restarting.html', refresh='60; url=/',
-                           message="Rebooting system...")
+    return redirect(url_for('index'))
 
 
 @not_while_running

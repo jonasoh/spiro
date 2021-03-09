@@ -1,7 +1,8 @@
-import threading
 import os
 import time
+import threading
 import numpy as np
+from datetime import date
 from statistics import mean
 from collections import deque
 from spiro.config import Config
@@ -29,13 +30,24 @@ class Experimenter(threading.Thread):
         self.idlepos = 0
         threading.Thread.__init__(self)
 
+
     def stop(self):
         self.status = "Stopping"
         self.next_status = ''
         self.stop_experiment = True
         log("Stopping running experiment...")
 
+
+    def getDefName(self):
+        '''returns a default experiment name'''
+        today = date.today().strftime('%Y.%m.%d')
+        return today + ' ' + self.cfg.get('name')
+
+
     def isDaytime(self):
+        '''algorithm for daytime estimation.
+           if the average pixel intensity is less than 10, we assume it is night.
+           this may be tweaked for special use cases.'''
         oldres = self.cam.resolution
         self.cam.resolution = (320, 240)
         self.cam.iso = self.cfg.get('dayiso')
@@ -46,6 +58,7 @@ class Experimenter(threading.Thread):
         debug("Daytime estimation mean value: " + str(output.mean()))
         return output.mean() > 10
 
+
     def setWB(self):
         debug("Determining white balance.")
         self.cam.awb_mode = "auto"
@@ -53,6 +66,7 @@ class Experimenter(threading.Thread):
         g = self.cam.awb_gains
         self.cam.awb_mode = "off"
         self.cam.awb_gains = g
+
 
     def takePicture(self, name):
         filename = ""
@@ -71,7 +85,6 @@ class Experimenter(threading.Thread):
             time.sleep(0.5)
             self.cam.shutter_speed = 1000000 // self.cfg.get('nightshutter')
             self.cam.iso = self.cfg.get('nightiso')
-            #self.cam.color_effects = (128, 128)
             filename = os.path.join(self.dir, name + "-night.png")
         
         if prev_daytime != self.daytime and self.daytime and self.cam.awb_mode != "off":
@@ -93,7 +106,9 @@ class Experimenter(threading.Thread):
             # turn off led
             self.hw.LEDControl(False)
 
+
     def run(self):
+        '''starts experiment if there is signal to do so'''
         while not self.quit:
             self.status_change.wait()
             if self.next_status == 'run':
@@ -101,11 +116,15 @@ class Experimenter(threading.Thread):
                 self.status_change.clear()
                 self.runExperiment()
 
+
     def go(self):
+        '''signals intent to start experiment'''
         self.next_status = 'run'
         self.status_change.set()                
 
+
     def runExperiment(self):
+        '''main experiment loop'''
         if self.running:
             raise RuntimeError('An experiment is already running.')
 
@@ -122,12 +141,17 @@ class Experimenter(threading.Thread):
             self.cam.shutter_speed = 0
             self.hw.LEDControl(False)
 
+            if self.dir == os.path.expanduser('~'):
+                # make sure we don't write directly to home dir
+                self.dir = os.path.join(os.path.expanduser('~'), self.getDefName())
+
             for i in range(4):
                 platedir = "plate" + str(i + 1)
                 os.makedirs(os.path.join(self.dir, platedir), exist_ok=True)
 
             while time.time() < self.endtime and not self.stop_experiment:
                 loopstart = time.time()
+                # need to use time-based loop control as we do not know how long a rotation takes
                 nextloop = time.time() + 60 * self.delay
                 if nextloop > self.endtime:
                     nextloop = self.endtime
