@@ -572,6 +572,12 @@ def verify_dir(check_dir):
     return os.path.dirname(check_dir) == dir and not os.path.basename(check_dir).startswith('.') and os.path.isdir(check_dir)
 
 
+@app.route('/log')
+def get_log():
+    p = subprocess.Popen(['/bin/journalctl', '--user-unit=spiro', '-n', '1000'], stdout=subprocess.PIPE)
+    return Response(stream_popen(p), mimetype='text/plain')
+
+
 def stream_popen(p):
     '''generator for sending STDOUT to a web client'''
     data = p.stdout.read(128*1024)
