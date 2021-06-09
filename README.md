@@ -95,7 +95,7 @@ Next, make sure the system is up to date, and install the required tools (answer
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install python3-pip git i2c-tools wiringpi libatlas-base-dev zip
+sudo apt install python3-pip git i2c-tools wiringpi libatlas-base-dev zip python3-pil
 ```
 
 Then, install the SPIRO software and its dependencies:
@@ -226,7 +226,7 @@ sudo apt update
 sudo apt upgrade
 ```
 
-To update the SPIRO control software, issue the commands:
+When updating the SPIRO control software, first check the [UPDATING.md](UPDATING.md) file for notable changes. Normally, to update the software, issue the commands:
 
 ```
 sudo pip3 install -U git+https://github.com/jonasoh/spiro#egg=spiro

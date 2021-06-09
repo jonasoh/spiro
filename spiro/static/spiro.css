@@ -333,7 +333,9 @@ li.selected > a {
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px; 
 }
-
+input {
+    color: black;
+}
 input[type=range] {
     -webkit-appearance: none;
     width: 100%;

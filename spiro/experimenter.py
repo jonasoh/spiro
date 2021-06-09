@@ -2,6 +2,8 @@ import os
 import time
 import threading
 import numpy as np
+from PIL import Image
+from io import BytesIO
 from datetime import date
 from statistics import mean
 from collections import deque
@@ -70,6 +72,7 @@ class Experimenter(threading.Thread):
 
     def takePicture(self, name):
         filename = ""
+        stream = BytesIO()
         prev_daytime = self.daytime
         self.daytime = self.isDaytime()
         
@@ -95,7 +98,12 @@ class Experimenter(threading.Thread):
 
         debug("Capturing %s." % filename)
         self.cam.exposure_mode = "off"
-        self.cam.capture(filename)
+
+        self.cam.capture(stream, format='bmp')
+        stream.seek(0)
+        im = Image.open(stream)
+        im.save(filename)
+
         self.last_captured = filename
         self.cam.color_effects = None
         self.cam.shutter_speed = 0

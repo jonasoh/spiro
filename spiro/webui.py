@@ -380,7 +380,7 @@ def experiment():
         df = shutil.disk_usage(os.path.expanduser('~'))
 
     diskspace = round(df.free / 1024 ** 3, 1)
-    diskreq = round(experimenter.nshots * 4 * 10 / 1024, 1)
+    diskreq = round(experimenter.nshots * 4 * 6 / 1024, 1)
     return render_template('experiment.html', running=experimenter.running, directory=experimenter.dir, 
                            starttime=time.ctime(experimenter.starttime), delay=experimenter.delay,
                            endtime=time.ctime(experimenter.endtime), diskspace=diskspace, duration=experimenter.duration,
