@@ -504,7 +504,8 @@ def settings():
     if request.method == 'POST':
         if request.form.get('name'):
             cfg.set('name', request.form.get('name'))
-    return render_template('settings.html', name=cfg.get('name'), running=experimenter.running, version=cfg.version)
+    return render_template('settings.html', name=cfg.get('name'), running=experimenter.running, version=cfg.version,
+                           debug=cfg.get('debug'))
 
 
 @not_while_running
@@ -584,6 +585,17 @@ def stream_popen(p):
     while data:
         yield data
         data = p.stdout.read(128*1024)
+
+
+@app.route('/debug/<value>')
+def set_debug(value):
+    if value == 'on':
+        cfg.set('debug', True)
+        flash('Debug mode enabled.')
+    elif value == 'off':
+        cfg.set('debug', False)
+        flash('Debug mode disabled.')
+    return redirect(url_for('settings'))
 
 
 liveoutput = StreamingOutput()

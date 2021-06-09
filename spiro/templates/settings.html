@@ -52,6 +52,12 @@ Version:
 <div class="pure-u-3-5">
 {{ version }}
 </div>
+<div class="pure-u-2-5">
+Debug mode:
+</div>
+<div class="pure-u-3-5">
+<a href="/debug/on" class="pure-button {% if debug %} green {% endif %}">On</a> <a href="/debug/off" class="pure-button {% if not debug %} green {% endif %}">Off</a>
+</div>
 </div>
 <legend class="label">Shut down</legend>
 <a href="/exit" class="pure-button">Restart web UI</a>
