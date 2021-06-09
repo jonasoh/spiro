@@ -11,6 +11,7 @@ from picamera import PiCamera
 from spiro.config import Config
 from spiro.hwcontrol import HWControl
 from spiro.logger import log, debug
+import spiro.failsafe as failsafe
 import spiro.hostapd as hostapd
 import spiro.webui as webui
 import argparse
@@ -88,9 +89,11 @@ def terminate(sig, frame):
         signal.alarm(10)
 
     log("Signal " + str(sig) + " caught -- shutting down.")
-    webui.stop()
+    if not failed:
+        webui.stop()
+    if cam:
+        cam.close()
     hw.motorOn(False)
-    cam.close()
     hw.cleanup()
     sys.exit()
 
@@ -99,6 +102,7 @@ shutdown = False
 cfg = Config()
 cam = None
 hw = HWControl()
+failed = False
 for sig in [signal.SIGTERM, signal.SIGINT, signal.SIGQUIT, signal.SIGHUP, signal.SIGALRM]:
     signal.signal(sig, terminate)
 
@@ -132,9 +136,14 @@ def main():
         sys.exit()
 
     # no options given, go ahead and start web ui
-    global cam
-    gpio.setmode(gpio.BCM)
-    hw.GPIOInit()
-    cam = initCam()
-    log('Starting web UI.')
-    webui.start(cam, hw)
+    try:
+        global cam
+        gpio.setmode(gpio.BCM)
+        hw.GPIOInit()
+        cam = initCam()
+        log('Starting web UI.')
+        webui.start(cam, hw)
+    except Exception as e:
+        global failed
+        failed = True
+        failsafe.start(e)

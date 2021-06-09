@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}SPIRO failsafe mode{% endblock %}
+{% block content %}
+<style>
+body { background-color: black; color: white; }
+iframe { background-color: gray; }
+</style>
+<h1>SPIRO {{ version }} failed to start</h1>
+<p>This is the failsafe mode.</p>
+<h2>Traceback:</h2>
+<pre>
+{{ trace }}
+</pre>
+<h2>System log:</h2>
+<iframe id="log" width="100%" height="500" src="/log">
+</iframe>
+<p>
+<a href="/exit" class="pure-button">Restart web UI</a> <a href="/reboot" class="pure-button">Reboot system</a>
+<a href="/shutdown" class="pure-button">Shut down system</a>
+</p>
+{% endblock %}

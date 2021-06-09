@@ -336,6 +336,9 @@ li.selected > a {
 input {
     color: black;
 }
+iframe {
+    color: white;
+}
 input[type=range] {
     -webkit-appearance: none;
     width: 100%;
