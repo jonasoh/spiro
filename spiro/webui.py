@@ -558,7 +558,8 @@ def delete_dir(exp_dir):
             flash(f'Directory {exp_dir} deleted.')
             return redirect(url_for('file_browser'))
         else:
-            abort(404)
+            flash(f'Unable to delete directory "{exp_dir}".')
+            return redirect(url_for('file_browser'))
 
 
 def verify_dir(check_dir):

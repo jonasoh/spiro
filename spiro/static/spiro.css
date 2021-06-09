@@ -199,6 +199,7 @@ ul.flashes {
     margin-top: 0px;
     padding: 10px;
     background-color: rgb(181, 240, 136);
+    color: black;
 }
 ul.flashes li {
     list-style-type: none;
