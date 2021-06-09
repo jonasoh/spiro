@@ -1,3 +1,7 @@
+# logger.py -
+#   simple functions for logging
+#
+
 import sys
 from spiro.config import Config
 

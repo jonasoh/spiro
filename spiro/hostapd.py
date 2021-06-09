@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-#
 # hostapd.py -
 #   configure system as an AP directing all client queries to the web ui
 #

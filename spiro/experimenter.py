@@ -1,3 +1,7 @@
+# experimenter.py -
+#   this file handles running the actual experiments
+#
+
 import os
 import time
 import threading

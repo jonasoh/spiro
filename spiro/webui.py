@@ -1,8 +1,6 @@
 # webui.py -
 #   main web ui controller for spiro
 #
-# - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
-#
 
 import io
 import os

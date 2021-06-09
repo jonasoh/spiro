@@ -1,3 +1,7 @@
+# config.py -
+#   handles getting/setting of persistent spiro config values
+#
+
 import json
 import os
 import sys

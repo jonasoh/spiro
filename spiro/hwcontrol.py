@@ -1,3 +1,7 @@
+# hwcontrol.py -
+#   various functions for controlling the spiro hardware
+#
+
 import RPi.GPIO as gpio
 import time
 import os

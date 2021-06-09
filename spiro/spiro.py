@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
 #
 # spiro.py -
-#   script for time-lapse imaging of Petri dishes, with a focus on plants
-#   (i.e. it is adapted to day/night cycles).
-#
-# - Jonas Ohlsson <jonas.ohlsson .a. slu.se>
+#   primary entry point for the spiro control software
 #
 
 import os
+import textwrap
+import RPi.GPIO as gpio
 from picamera import PiCamera
-from spiro.hwcontrol import HWControl
 from spiro.config import Config
+from spiro.hwcontrol import HWControl
 from spiro.logger import log, debug
 import spiro.hostapd as hostapd
 import spiro.webui as webui
 import argparse
-import textwrap
-import sys
 import signal
-import RPi.GPIO as gpio
+import sys
 
 parser = argparse.ArgumentParser(
              description=textwrap.dedent("""\
