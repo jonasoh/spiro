@@ -39,6 +39,7 @@ parser.add_argument('--disable-hotspot', action="store_true", dest="disable_ap",
                     help="disables the wi-fi hotspot")
 options = parser.parse_args()
 
+
 def initCam():
     cam = PiCamera()
     # cam.framerate dictates longest exposure (1/cam.framerate)

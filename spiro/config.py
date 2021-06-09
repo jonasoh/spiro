@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from ._version import __version__
 
 def log(msg):
     sys.stderr.write(msg + '\n')
@@ -35,6 +36,7 @@ class Config(object):
     def __init__(self):
         self.cfgdir = os.path.expanduser("~/.config/spiro")
         self.cfgfile = os.path.join(self.cfgdir, "spiro.conf")
+        self.version = __version__
         self.read()
         if os.path.exists(self.cfgfile):
             st = os.stat(self.cfgfile)

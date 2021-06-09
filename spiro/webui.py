@@ -504,7 +504,7 @@ def settings():
     if request.method == 'POST':
         if request.form.get('name'):
             cfg.set('name', request.form.get('name'))
-    return render_template('settings.html', name=cfg.get('name'), running=experimenter.running)
+    return render_template('settings.html', name=cfg.get('name'), running=experimenter.running, version=cfg.version)
 
 
 @not_while_running
