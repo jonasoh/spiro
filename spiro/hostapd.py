@@ -57,7 +57,6 @@ def config_hostapd():
                                 wpa_pairwise=TKIP
                                 rsn_pairwise=CCMP
                                 """.format(id, pwd)))
-    return(id, pwd)
 
 
 def config_dnsmasq():
@@ -112,7 +111,7 @@ def restart_services():
     codes = []
 
     for s in services:
-        p = subprocess.run(["systemctl", "restart", s], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+        p = subprocess.run(["sudo", "systemctl", "restart", s], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
         debug("Restarted service {0} with status code {1}.".format(s, p.returncode))
         codes.append(p.returncode)
 
@@ -125,25 +124,28 @@ def enable_services():
 
     services = ['dnsmasq', 'hostapd']
     for s in services:
-        p = subprocess.run(['systemctl', 'unmask', s], capture_output=True)
-        p = subprocess.run(['systemctl', 'enable', s], capture_output=True)
+        p = subprocess.run(['sudo', 'systemctl', 'unmask', s], capture_output=True)
+        p = subprocess.run(['sudo', 'systemctl', 'enable', s], capture_output=True)
         
 
 def disable_services():
     services = ['dnsmasq', 'hostapd']
     for s in services:
-        p = subprocess.run(['systemctl', 'stop', s], capture_output=True)
-        p = subprocess.run(['systemctl', 'disable', s], capture_output=True)
+        p = subprocess.run(['sudo', 'systemctl', 'stop', s], capture_output=True)
+        p = subprocess.run(['sudo', 'systemctl', 'disable', s], capture_output=True)
 
 
 def start_ap():
-    log("Setting up dependencies...")
-    init()
-    install_reqs()
-    log("Configuring system...")
+    if not is_ready():
+        # initial steps, run 'sudo spiro --enable-hotspot'
+        log("Setting up dependencies...")
+        init()
+        install_reqs()
+        log("Configuring system...")
+        config_dnsmasq()
+        config_hostapd()
+
     config_dhcpcd(enable=True)
-    config_dnsmasq()
-    ssid, pwd = config_hostapd()
     log("Starting services...")
     enable_services()
     r = restart_services()
@@ -152,6 +154,7 @@ def start_ap():
         log("Setting up access point failed.")
         return(1)
     else:
+        ssid, pwd = get_ssid()
         log("Access point configured and enabled. Below are the details for connecting to it:")
         log("\nSSID:     " + ssid)
         log("Password: " + pwd)
@@ -163,7 +166,7 @@ def stop_ap():
     log("Disabling services...")
     init()
     config_dhcpcd(enable=False)
-    p = subprocess.run(['systemctl', 'restart', 'dhcpcd'], capture_output=True)
+    p = subprocess.run(['sudo', 'systemctl', 'restart', 'dhcpcd'], capture_output=True)
     disable_services()
     log("Access point disabled.")
 

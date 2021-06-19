@@ -72,6 +72,14 @@ Hotspot password:
 {{ passwd }}
 </div>
 {% endif %}
+{% if hotspot_ready %}
+<div class="pure-u-2-5">
+Wi-Fi hotspot:
+</div>
+<div class="pure-u-3-5">
+<a href="/hotspot/start" class="pure-button {% if hotspot_enabled %} green {% endif %}">On</a> <a href="/hotspot/stop" class="pure-button {% if not hotspot_enabled %} green {% endif %}">Off</a>
+</div>
+{% endif %}
 <div class="pure-u-2-5">
 Debug mode:
 </div>

@@ -611,6 +611,19 @@ def get_external_ip():
         return 'Unknown'
 
 
+@app.route('/hotspot/<value>')
+def set_hotspot(value):
+    """toggles wi-fi hotspot mode on/off from webui. requires installation of dependencies before use,
+       i.e., running spiro --enable-hotspot from the terminal"""
+    if value == 'start':
+        hostapd.start_ap()
+    elif value == 'stop':
+        hostapd.stop_ap()
+    else:
+        abort(404)
+    return redirect(url_for('settings'))
+
+
 liveoutput = StreamingOutput()
 nightstill = io.BytesIO()
 daystill = io.BytesIO()
