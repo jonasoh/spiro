@@ -58,6 +58,20 @@ IP address:
 <div class="pure-u-3-5">
 {{ ip_addr }}
 </div>
+{% if hotspot_ready and hotspot_enabled %}
+<div class="pure-u-2-5">
+Hotspot SSID:
+</div>
+<div class="pure-u-3-5">
+{{ ssid }}
+</div>
+<div class="pure-u-2-5">
+Hotspot password:
+</div>
+<div class="pure-u-3-5">
+{{ passwd }}
+</div>
+{% endif %}
 <div class="pure-u-2-5">
 Debug mode:
 </div>

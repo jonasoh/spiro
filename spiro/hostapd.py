@@ -177,7 +177,7 @@ def get_ssid():
     try:
         with open("/etc/hostapd/hostapd.conf", "r") as f:
             for l in f:
-                lgrp = re.match(r'\s*(\w+)\s*=\s*(\w+)\s*', l)
+                lgrp = re.match(r'\s*(\w+)\s*=\s*([\w-]+)\s*', l)
                 if lgrp:
                     params[lgrp.group(1)] = lgrp.group(2)
     except OSError as e:

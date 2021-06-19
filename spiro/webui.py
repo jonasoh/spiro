@@ -15,6 +15,7 @@ from threading import Thread, Lock, Condition
 from waitress import serve
 from flask import Flask, render_template, Response, request, redirect, url_for, session, flash, abort
 
+import spiro.hostapd as hostapd
 from spiro.config import Config
 from spiro.logger import log, debug
 from spiro.experimenter import Experimenter
@@ -503,8 +504,10 @@ def settings():
     if request.method == 'POST':
         if request.form.get('name'):
             cfg.set('name', request.form.get('name'))
+    ssid, passwd = hostapd.get_ssid()
     return render_template('settings.html', name=cfg.get('name'), running=experimenter.running, version=cfg.version,
-                           debug=cfg.get('debug'), ip_addr=get_external_ip())
+                           debug=cfg.get('debug'), ip_addr=get_external_ip(), hotspot_ready=hostapd.is_ready(),
+                           hotspot_enabled=hostapd.is_enabled(), ssid=ssid, passwd=passwd)
 
 
 @not_while_running
