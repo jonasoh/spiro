@@ -51,6 +51,10 @@ p.diskspace {
     text-align: right;
     font-family: 'Aldrich Regular', sans-serif;
 }
+.sysinfo div.pure-u-2-5, .sysinfo div.pure-u-3-5 {
+    font-family: 'Saira Condensed', sans-serif;
+    margin-top: 3px;
+}
 #topmenu {
     height: 50px;
 }
