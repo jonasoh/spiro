@@ -4,6 +4,7 @@
 
 import io
 import os
+import re
 import time
 import shutil
 import signal
@@ -503,7 +504,7 @@ def settings():
         if request.form.get('name'):
             cfg.set('name', request.form.get('name'))
     return render_template('settings.html', name=cfg.get('name'), running=experimenter.running, version=cfg.version,
-                           debug=cfg.get('debug'))
+                           debug=cfg.get('debug'), ip_addr=get_external_ip())
 
 
 @not_while_running
@@ -594,6 +595,17 @@ def set_debug(value):
         cfg.set('debug', False)
         flash('Debug mode disabled.')
     return redirect(url_for('settings'))
+
+
+def get_external_ip():
+    """returns the IPv4 address of eth0"""
+    p = subprocess.Popen(['/sbin/ip', '-4', '-o', 'a', 'show', 'eth0'], stdout=subprocess.PIPE, text=True)
+    data = p.stdout.read()
+    ip_match = re.search(r'\s(\d+\.\d+\.\d+\.\d+)\s', data)
+    if ip_match:
+        return ip_match.group(1)
+    else:
+        return 'Unknown'
 
 
 liveoutput = StreamingOutput()
