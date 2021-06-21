@@ -84,7 +84,7 @@ In the raspi-config interface, make the following changes:
 * **Change the password**. The system will allow network access, and a weak password **will** compromise your network security **and** your experimental data.
 * After changing the password, connect the network cable (if you are using wired networking).
 * Under *Interfacing*, enable *Camera*, *I2C*, and *SSH*. 
-* In the *Advanced Options*, set *Memory Split* to 256.
+* In *Performance Options*, set *GPU Memory* to 256.
 * Under *Localisation Options*, make sure to set the *Timezone*. Please note that a working network connection is required to maintain the correct date.
 * If needed, configure *Network* and *Localization* options here as well. Set a *Hostname* under Network if you plan on running several SPIROs.
 * Finally, select *Finish*, and choose to reboot the system when asked. 
@@ -138,11 +138,7 @@ Connect to the web interface using the address http://spiro.local:8080
 
 To reach the web UI or SSH when connected to the hotspot, use the convenience address `spiro.local` and the normal ports (22 for SSH, 8080 for web UI). Please note that the hotspot only allows access to the SPIRO system, and otherwise provides no internet connectivity.
 
-The hotspot can be disabled using the command:
-
-```
-sudo spiro --disable-hotspot
-```
+After enabling the hotspot using the above command, the hotspot can be enabled or disabled from the System Settings page in the web UI, where the connection details are also displayed.
 
 ## Usage
 
