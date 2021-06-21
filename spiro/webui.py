@@ -545,7 +545,7 @@ def make_zipfile(exp_dir):
         abort(404)
 
 
-@app.route('/delete/<exp_dir>', methods=['GET', 'POST'])
+@app.route('/delete/<exp_dir>/', methods=['GET', 'POST'])
 def delete_dir(exp_dir):
     dir = os.path.expanduser('~')
     del_dir = os.path.abspath(os.path.join(dir, exp_dir))
