@@ -39,16 +39,22 @@
 <div class="main">
 <div class="pure-g">
 {% if running %}
-<div class="pure-u-9-24">
+{% for i in range(4) %}
+<div class="pure-u-1 pure-u-md-1-2">
+<a href="lastcapture/{{ i }}.png"><img class="pure-img" src="lastcapture/{{ i }}.png"></a>
+</div>
+{% endfor %}
+
+<div class="pure-u-1">
 <div class="expinfo">
 <h2>Experiment info</h2>
-<p><b>Status:</b> {{ status }}</p>
-<p><b>Folder:</b> {{ directory }}</p>
-<p><b>Started:</b> {{ starttime }}</p>
-<p><b>Ends:</b> {{ endtime }}</p>
-<p><b>Images remaining/plate:</b> {{ nshots }}</p>
-<p><b>Disk required:</b> {{ diskreq }} GB</p>
-<p><b>Disk available:</b> {{ diskspace }} GB</p>
+<p><b>Status:</b> {{ status }}<br>
+<b>Folder:</b> {{ directory }}<br>
+<b>Started:</b> {{ starttime }}<br>
+<b>Ends:</b> {{ endtime }}<br>
+<b>Images remaining/plate:</b> {{ nshots }}<br>
+<b>Disk required:</b> {{ diskreq }} GB<br>
+<b>Disk available:</b> {{ diskspace }} GB</p>
 </div>
 <div>
 <form method="post" class="pure-form">
@@ -94,12 +100,6 @@
 </div>
 {% endif %}
 </div>
-{% if running %}
-<div class="pure-u-15-24">
-<div>
-<img src="lastcapture.png" class="pure-img">
-</div>
-{% endif %}
 </div>
 </div>
 {% endblock %}

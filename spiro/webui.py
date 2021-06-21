@@ -305,17 +305,22 @@ def dayStill():
     return Response(daystill.read(), mimetype="image/png")
 
 
-@app.route('/lastcapture.png')
-def lastCapture():
+@app.route('/lastcapture/<int:num>.png')
+def lastCapture(num):
     if not experimenter.last_captured:
         return redirect(url_for('static', filename='empty.png'))
+    elif num < 0 or num > 3:
+        return redirect(url_for('static', filename='empty.png'))
     else:
-        try:
-            with open(experimenter.last_captured, 'rb') as f:
-                return Response(f.read(), mimetype="image/png")
-        except Exception as e:
-            print("Could not read last captured image:", e)
+        if experimenter.last_captured[num] == '':
             return redirect(url_for('static', filename='empty.png'))
+        else:
+            try:
+                with open(experimenter.last_captured[num], 'rb') as f:
+                    return Response(f.read(), mimetype="image/png")
+            except Exception as e:
+                print("Could not read last captured image:", e)
+                return redirect(url_for('static', filename='empty.png'))
 
 
 def takePicture(obj):

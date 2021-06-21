@@ -31,7 +31,7 @@ class Experimenter(threading.Thread):
         self.stop_experiment = False
         self.status_change = threading.Event()
         self.next_status = ''
-        self.last_captured = None
+        self.last_captured = [''] * 4
         self.nshots = 0
         self.idlepos = 0
         threading.Thread.__init__(self)
@@ -74,7 +74,7 @@ class Experimenter(threading.Thread):
         self.cam.awb_gains = g
 
 
-    def takePicture(self, name):
+    def takePicture(self, name, plate_no):
         filename = ""
         stream = BytesIO()
         prev_daytime = self.daytime
@@ -108,7 +108,7 @@ class Experimenter(threading.Thread):
         im = Image.open(stream)
         im.save(filename)
 
-        self.last_captured = filename
+        self.last_captured[plate_no] = filename
         self.cam.color_effects = None
         self.cam.shutter_speed = 0
         # we leave the cam in auto exposure mode to improve daytime assessment performance
@@ -146,7 +146,7 @@ class Experimenter(threading.Thread):
             self.status = "Initiating"
             self.starttime = time.time()
             self.endtime = time.time() + 60 * 60 * 24 * self.duration
-            self.last_captured = None
+            self.last_captured = [''] * 4
             self.delay = self.delay or 0.001
             self.nshots = self.duration * 24 * 60 // self.delay
             self.cam.exposure_mode = "auto"
@@ -176,8 +176,8 @@ class Experimenter(threading.Thread):
                         debug("Finding initial position.")
                         self.hw.findStart(calibration=self.cfg.get('calibration'))
                         debug("Found initial position.")
-                    else:
                         self.status = "Imaging"
+                    else:
                         # rotate cube 90 degrees
                         debug("Rotating stage.")
                         self.hw.halfStep(100, 0.03)
@@ -187,7 +187,7 @@ class Experimenter(threading.Thread):
 
                     now = time.strftime("%Y%m%d-%H%M%S", time.localtime())
                     name = os.path.join("plate" + str(i + 1), "plate" + str(i + 1) + "-" + now)
-                    self.takePicture(name)
+                    self.takePicture(name, i)
 
                 self.nshots -= 1
                 self.hw.motorOn(False)
