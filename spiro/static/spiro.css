@@ -55,6 +55,10 @@ p.diskspace {
     font-family: 'Saira Condensed', sans-serif;
     margin-top: 3px;
 }
+.vertical-center {
+    display: flex;
+    align-items: center;
+}
 #topmenu {
     height: 50px;
 }
