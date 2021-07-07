@@ -314,11 +314,14 @@ def lastCapture(num):
             return redirect(url_for('static', filename='empty.png'))
         else:
             try:
+                experimenter.last_captured_lock.acquire()
                 with open(experimenter.last_captured[num], 'rb') as f:
                     return Response(f.read(), mimetype="image/png")
             except Exception as e:
                 print("Could not read last captured image:", e)
                 return redirect(url_for('static', filename='empty.png'))
+            finally:
+                experimenter.last_captured_lock.release()
 
 
 @app.route('/preview/<int:num>.jpg')
@@ -328,8 +331,12 @@ def preview(num):
     elif experimenter.preview[num] == '':
         return redirect(url_for('static', filename='empty.png'))
     else:
-        experimenter.preview[num].seek(0)
-        return Response(experimenter.preview[num].read(), mimetype="image/jpeg")
+        experimenter.preview_lock.acquire()
+        try:
+            experimenter.preview[num].seek(0)
+            return Response(experimenter.preview[num].read(), mimetype="image/jpeg")
+        finally:
+            experimenter.preview_lock.release()
 
 
 def takePicture(obj):

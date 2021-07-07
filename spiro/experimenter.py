@@ -32,7 +32,9 @@ class Experimenter(threading.Thread):
         self.status_change = threading.Event()
         self.next_status = ''
         self.last_captured = [''] * 4
+        self.last_captured_lock = threading.Lock()
         self.preview = [''] * 4
+        self.preview_lock = threading.Lock()
         self.nshots = 0
         self.idlepos = 0
         threading.Thread.__init__(self)
@@ -112,12 +114,16 @@ class Experimenter(threading.Thread):
         # convert to PNG using PIL
         stream.seek(0)
         im = Image.open(stream)
+        self.last_captured_lock.acquire()
         im.save(filename)
+        self.last_captured_lock.release()
 
         # make thumbnail previews for experiment overview page
         im.thumbnail((800, 600))
+        self.preview_lock.acquire()
         self.preview[plate_no] = BytesIO()
         im.save(self.preview[plate_no], format="jpeg")
+        self.preview_lock.release()
         im.close()
 
         self.last_captured[plate_no] = filename
