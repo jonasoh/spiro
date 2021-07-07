@@ -32,6 +32,7 @@ class Experimenter(threading.Thread):
         self.status_change = threading.Event()
         self.next_status = ''
         self.last_captured = [''] * 4
+        self.preview = [''] * 4
         self.nshots = 0
         self.idlepos = 0
         threading.Thread.__init__(self)
@@ -112,6 +113,12 @@ class Experimenter(threading.Thread):
         stream.seek(0)
         im = Image.open(stream)
         im.save(filename)
+
+        # make thumbnail previews for experiment overview page
+        im.thumbnail((800, 600))
+        self.preview[plate_no] = BytesIO()
+        im.save(self.preview[plate_no], format="jpeg")
+        im.close()
 
         self.last_captured[plate_no] = filename
         self.cam.color_effects = None
