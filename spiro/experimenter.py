@@ -81,7 +81,6 @@ class Experimenter(threading.Thread):
         self.daytime = self.isDaytime()
         
         if self.daytime:
-            time.sleep(0.5)
             self.cam.shutter_speed = 1000000 // self.cfg.get('dayshutter')
             self.cam.iso = self.cfg.get('dayiso')
             self.cam.color_effects = None
@@ -89,7 +88,7 @@ class Experimenter(threading.Thread):
         else:
             # turn on led
             self.hw.LEDControl(True)
-            time.sleep(0.5)
+            time.sleep(0.1)
             self.cam.shutter_speed = 1000000 // self.cfg.get('nightshutter')
             self.cam.iso = self.cfg.get('nightiso')
             filename = os.path.join(self.dir, name + "-night.png")
@@ -104,6 +103,12 @@ class Experimenter(threading.Thread):
         self.cam.exposure_mode = "off"
 
         self.cam.capture(stream, format='bmp')
+
+        # turn off LED immediately after capture
+        if not self.daytime:
+            self.hw.LEDControl(False)
+
+        # convert to PNG using PIL
         stream.seek(0)
         im = Image.open(stream)
         im.save(filename)
@@ -113,10 +118,6 @@ class Experimenter(threading.Thread):
         self.cam.shutter_speed = 0
         # we leave the cam in auto exposure mode to improve daytime assessment performance
         self.cam.exposure_mode = "auto"
-       
-        if not self.daytime:
-            # turn off led
-            self.hw.LEDControl(False)
 
 
     def run(self):
