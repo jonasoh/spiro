@@ -105,15 +105,16 @@ class Experimenter(threading.Thread):
         debug("Capturing %s." % filename)
         self.cam.exposure_mode = "off"
 
-        self.cam.capture(stream, format='bmp')
+        self.cam.capture(stream, format='rgb')
 
         # turn off LED immediately after capture
         if not self.daytime:
             self.hw.LEDControl(False)
 
         # convert to PNG using PIL
+        # saving as 'RGB' using picamera adds a 16-pixel border which needs to be cropped away
         stream.seek(0)
-        im = Image.open(stream)
+        im = Image.frombytes('RGB', (3296,2464), stream.read()).crop(box=(0,0,3280,2464))
         im.save(filename)
 
         # make thumbnail previews for experiment overview page
