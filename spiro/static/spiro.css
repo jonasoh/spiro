@@ -155,7 +155,10 @@ div.logo img {
     color: grey;
 }
 .diskfull {
-    color: red !important;
+    color: white !important;
+    background-color: red;
+    font-weight: bold;
+    font-size: 18px;
 }
 div.explabel {
     margin-top: 15px;
