@@ -314,14 +314,11 @@ def lastCapture(num):
             return redirect(url_for('static', filename='empty.png'))
         else:
             try:
-                experimenter.last_captured_lock.acquire()
                 with open(experimenter.last_captured[num], 'rb') as f:
                     return Response(f.read(), mimetype="image/png")
             except Exception as e:
                 print("Could not read last captured image:", e)
                 return redirect(url_for('static', filename='empty.png'))
-            finally:
-                experimenter.last_captured_lock.release()
 
 
 @app.route('/preview/<int:num>.jpg')
