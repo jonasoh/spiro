@@ -191,7 +191,7 @@ class Experimenter(threading.Thread):
                         debug("Finding initial position.")
                         self.hw.findStart(calibration=self.cfg.get('calibration'))
                         debug("Found initial position.")
-                        self.status = "Imaging"
+                        if self.status != "Stopping": self.status = "Imaging"
                     else:
                         # rotate cube 90 degrees
                         debug("Rotating stage.")
@@ -206,7 +206,7 @@ class Experimenter(threading.Thread):
 
                 self.nshots -= 1
                 self.hw.motorOn(False)
-                self.status = "Waiting"
+                if self.status != "Stopping": self.status = "Waiting"
 
                 if self.idlepos > 0:
                     # alternate between resting positions during idle, stepping 45 degrees per image
