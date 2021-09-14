@@ -279,4 +279,4 @@ If the motor is moving jerkily during normal operation, there is likely a proble
 
 ## Licensing
 
-The code for SPIRO is licensed under a 2-clause BSD license, allowing redistribution and modification of the source code as long as the original license and copyright notice are retained. SPIRO includes the fonts [Aldrich](https://fonts.google.com/specimen/Aldrich) and [Saira Condensed](https://github.com/Omnibus-Type/Saira), for which the licenses can be found under the `doc/licenses` directory.
+The code for SPIRO is licensed under a 2-clause BSD license, allowing redistribution and modification of the source code as long as the original license and copyright notice are retained. SPIRO includes the fonts [Aldrich](https://fonts.google.com/specimen/Aldrich) and [Saira Condensed](https://github.com/Omnibus-Type/Saira), and the CSS library [Pure.css](https://purecss.io). The licenses for these resources can be found under the `doc/licenses` directory.
