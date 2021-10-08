@@ -547,7 +547,8 @@ def file_browser():
 
     for entry in os.scandir(dir):
         if entry.is_dir() and os.path.dirname(entry.path) == dir and not entry.name.startswith('.'):
-            dirs.append(entry.name)
+            du = subprocess.check_output(['/usr/bin/du','-s', entry.path]).split()[0].decode('utf-8')
+            dirs.append((entry.name, round(int(du)/1024**2, 1)))
     return render_template('filemanager.html', dirs=sorted(dirs), diskspace=diskspace, name=cfg.get('name'), running=experimenter.running)
 
 
