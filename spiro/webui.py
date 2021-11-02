@@ -142,7 +142,7 @@ def index():
 
 @app.route('/empty')
 def empty():
-    return render_template('unavailable.html'), 409
+    return render_template('unavailable.html', 409)
 
 
 @public_route
