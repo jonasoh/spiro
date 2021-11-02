@@ -35,6 +35,8 @@ The image below is a link to a YouTube video showing some of its design and feat
 
 SPIRO is based around [Raspberry Pi 3 B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/), using 3D printed parts to hold everything together. It works with both the [official camera module](https://www.raspberrypi.org/products/camera-module-v2/) as well as with third-party cameras. We use the [Arducam Motorized Focus camera](http://www.arducam.com/programmable-motorized-focus-camera-raspberry-pi/), which allows focusing the images via the built-in live view web server.
 
+It is also possible to use a [Raspberry Pi 4B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) as the base of the system. Most likely, SPIRO can also be built around other Raspberry Pi models, although these have not been tested and modifications to the Borg's nest housing may be needed to accomodate such solutions.
+
 The system basically consists of a camera, a green LED illuminator for imaging in the dark, and a motor-controlled imaging stage, as shown below. 
 
 ![SPIRO close-up](https://user-images.githubusercontent.com/6480370/60957134-6a4ae280-a304-11e9-8a03-0d854267297b.jpeg)
