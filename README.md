@@ -2,7 +2,9 @@
   <img src="https://user-images.githubusercontent.com/6480370/61460733-a965dd00-a96f-11e9-820a-352e4eebd1e5.png" alt="SPIRO logo">
 </p>
 
-SPIRO is an imaging platform designed for making highly reproducible, high temporal resolution timelapse sequences of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies, etc. SPIRO supports imaging of up to four plates at the same time. It is designed to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates.
+SPIRO is an imaging platform designed for making highly reproducible, high temporal resolution timelapse sequences of biological samples grown on Petri dishes: plant seedlings, fungal mycelium, bacterial colonies, etc. SPIRO supports imaging of up to four plates at the same time. It is designed to be suitable for the two most poular Petri dish formats: round 9 cm plates and square 12 cm plates. 
+
+SPIRO is described in depth in [our preprint](https://www.biorxiv.org/content/10.1101/2021.03.15.435343).
 
 The image below is a link to a YouTube video showing some of its design and features.
 
