@@ -112,9 +112,19 @@ class Experimenter(threading.Thread):
             self.hw.LEDControl(False)
 
         # convert to PNG using PIL
-        # saving as 'RGB' using picamera adds a 16-pixel border which needs to be cropped away
+        # saving as 'RGB' using picamera adds a border which needs to be cropped away
+        # the raw capture size depends on the type of camera used
+        # we only support 5 MP (OV5647) and 8 MP (IMX219) cameras, for now at least
+        if self.cam.resolution[0] == 3280:
+            raw_res = (3296, 2464)
+        elif self.cam.resolution[0] == 2592:
+            raw_res = (2592, 1952)
+        else:
+            # unsupported resolution, try to make the best of it
+            debug('Camera has unsupported resolution ' + str(cam.resolution) + '! This may lead to crashes or corrupted images.')
+            raw_res = tuple(cam.resolution)
         stream.seek(0)
-        im = Image.frombytes('RGB', (3296,2464), stream.read()).crop(box=(0,0,3280,2464))
+        im = Image.frombytes('RGB', raw_res, stream.read()).crop(box=(0,0)+self.cam.resolution)
         im.save(filename)
 
         # make thumbnail previews for experiment overview page
