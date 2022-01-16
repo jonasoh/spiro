@@ -123,7 +123,7 @@ You may now place the system in the setting in which you will be using it for yo
 
 For situations where the web UI cannot be used via the network, e.g. if using the system is used where a network connection is not available or where firewall policies block access to the web UI or SSH, SPIRO can be configured to act as a Wi-Fi hotspot. In this mode, a Wi-Fi network with the name spiro-XXXXXX is provided, which provides access only to SPIRO.
 
-To enable the hotspot, run the following command from the terminal or via SSH (note that the system must be connected to a network when initially enabling the hotspot, as it needs to be able to download several software packages):
+Wi-Fi hotspot mode can be conveniently enabled in the *System settings* page in the web UI. To enable the hotspot when the web UI is not accessible (such as if the system is connected to a screen and keyboard during installation), run the following command from the terminal or via SSH (note that the system must be connected to a network with internet access when initially enabling the hotspot, as it needs to be able to download several software packages):
 
 ```
 sudo spiro --enable-hotspot
@@ -134,15 +134,17 @@ After installing and configuring the required services, the details for connecti
 ```
 Access point configured and enabled. Below are the details for connecting to it:
 
-SSID:     spiro-feed13
+SSID:     spiro-abcdef
 Password: 517824ee
 
 Connect to the web interface using the address http://spiro.local:8080
 ```
 
+Each SPIRO will use a unique SSID, allowing the use of multiple hotspot-enabled SPIROs in one location.
+
 To reach the web UI or SSH when connected to the hotspot, use the convenience address `spiro.local` and the normal ports (22 for SSH, 8080 for web UI). Please note that the hotspot only allows access to the SPIRO system, and otherwise provides no internet connectivity.
 
-After enabling the hotspot using the above command, the hotspot can be enabled or disabled from the System Settings page in the web UI, where the connection details are also displayed.
+After enabling the hotspot, the hotspot can be enabled or disabled from the System Settings page in the web UI, where the connection details are also displayed.
 
 ## Usage
 
@@ -154,13 +156,23 @@ Initiating experiments and controlling imaging parameters is performed using a w
 
 The live view allows correcting the focus of the lens as well as placement of Petri plates and distance of the illuminator for optimal image quality. The UI also allows for calibration of the motor and setting up day and night imaging parameters (shutter speed and ISO) separately.
 
-![Experiment control](https://user-images.githubusercontent.com/6480370/78147828-561bb800-7434-11ea-8f5f-105af09fa559.png)
+![Experiment control](https://user-images.githubusercontent.com/6480370/149667658-34eba3af-1084-4a87-ad62-26567af86684.png)
 
-In the experiment control view, parameters such as the duration of the experiment and frequency of imaging is configured. The system dynamically estimates the required size of the images, given the configured parameters.
+In the experiment control view, parameters such as the duration of the experiment and frequency of imaging are configured. The system dynamically estimates the required size of the images, given the configured parameters.
 
 ![Running experiment](https://user-images.githubusercontent.com/6480370/78148080-b3b00480-7434-11ea-9c6c-fd01ceb1d394.png)
 
 During a running experiment, most functions of the web UI are disabled. Browsing to the UI instead displays the status of the running experiment, and provides details on time remaining and the current image quality.
+
+![File manager](https://user-images.githubusercontent.com/6480370/149667737-48a9092f-e7ae-4448-9a67-3901355ac8a2.png)
+
+The file manager allows easy downloading of experimental data from within the web UI.
+
+![System settings](https://user-images.githubusercontent.com/6480370/149667319-8b932f1f-08dc-4add-8db1-37377d8f98c2.png)
+
+The system settings pane provides access to some common settings.
+
+### System administration
 
 For administration of SPIRO (e.g., for updating the software and diagnosing problems), an SSH client is very useful. Below are a few choices:
 
@@ -190,6 +202,8 @@ When imaging parameters are set up to your liking, you are ready to start your e
 ### Downloading images
 
 Images can be downloaded from the web interface under *File manager*. The File manager also allows deleting files to free up space on the SD card.
+
+Image data can also be downloaded using an SSH/SFTP client, such as *MobaXterm*. This allows easy inspection of single images.
 
 ## Maintaining the system
 
