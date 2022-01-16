@@ -3,12 +3,7 @@
 {% block content %}
 <div class="layout">
 <div class="menu">
-<div class="logo">
-<img src="{{ url_for('static', filename='spiro.svg') }}" class="pure-img">
-</div>
-<div class="name">
-{{ name }}
-</div>
+{% include "logo.html.inc" %}
 <div class="pure-menu">
 <ul class="pure-menu-list">
 <li class="pure-menu-item"><a href="/live/on" class="pure-menu-link">Live view</a></li>
