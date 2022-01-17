@@ -55,12 +55,6 @@ Here are a couple of examples showcasing the image quality of day and night imag
 
 ![Example night image](https://user-images.githubusercontent.com/6480370/77849217-4b5dea80-71ca-11ea-8270-8f839e69e6f8.png)
 
-Below is a timelapse sequence of *Arabidopsis* seedlings growing on agar. The image has been heavily downscaled due to size constraints.
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/6480370/60673063-350f4200-9e77-11e9-9fad-f9ec3140b05c.gif" alt="Timelapse example">
-</p>
-
 ## 3D printer models
 
 Models for the 3D printed hardware components can be found at [AlyonaMinina/SPIRO.Hardware](https://github.com/AlyonaMinina/SPIRO.Hardware).
@@ -68,6 +62,10 @@ Models for the 3D printed hardware components can be found at [AlyonaMinina/SPIR
 ## Automated data analysis
 
 Image data acquired using SPIRO is highly reproducible, and well suited for automated image analysis. We have so far developed pipelines for automated assessment of germination and root growth rates, which can be found at [jiaxuanleong/SPIRO.Assays](https://github.com/jiaxuanleong/SPIRO.Assays).
+
+The video below demonstrates some of SPIRO's data acquisition and processing capabilities.
+
+https://user-images.githubusercontent.com/6480370/149747187-09aa5269-0595-4daf-8142-9e2a1a63d6bf.mp4
 
 ## Installation
 
