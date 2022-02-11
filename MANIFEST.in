@@ -1,2 +1,2 @@
 include spiro/static/*
-include spiro/templates/*.html
+include spiro/templates/*
