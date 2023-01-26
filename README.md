@@ -35,7 +35,7 @@ The image below is a link to a YouTube video showing some of its design and feat
 
 ## Hardware
 
-SPIRO is based around [Raspberry Pi 3 B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/), using 3D printed parts to hold everything together. It works with both the [official camera module](https://www.raspberrypi.org/products/camera-module-v2/) as well as with third-party cameras. We use the [Arducam Auto Focus camera module](https://www.arducam.com/product/arducam-imx219-auto-focus-camera-module-drop-in-replacement-for-raspberry-pi-v2-and-nvidia-jetson-nano-camera/), which allows focusing the images via the built-in live view web server.
+SPIRO is based around [Raspberry Pi 3 B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/), using 3D printed parts to hold everything together. It works with both the [official camera module](https://www.raspberrypi.org/products/camera-module-v2/) as well as with third-party cameras. **N.B.! SPIRO doesn't currently support the Raspberry Pi camera module v3.** We use the [Arducam Auto Focus camera module](https://www.arducam.com/product/arducam-imx219-auto-focus-camera-module-drop-in-replacement-for-raspberry-pi-v2-and-nvidia-jetson-nano-camera/), which allows focusing the images via the built-in live view web server.
 
 It is also possible to use a [Raspberry Pi 4B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) as the base of the system. Most likely, SPIRO can also be built around other Raspberry Pi models, although these have not been tested and modifications to the Borg's nest housing may be needed to accomodate such solutions.
 
