@@ -5,6 +5,7 @@
 import RPi.GPIO as gpio
 import time
 import os
+from spiro.camera import cam
 from spiro.config import Config
 from spiro.logger import log, debug
 
@@ -99,16 +100,27 @@ class HWControl:
         self.led = value
 
 
-    # focuses the ArduCam motorized focus camera
-    # code is from ArduCam GitHub repo
     def focusCam(self, val):
-        value = (val << 4) & 0x3ff0
-        data1 = (value >> 8) & 0x3f
-        data2 = value & 0xf0
-        if os.path.exists('/dev/i2c-0'):
-            os.system("i2cset -y 0 0x0c %d %d" % (data1,data2))
-        if os.path.exists('/dev/i2c-1'):
-            os.system("i2cset -y 1 0x0c %d %d" % (data1,data2))
+        if cam.type == 'legacy':
+            # focuses the ArduCam motorized focus camera
+            # code is from ArduCam GitHub repo
+            value = (val << 4) & 0x3ff0
+            data1 = (value >> 8) & 0x3f
+            data2 = value & 0xf0
+            if os.path.exists('/dev/i2c-0'):
+                os.system("i2cset -y 0 0x0c %d %d" % (data1,data2))
+            if os.path.exists('/dev/i2c-1'):
+                os.system("i2cset -y 1 0x0c %d %d" % (data1,data2))
+        elif cam.type == 'libcamera':
+            # to be compatible with legacy code, adapt to libcamera's allowed focusing range,
+            # defined by camera.lens_limits[0]-camera.lens_limits[1], where [0] denotes the furthest 
+            # focusing distance. 
+            # on arducam, the range is 10-1000 where 10 is the closest distance.
+
+            # where 10 is the closest focus and 0 is infinity (for ArduCam, it's 10-1000 where 10 is closest)
+            (lens_far, lens_close) = cam.lens_limits[:2]
+            val = (val - 10) / (990 / lens_close)
+            cam.focus(val)
 
 
     # my copy of the pinout

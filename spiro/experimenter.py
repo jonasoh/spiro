@@ -56,14 +56,20 @@ class Experimenter(threading.Thread):
         '''algorithm for daytime estimation.
            if the average pixel intensity is less than 10, we assume it is night.
            this may be tweaked for special use cases.'''
-        oldres = self.cam.resolution
-        self.cam.resolution = (320, 240)
-        self.cam.iso = self.cfg.get('dayiso')
-        self.cam.shutter_speed = 1000000 // self.cfg.get('dayshutter')
-        output = np.empty((240, 320, 3), dtype=np.uint8)
-        self.cam.capture(output, 'rgb')
-        self.cam.resolution = oldres
-        debug("Daytime estimation mean value: " + str(output.mean()))
+        if self.cam.type == 'legacy':
+            oldres = self.cam.resolution
+            self.cam.resolution = (320, 240)
+            self.cam.iso = self.cfg.get('dayiso')
+            self.cam.shutter_speed = 1000000 // self.cfg.get('dayshutter')
+            output = np.empty((240, 320, 3), dtype=np.uint8)
+            self.cam.capture(output, 'rgb')
+            self.cam.resolution = oldres
+            debug("Daytime estimation mean value: " + str(output.mean()))
+        else:
+            # XXX: clean this up
+            self.cam.shutter_speed = 1000000 // self.cfg.get('dayshutter')
+            output = self.cam.camera.capture_array('lores')
+            debug("Daytime estimation mean value: " + str(output.mean()))
         return output.mean() > 10
 
 
@@ -105,7 +111,11 @@ class Experimenter(threading.Thread):
         debug("Capturing %s." % filename)
         self.cam.exposure_mode = "off"
 
-        self.cam.capture(stream, format='rgb')
+        if self.cam.type == 'legacy':
+            self.cam.capture(stream, format='rgb')
+        else:
+            # XXX
+            stream.write(self.cam.camera.capture_array('main'))
 
         # turn off LED immediately after capture
         if not self.daytime:
@@ -121,8 +131,8 @@ class Experimenter(threading.Thread):
             raw_res = (2592, 1952)
         else:
             # unsupported resolution, try to make the best of it
-            debug('Camera has unsupported resolution ' + str(cam.resolution) + '! This may lead to crashes or corrupted images.')
-            raw_res = tuple(cam.resolution)
+            debug('Camera has unsupported resolution ' + str(self.cam.resolution) + '! This may lead to crashes or corrupted images.')
+            raw_res = tuple(self.cam.resolution)
         stream.seek(0)
         im = Image.frombytes('RGB', raw_res, stream.read()).crop(box=(0,0)+self.cam.resolution)
         im.save(filename)
@@ -140,6 +150,7 @@ class Experimenter(threading.Thread):
         self.cam.shutter_speed = 0
         # we leave the cam in auto exposure mode to improve daytime assessment performance
         self.cam.exposure_mode = "auto"
+            
 
 
     def run(self):
@@ -165,6 +176,7 @@ class Experimenter(threading.Thread):
 
         try:
             debug("Starting experiment.")
+            self.cam.still_mode() # XXX: figure out a nice way to handle this switch for both camera stacks
             self.running = True
             self.status = "Initiating"
             self.starttime = time.time()
