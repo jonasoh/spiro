@@ -217,6 +217,7 @@ def setLive(val):
     if val == 'on' and livestream != True:
         livestream = True
         camera.start_stream(liveoutput)
+        hw.focusCam(cfg.get('focus'))
     elif val == 'off' and livestream == True:
         livestream = False
         camera.stop_stream()
@@ -628,7 +629,7 @@ def set_hotspot(value):
 liveoutput = StreamingOutput()
 nightstill = io.BytesIO()
 daystill = io.BytesIO()
-zoomer = ZoomObject()
+zoomer = None
 cfg = Config()
 lock = Lock()
 
@@ -642,9 +643,10 @@ restarting = False
 livestream = False
 
 def start(cam, myhw):
-    global camera, hw, experimenter
+    global camera, hw, experimenter, zoomer
     camera = cam
     hw = myhw
+    zoomer = ZoomObject()
     experimenter = Experimenter(hw=hw, cam=cam)
     experimenter.start()
     if cfg.get('secret') == '':
