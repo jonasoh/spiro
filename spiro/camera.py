@@ -136,9 +136,11 @@ class NewCamera:
         self.camera.close()
 
     def still_mode(self):
+        self.camera.stop_encoder()
         self.camera.switch_mode(self.still_config)
 
     def video_mode(self):
+        self.camera.stop_encoder()
         self.camera.switch_mode(self.video_config)
 
     @property
