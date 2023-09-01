@@ -78,7 +78,7 @@ class ZoomObject(object):
         limits = (self.roi / 2.0, 1 - self.roi / 2.0)
         self.x = max(min(self.x, limits[1]), limits[0])
         self.y = max(min(self.y, limits[1]), limits[0])
-        camera.zoom = (self.y - self.roi/2.0, self.x - self.roi/2.0, self.roi, self.roi)
+        camera.set_zoom(self.y - self.roi/2.0, self.x - self.roi/2.0, self.roi, self.roi)
 
 
 def public_route(decorated_function):

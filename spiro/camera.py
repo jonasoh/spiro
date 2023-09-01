@@ -20,14 +20,13 @@ class OldCamera:
 
     def stop_stream(self):
         self.camera.stop_recording()
-        self.camera.resolution = camera.MAX_RESOLUTION
+        self.camera.resolution = self.camera.MAX_RESOLUTION
 
     @property
     def zoom(self):
         return self.camera.zoom
 
-    @zoom.setter
-    def zoom(self, x, y, w, h):
+    def set_zoom(self, x, y, w, h):
         self.camera.zoom = (x, y, w, h)
     
     def auto_exposure(self, value):
@@ -94,10 +93,14 @@ class NewCamera:
     def zoom(self):
         return None # XXX
 
-    def zoom(self, x, y, w, h):
+    def set_zoom(self, x, y, w, h):
         '''libcamera wants these values in pixels whereas the legacy stack wants values as fractions.'''
         (resx, resy) = self.camera.camera_properties['PixelArraySize']
-        self.camera.set_controls({"ScalerCrop": (int(x * resx), int(y * resy), int(w * resx), (h * resy))})
+        self.camera.set_controls({"ScalerCrop": [int(x * resx), int(y * resy), int(w * resx), int(h * resy)]})
+        print({"ScalerCrop": [int(x * resx), int(y * resy), int(w * resx), int(h * resy)]})
+
+    def reset_zoom(self):
+        self.camera.set_controls({"ScalerCrop": [0, 0, *self.camera.camera_properties['PixelArraySize']]})
     
     def auto_exposure(self, value):
         self.camera.set_controls({'AeEnable': value})
