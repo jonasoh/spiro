@@ -97,7 +97,6 @@ class NewCamera:
         '''libcamera wants these values in pixels whereas the legacy stack wants values as fractions.'''
         (resx, resy) = self.camera.camera_properties['PixelArraySize']
         self.camera.set_controls({"ScalerCrop": [int(x * resx), int(y * resy), int(w * resx), int(h * resy)]})
-        print({"ScalerCrop": [int(x * resx), int(y * resy), int(w * resx), int(h * resy)]})
 
     def reset_zoom(self):
         self.camera.set_controls({"ScalerCrop": [0, 0, *self.camera.camera_properties['PixelArraySize']]})

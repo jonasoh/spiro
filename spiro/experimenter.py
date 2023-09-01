@@ -115,7 +115,7 @@ class Experimenter(threading.Thread):
             self.cam.capture(stream, format='rgb')
         else:
             # XXX
-            stream.write(self.cam.camera.capture_array('main'))
+            img_array = self.cam.camera.capture_array('main')
 
         # turn off LED immediately after capture
         if not self.daytime:
@@ -133,9 +133,15 @@ class Experimenter(threading.Thread):
             # unsupported resolution, try to make the best of it
             debug('Camera has unsupported resolution ' + str(self.cam.resolution) + '! This may lead to crashes or corrupted images.')
             raw_res = tuple(self.cam.resolution)
-        stream.seek(0)
-        im = Image.frombytes('RGB', raw_res, stream.read()).crop(box=(0,0)+self.cam.resolution)
-        im.save(filename)
+
+        if self.cam.type == 'legacy':
+            stream.seek(0)
+            im = Image.frombytes('RGB', raw_res, stream.read()).crop(box=(0,0)+self.cam.resolution)
+            im.save(filename)
+        if self.cam.type == 'libcamera':
+            img_array = np.rot90(img_array, 3)
+            im = Image.fromarray(img_array, 'RGB')
+            im.save(filename)
 
         # make thumbnail previews for experiment overview page
         im.thumbnail((800, 600))
@@ -150,7 +156,6 @@ class Experimenter(threading.Thread):
         self.cam.shutter_speed = 0
         # we leave the cam in auto exposure mode to improve daytime assessment performance
         self.cam.exposure_mode = "auto"
-            
 
 
     def run(self):
