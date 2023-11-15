@@ -97,7 +97,15 @@ Next, make sure the system is up to date, and install the required tools (answer
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install python3-pip git i2c-tools wiringpi libatlas-base-dev zip python3-pil
+sudo apt install git zip i2c-tools libatlas-base-dev python3-pip python3-pil
+```
+
+To install the WiringPi library (which has been deprecated and will be replaced at a future date), the following commands should work:
+
+```
+cd /tmp
+wget https://project-downloads.drogon.net/wiringpi-latest.deb
+sudo dpkg -i wiringpi-latest.deb
 ```
 
 Then, install the SPIRO software and its dependencies:
@@ -138,11 +146,15 @@ Password: 517824ee
 Connect to the web interface using the address http://spiro.local:8080
 ```
 
-Each SPIRO will use a unique SSID, allowing the use of multiple hotspot-enabled SPIROs in one location.
-
 To reach the web UI or SSH when connected to the hotspot, use the convenience address `spiro.local` and the normal ports (22 for SSH, 8080 for web UI). Please note that the hotspot only allows access to the SPIRO system, and otherwise provides no internet connectivity.
 
 After enabling the hotspot, the hotspot can be enabled or disabled from the System Settings page in the web UI, where the connection details are also displayed.
+
+Each SPIRO will use a unique SSID, allowing the use of multiple hotspot-enabled SPIROs in one location. If you operate several SPIROs in one location, you can create more user-friendly names for the different Wi-Fi networks by using this command:
+
+`sudo nano /etc/hostapd/hostapd.conf`
+
+Modify the content of the `ssid=` line to whatever you find more appropriate. You may also change the password by editing the `wpa_passphrase=` line.
 
 ## Usage
 
