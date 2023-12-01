@@ -97,15 +97,7 @@ Next, make sure the system is up to date, and install the required tools (answer
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install git zip i2c-tools libatlas-base-dev python3-pip python3-pil
-```
-
-To install the WiringPi library (which has been deprecated and will be replaced at a future date), the following commands should work:
-
-```
-cd /tmp
-wget https://project-downloads.drogon.net/wiringpi-latest.deb
-sudo dpkg -i wiringpi-latest.deb
+sudo apt install git zip i2c-tools libatlas-base-dev python3-pip python3-pil python3-numpy
 ```
 
 Then, install the SPIRO software and its dependencies:
@@ -119,7 +111,7 @@ Finally, instruct the system to automatically run the SPIRO control software on 
 ```
 spiro --install
 systemctl enable --user spiro
-sudo loginctl enable-linger pi
+sudo loginctl enable-linger `whoami`
 systemctl --user start spiro
 ```
 
@@ -283,25 +275,23 @@ journalctl --user-unit=spiro
 To check whether the Raspberry Pi can control the LED illuminator, first set the LED control pin to output mode:
 
 ```
-gpio -g mode 17 out
+echo 17 > /sys/class/gpio/export
+echo "out" > /sys/class/gpio/gpio17/direction
 ```
 
-You may then toggle it on and off using the command
+You may then toggle it on or off using the commands
 
 ```
-gpio -g toggle 17
+echo 1 > /sys/class/gpio/gpio17/value  # Turn LED on
+```
+
+```
+echo 0 > /sys/class/gpio/gpio17/value  # Turn LED off
 ```
 
 If it doesn't respond to this command, this may indicate either miswiring, or that either the LED strip or the MOSFET is non-functional.
 
-Similarly, you can turn on and off the motor:
-
-```
-gpio -g mode 23 out
-gpio -g toggle 23
-```
-
-When GPIO pin 23 is toggled on, the cube should be locked in position. If it is not, check that your wiring looks good, that the power supply is connected, and that the shaft coupler is firmly attached to both the cube and the motor. 
+Similarly, you can turn on and off the motor, by substituting the value *23* for 17 in the above examples. When GPIO pin 23 is toggled on, the cube should be locked in position. If it is not, check that your wiring looks good, that the power supply is connected, and that the shaft coupler is firmly attached to both the cube and the motor. 
 
 If the motor is moving jerkily during normal operation, there is likely a problem with the wiring of the coil pins (Ain1&2 and Bin1&2).
 
