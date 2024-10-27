@@ -40,6 +40,9 @@ li.filelist {
     font-family: 'Saira Condensed', sans-serif;
     color: white;
 }
+a.browse {
+    color: #A07EFE;
+}
 a.download {
     color: #73B72F;
 }

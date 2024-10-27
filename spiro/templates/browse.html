@@ -27,14 +27,12 @@
 <div class="main">
 <div class="pure-g" style="padding-top:30px;">
 <div class="pure-u-24-24">
-<legend class="label">File manager</legend>
+<legend class="label">{{ dir }}</legend>
 <ul class="filelist">
-{% for dir, du in dirs %}
-<li class="filelist"><a href="/browse/{{ dir }}" class="browse">{{ dir }}</a> ({{ du }} GB) [<a href="/get/{{ dir }}.zip" class="download">Download</a>] [<a href="/delete/{{ dir }}/" class="delete">Delete</a>]
+{% for file in files %}
+<li class="browselist"><a href="/view/{{ dir }}/{{ file.path }}" class="browse">{{ file.plate }} / {{ file.name }}</a></li>
 {% endfor %}
 </ul>
-<hr>
-<p class="diskspace"><b>Disk available:</b> {{ diskspace }} GB</p>
 </div>
 </div>
 </div>

@@ -144,6 +144,7 @@ def main():
 
     # no options given, go ahead and start web ui
     try:
+        os.chdir(os.path.expanduser('~'))
         global cam
         gpio.setmode(gpio.BCM)
         hw.GPIOInit()

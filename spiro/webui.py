@@ -584,6 +584,41 @@ def delete_dir(exp_dir):
             return redirect(url_for('file_browser'))
 
 
+@app.route('/browse/<dir>')
+def dir_browser(dir):
+    check_dir = dir
+    dir = os.path.join(os.path.expanduser('~'), dir)
+    if not verify_dir(dir):
+        abort(404)
+
+    files = []
+    for plate in ['plate' + str(i+1) for i in range(4)]:
+        for entry in os.scandir(os.path.join(dir, plate)):
+            if entry.is_file() and os.path.dirname(entry.path).startswith(dir) and not entry.name.startswith('.') and \
+                    os.path.basename(os.path.dirname(entry.path)).startswith('plate'):
+                files.append({'path': os.path.basename(os.path.dirname(entry.path)) + '/' + entry.name,
+                              'plate': plate, 'name': entry.name})
+    
+    return render_template('browse.html', dir=check_dir, files=sorted(files, key=lambda x: x['path']), 
+                           name=cfg.get('name'), running=experimenter.running)
+    
+
+@app.route('/view/<dir>/<plate>/<file>')
+def view_file(dir, plate, file):
+    file = os.path.abspath(os.path.join(os.path.expanduser('~'), dir, plate, file))
+    if not verify_dir(dir) or not os.path.dirname(file).startswith(os.path.join(os.path.expanduser('~'), dir, plate)):
+        flash('Invalid directory')
+        return redirect(url_for('file_browser'))
+
+    try:
+        with open(file, 'rb') as f:
+            img_data = f.read()
+    except FileNotFoundError:
+        abort(404)
+    
+    return Response(img_data, mimetype='image/png')
+
+
 def verify_dir(check_dir):
     '''checks that the directory is
        1. immediately contained within the appropriate parent dir
