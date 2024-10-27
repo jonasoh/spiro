@@ -111,6 +111,12 @@ Then, install the SPIRO software and its dependencies:
 sudo pip3 install git+https://github.com/jonasoh/spiro#egg=spiro
 ```
 
+If you are using the newer non-rotated camera house, disable camera rotation (this can also be done in the System settings pane in the Web UI):
+
+```
+spiro --disable-rotation
+```
+
 Finally, instruct the system to automatically run the SPIRO control software on boot:
 
 ```

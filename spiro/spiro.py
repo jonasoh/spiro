@@ -35,6 +35,9 @@ parser.add_argument('--enable-hotspot', action="store_true", dest="enable_ap",
                     help="enables the wi-fi hotspot")
 parser.add_argument('--disable-hotspot', action="store_true", dest="disable_ap",
                     help="disables the wi-fi hotspot")
+parser.add_argument('--disable-rotation', action="store_true", dest="disable_rotation",
+                    help="disables camera rotation (use with non-rotated camera house)")
+
 options = parser.parse_args()
 
 
@@ -44,7 +47,8 @@ def initCam():
     cam.framerate = 5
     cam.iso = 50
     cam.resolution = cam.MAX_RESOLUTION
-    cam.rotation = 90
+    if cfg.get('rotated_camera'):
+        cam.rotation = 90
     cam.image_denoise = False
     hw.focusCam(cfg.get('focus'))
     return cam
@@ -127,12 +131,15 @@ def main():
             print("Debug mode on.")
         else:
             print("Debug mode off")
+    if options.disable_rotation:
+        cfg.set('rotated_camera', False)
+        print('Camera rotation disabled.')
     if options.enable_ap:
         hostapd.start_ap()
     if options.disable_ap:
         hostapd.stop_ap()
     if any([options.reset, options.resetpw, options.install, options.toggle_debug,
-            options.enable_ap, options.disable_ap]):
+            options.enable_ap, options.disable_ap, options.disable_rotation]):
         sys.exit()
 
     # no options given, go ahead and start web ui

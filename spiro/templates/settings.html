@@ -92,7 +92,15 @@ Debug mode:
 <a href="/debug/on" class="pure-button {% if debug %} green {% endif %}">On</a> <a href="/debug/off" class="pure-button {% if not debug %} green {% endif %}">Off</a>
 </div>
 </div>
-<legend class="label">Shut down</legend>
+<div class="pure-g sysinfo">
+    <div class="pure-u-2-5 vertical-center">
+    Rotated camera house:
+    </div>
+    <div class="pure-u-3-5">
+    <a href="/rotate_camera/on" class="pure-button {% if rotation %} green {% endif %}">Yes</a> <a href="/rotate_camera/off" class="pure-button {% if not rotation %} green {% endif %}">No</a>
+    </div>
+    </div>
+    <legend class="label">Shut down</legend>
 <a href="/exit" class="pure-button">Restart web UI</a>
 <a href="/reboot" class="pure-button">Reboot system</a>
 <a href="/shutdown" class="pure-button">Power off system</a>

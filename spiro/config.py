@@ -14,25 +14,26 @@ def log(msg):
 
 class Config(object):
     defaults = {
-        'calibration' : 8,   # number of steps taken after positional sensor is lit
-        'sensor': 4,         # pin for mini microswitch positional sensor
-        'LED': 17,           # pin for turning on/off led
-        'PWMa': 8,           # first pwm pin
-        'PWMb': 14,          # second pwm pin
-        'coilpin_M11': 25,   # ain2 pin
-        'coilpin_M12': 24,   # ain1 pin
-        'coilpin_M21': 18,   # bin1 pin
-        'coilpin_M22': 15,   # bin2 pin
-        'stdby': 23,         # stby pin
-        'focus': 250,	     # default focus distance
-        'password': '',      # an empty password will trigger password initialization for web ui
-        'secret': '',        # secret key for flask sessions
-        'dayshutter': 100,   # day exposure time in fractions of a second, e.g. 100 means 1/100
-        'dayiso': 50,        # daytime iso values
-        'nightshutter': 10,  # night exposure time
-        'nightiso': 400,     # night iso
-        'name': 'spiro',     # the name of this spiro instance
-        'debug': False,      # debug logging
+        'calibration' : 8,      # number of steps taken after positional sensor is lit
+        'sensor': 4,            # pin for mini microswitch positional sensor
+        'LED': 17,              # pin for turning on/off led
+        'PWMa': 8,              # first pwm pin
+        'PWMb': 14,             # second pwm pin
+        'coilpin_M11': 25,      # ain2 pin
+        'coilpin_M12': 24,      # ain1 pin
+        'coilpin_M21': 18,      # bin1 pin
+        'coilpin_M22': 15,      # bin2 pin
+        'stdby': 23,            # stby pin
+        'focus': 250,	        # default focus distance
+        'password': '',         # an empty password will trigger password initialization for web ui
+        'secret': '',           # secret key for flask sessions
+        'dayshutter': 100,      # day exposure time in fractions of a second, e.g. 100 means 1/100
+        'dayiso': 50,           # daytime iso values
+        'nightshutter': 10,     # night exposure time
+        'nightiso': 400,        # night iso
+        'name': 'spiro',        # the name of this spiro instance
+        'debug': False,         # debug logging
+        'rotated_camera': True  # rotated camera house
     }
 
     config = {}

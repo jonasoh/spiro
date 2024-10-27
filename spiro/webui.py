@@ -525,7 +525,7 @@ def settings():
     ssid, passwd = hostapd.get_ssid()
     return render_template('settings.html', name=cfg.get('name'), running=experimenter.running, version=cfg.version,
                            debug=cfg.get('debug'), ip_addr=get_external_ip(), hotspot_ready=hostapd.is_ready(),
-                           hotspot_enabled=hostapd.is_enabled(), ssid=ssid, passwd=passwd)
+                           hotspot_enabled=hostapd.is_enabled(), ssid=ssid, passwd=passwd, rotation=cfg.get('rotated_camera'))
 
 
 @not_while_running
@@ -619,6 +619,17 @@ def set_debug(value):
     return redirect(url_for('settings'))
 
 
+@app.route('/rotate_camera/<value>')
+def set_rotated_camera(value):
+    if value == 'on':
+        cfg.set('rotated_camera', True)
+        flash('Camera rotation enabled. Please restart.')
+    elif value == 'off':
+        cfg.set('rotated_camera', False)
+        flash('Camera rotation disabled. Please restart.')
+    return redirect(url_for('settings'))
+
+
 def get_external_ip():
     """returns the IPv4 address of eth0"""
     for iface in ['eth0', 'wlan0']:
@@ -672,7 +683,8 @@ def start(cam, myhw):
     app.secret_key = cfg.get('secret')
     try:
         camera.meter_mode = 'spot'
-        camera.rotation = 90
+        if cfg.get('rotated_camera'):
+            camera.rotation = 90
         setLive('on')
         #app.run(host="0.0.0.0", port=8080, debug=False)
         # use a tcp timeout of 20 seconds to improve hanging behavior in live view
