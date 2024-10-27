@@ -76,7 +76,12 @@ First, prepare the SD card with a fresh release of [Raspberry Pi OS Lite **(Lega
 dtparam=i2c_vc=on
 ```
 
-Connect the Raspberry Pi to a screen and keyboard. Log in using the default credentials (username `pi`, password `raspberry`). Start the system configuration:
+For convenience, you may also add the following line to `config.txt` in the SD card, which makes it possible to connect an external HDMI monoitor after boot. This can be useful for debugging the system:
+```
+hdmi_force_hotplug=1
+```
+
+Connect the Raspberry Pi to a screen and keyboard and start it up. Log in using the default credentials (username `pi`, password `raspberry`). Start the system configuration:
 
 ```
 sudo raspi-config
@@ -92,7 +97,7 @@ In the raspi-config interface, make the following changes:
 * Finally, select *Finish*, and choose to reboot the system when asked. 
 * After reboot, the system shows a message on the screen showing its IP address ("My IP address is: *a.b.c.d*"). Make a note of this address as you will need it to access the system over the network. Make sure that your network allows access to ports 8080 on this IP address. (Alternatively, see [Enabling the Wi-Fi hotspot](#enabling-the-wifi-hotspot))
 
-Next, make sure the system is up to date, and install the required tools (answer yes to any questions):
+Next, ensure the system is connected to the internet. Update the operating system and install the required tools:
 
 ```
 sudo apt update
