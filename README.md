@@ -115,13 +115,13 @@ sudo loginctl enable-linger `whoami`
 systemctl --user start spiro
 ```
 
-You may now place the system in the setting in which you will be using it for your experiments.
+If you want to use the Wi-Fi hotspot, see the next section. Otherwise, you may now place the system in the setting in which you will be using it for your experiments.
 
 ### Enabling the Wi-Fi hotspot
 
 For situations where the web UI cannot be used via the network, e.g. if using the system is used where a network connection is not available or where firewall policies block access to the web UI or SSH, SPIRO can be configured to act as a Wi-Fi hotspot. In this mode, a Wi-Fi network with the name spiro-XXXXXX is provided, which provides access only to SPIRO.
 
-Wi-Fi hotspot mode can be conveniently enabled in the *System settings* page in the web UI. To enable the hotspot when the web UI is not accessible (such as if the system is connected to a screen and keyboard during installation), run the following command from the terminal or via SSH (note that the system must be connected to a network with internet access when initially enabling the hotspot, as it needs to be able to download several software packages):
+Wi-Fi hotspot mode can be conveniently enabled in the *System settings* page in the web UI. To enable the hotspot when the web UI is not accessible (such as if the system is connected to a screen and keyboard during installation), run the following command from the terminal or via SSH:
 
 ```
 sudo spiro --enable-hotspot
