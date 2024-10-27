@@ -97,7 +97,7 @@ Next, make sure the system is up to date, and install the required tools (answer
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install git zip i2c-tools libatlas-base-dev python3-pip python3-pil
+sudo apt install git zip i2c-tools libatlas-base-dev python3-pip python3-pil dnsmasq hostapd
 ```
 
 Then, install the SPIRO software and its dependencies:
