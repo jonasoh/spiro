@@ -621,13 +621,14 @@ def set_debug(value):
 
 def get_external_ip():
     """returns the IPv4 address of eth0"""
-    p = subprocess.Popen(['/sbin/ip', '-4', '-o', 'a', 'show', 'eth0'], stdout=subprocess.PIPE, text=True)
-    data = p.stdout.read()
-    ip_match = re.search(r'\s(\d+\.\d+\.\d+\.\d+)/', data)
-    if ip_match:
-        return ip_match.group(1)
-    else:
-        return 'Unknown'
+    for iface in ['eth0', 'wlan0']:
+        p = subprocess.Popen(['/sbin/ip', '-4', '-o', 'a', 'show', iface], stdout=subprocess.PIPE, text=True)
+        data = p.stdout.read()
+        ip_match = re.search(r'\s(\d+\.\d+\.\d+\.\d+)/', data)
+        if ip_match:
+            return ip_match.group(1)
+
+    return 'Unknown'
 
 
 @app.route('/hotspot/<value>')
