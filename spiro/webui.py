@@ -546,7 +546,8 @@ def file_browser():
     diskspace = round(df.free / 1024 ** 3, 1)
 
     for entry in os.scandir(dir):
-        if entry.is_dir() and os.path.dirname(entry.path) == dir and not entry.name.startswith('.'):
+        if entry.is_dir() and os.path.dirname(entry.path) == dir and not entry.name.startswith('.') \
+                and all(os.path.exists(os.path.join(entry.path, f'plate{i+1}')) for i in range(4)):
             du = subprocess.check_output(['/usr/bin/du','-s', entry.path]).split()[0].decode('utf-8')
             dirs.append((entry.name, round(int(du)/1024**2, 1)))
     return render_template('filemanager.html', dirs=sorted(dirs), diskspace=diskspace, name=cfg.get('name'), running=experimenter.running)
@@ -591,15 +592,17 @@ def dir_browser(dir):
     if not verify_dir(dir):
         abort(404)
 
-    files = []
+    files = {}
     for plate in ['plate' + str(i+1) for i in range(4)]:
+        plate_files = []
         for entry in os.scandir(os.path.join(dir, plate)):
             if entry.is_file() and os.path.dirname(entry.path).startswith(dir) and not entry.name.startswith('.') and \
                     os.path.basename(os.path.dirname(entry.path)).startswith('plate'):
-                files.append({'path': os.path.basename(os.path.dirname(entry.path)) + '/' + entry.name,
-                              'plate': plate, 'name': entry.name})
-    
-    return render_template('browse.html', dir=check_dir, files=sorted(files, key=lambda x: x['path']), 
+                plate_files.append({'path': os.path.basename(os.path.dirname(entry.path)) + '/' + entry.name,
+                                    'name': entry.name})
+        files[plate] = sorted(plate_files, key=lambda x: x['name'])
+
+    return render_template('browse.html', dir=check_dir, files=files, 
                            name=cfg.get('name'), running=experimenter.running)
     
 

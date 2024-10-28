@@ -40,6 +40,15 @@ li.filelist {
     font-family: 'Saira Condensed', sans-serif;
     color: white;
 }
+li.browse {
+    padding-left: 2rem;
+    background-image: url(/static/spiro-cube.png);
+    background-position: 10px 5px;
+    background-size: 1.0rem 1.0rem;
+    background-repeat: no-repeat;
+    font-family: 'Saira Condensed', sans-serif;
+    color: white;
+}
 a.browse {
     color: #A07EFE;
 }

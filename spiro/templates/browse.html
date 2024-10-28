@@ -28,11 +28,15 @@
 <div class="pure-g" style="padding-top:30px;">
 <div class="pure-u-24-24">
 <legend class="label">{{ dir }}</legend>
+{% for plate, plate_files in files.items() %}
 <ul class="filelist">
-{% for file in files %}
-<li class="browselist"><a href="/view/{{ dir }}/{{ file.path }}" class="browse">{{ file.plate }} / {{ file.name }}</a></li>
+<li class="filelist">{{ plate }}</li>
+<ul class="filelist">
+{% for file in plate_files %}
+<li class="browse"><a href="/view/{{ dir }}/{{ file.path }}" class="browse">{{ file.name }}</a></li>
 {% endfor %}
-</ul>
+</ul></ul>
+{% endfor %}
 </div>
 </div>
 </div>
