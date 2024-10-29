@@ -23,6 +23,8 @@ parser = argparse.ArgumentParser(
                                          SPIRO control software.
                                          Running this command without any flags starts the web interface.
                                          Specifying flags will perform those actions, then exit."""))
+parser.add_argument('--version', action="store_true", dest="show_version",
+                    help="print spiro software version")
 parser.add_argument('--reset-config', action="store_true", dest="reset",
                     help="reset all configuration values to defaults")
 parser.add_argument('--reset-password', action="store_true", dest="resetpw",
@@ -138,8 +140,11 @@ def main():
         hostapd.start_ap()
     if options.disable_ap:
         hostapd.stop_ap()
+    if options.show_version:
+        print(f'SPIRO software version {cfg.version}')
     if any([options.reset, options.resetpw, options.install, options.toggle_debug,
-            options.enable_ap, options.disable_ap, options.disable_rotation]):
+            options.enable_ap, options.disable_ap, options.disable_rotation,
+            options.show_version]):
         sys.exit()
 
     # no options given, go ahead and start web ui
