@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+title: "SPIRO"
+authors:
+  - family-names: "Ohlsson"
+    given-names: "Jonas A."
+preferred-citation:
+  type: article
+  title: "SPIRO – the automated Petri plate imaging platform designed by biologists, for biologists"
+  authors:
+    - family-names: "Ohlsson"
+      given-names: "Jonas A."
+    - family-names: "Leong"
+      given-names: "Jia Xuan"
+    - family-names: "Elander"
+      given-names: "Pernilla H."
+    - family-names: "Ballhaus"
+      given-names: "Florentine"
+    - family-names: "Holla"
+      given-names: "Sanjana"
+    - family-names: "Dauphinee"
+      given-names: "Adrian N."
+    - family-names: "Johansson"
+      given-names: "Johan"
+    - family-names: "Lommel"
+      given-names: "Mark"
+    - family-names: "Hofmann"
+      given-names: "Gero"
+    - family-names: "Betnér"
+      given-names: "Staffan"
+    - family-names: "Sandgren"
+      given-names: "Mats"
+    - family-names: "Schumacher"
+      given-names: "Karin"
+    - family-names: "Bozhkov"
+      given-names: "Peter V."
+    - family-names: "Minina"
+      given-names: "Elena A."
+  journal: "The Plant Journal"
+  volume: 118
+  issue: 2
+  year: 2024
+  pages: "584-600"
+  doi: "10.1111/tpj.16587"
