@@ -39,6 +39,28 @@
 </div>
 </fieldset>
 </form>
+<legend class="label">Set date and time</legend>
+<div class="pure-g sysinfo">
+<div class="pure-u-2-5 vertical-center">
+NTP (automatic time sync):
+</div>
+<div class="pure-u-3-5">
+<a href="/ntp/on" class="pure-button {% if ntp_enabled %} green {% endif %}">On</a> <a href="/ntp/off" class="pure-button {% if not ntp_enabled %} green {% endif %}">Off</a>
+</div>
+</div>
+<form method="post" action="/setdatetime" class="pure-form pure-g">
+<fieldset>
+<div class="pure-u-3-4">
+<label for="date">Date</label>
+<input type="date" id="date" name="date" value="{{ current_date }}" {% if ntp_enabled or running %}disabled{% endif %}>
+<label for="time">Time</label>
+<input type="time" id="time" name="time" value="{{ current_time }}" {% if ntp_enabled or running %}disabled{% endif %}>
+</div>
+<div class="pure-u-1-4">
+<button type="submit" class="pure-button green" {% if ntp_enabled or running %}disabled{% endif %}>Set date/time</button>
+</div>
+</fieldset>
+</form>
 <legend class="label">System info</legend>
 <div class="pure-g sysinfo">
 <div class="pure-u-2-5">

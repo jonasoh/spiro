@@ -11,6 +11,7 @@ import signal
 import hashlib
 import subprocess
 from threading import Thread, Lock, Condition
+from datetime import datetime
 
 from waitress import serve
 from flask import Flask, render_template, Response, request, redirect, url_for, session, flash, abort
@@ -523,9 +524,49 @@ def settings():
         if request.form.get('name'):
             cfg.set('name', request.form.get('name'))
     ssid, passwd = hostapd.get_ssid()
+    now = datetime.now()
     return render_template('settings.html', name=cfg.get('name'), running=experimenter.running, version=cfg.version,
                            debug=cfg.get('debug'), ip_addr=get_external_ip(), hotspot_ready=hostapd.is_ready(),
-                           hotspot_enabled=hostapd.is_enabled(), ssid=ssid, passwd=passwd, rotation=cfg.get('rotated_camera'))
+                           hotspot_enabled=hostapd.is_enabled(), ssid=ssid, passwd=passwd, rotation=cfg.get('rotated_camera'),
+                           ntp_enabled=get_ntp_status(), current_date=now.strftime('%Y-%m-%d'), current_time=now.strftime('%H:%M'))
+
+
+@app.route('/ntp/<value>')
+def set_ntp(value):
+    if value == 'on':
+        subprocess.run(['sudo', 'timedatectl', 'set-ntp', 'true'])
+        flash("NTP enabled. Time will sync automatically.")
+        log(f"NTP enabled by user.")
+    elif value == 'off':
+        subprocess.run(['sudo', 'timedatectl', 'set-ntp', 'false'])
+        flash("NTP disabled. Time can be set manually.")
+        log(f"NTP disabled by user.")
+    return redirect(url_for('settings'))
+
+
+@app.route('/setdatetime', methods=['POST'])
+def set_datetime():
+    new_date = request.form.get('date')
+    new_time = request.form.get('time')
+    if new_date and new_time:
+        datetime_str = f"{new_date} {new_time}:00"
+        try:
+            datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
+            result = subprocess.run(
+                ['sudo', 'timedatectl', 'set-time', datetime_str],
+                capture_output=True, text=True
+            )
+            if result.returncode == 0:
+                flash(f"System date/time set to {datetime_str}")
+                log(f"Date/time manually set to {datetime_str}")
+            else:
+                flash("Failed to set date/time: " + result.stderr)
+                log(f"Failed to set date/time: {result.stderr}")
+        except ValueError:
+            flash("Invalid date/time format.")
+    else:
+        flash("Please provide both date and time.")
+    return redirect(url_for('settings'))
 
 
 @not_while_running
@@ -691,6 +732,18 @@ def set_hotspot(value):
     else:
         abort(404)
     return redirect(url_for('settings'))
+
+
+def get_ntp_status():
+    """returns the NTP status"""
+    try:
+        result = subprocess.run(
+            ['timedatectl', 'show', '--property=NTP', '--value'],
+            capture_output=True, text=True
+        )
+        return result.stdout.strip() == 'yes'
+    except Exception:
+        return False
 
 
 liveoutput = StreamingOutput()
